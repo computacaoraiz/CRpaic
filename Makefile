@@ -13,7 +13,7 @@
 # Important variables
 
 # Version of CRpaic library:
-VERSION := 0.1.0
+VERSION := 0.1.1
 ifeq ($(VERSION), $(shell cat src/VERSION.TXT))
 else
     $(error VERSION in Makefile ($(VERSION)) does not match src/VERSION.TXT \

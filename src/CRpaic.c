@@ -266,7 +266,8 @@ get_string (va_list *args, const char *format, ...)
 
     // Resize the array of strings to open space for future inclusion of the
     // new string:
-    string *temp = realloc(arr_strings, sizeof(string) * total_allocations + 1);
+    string *temp = realloc(arr_strings,
+                           sizeof(string) * (total_allocations + 1));
     if (!temp)
     {
         free(s);
