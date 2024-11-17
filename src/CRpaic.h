@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic.h
- * Version : 0.1.0
- * Date    : 2024-11-17 01:23 -0300
+ * Version : 0.2.0
+ * Date    : 2024-11-17 14:37 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file creates the "CRpaic.h" interface, a C library specifically designed
@@ -9,7 +9,8 @@
  * Computer Science," published by Eric S. Roberts in 1997. The goal of this
  * library is to provide a basic set of tools and conventions thar increase the
  * readability of C programs, particularly as they are used in a teaching
- * environment.
+ * environment. Although this library is designed for studying PAIC, it can be
+ * applied generically to any C program.
  *
  * This library was based on:
  *    - Eric S. Roberts' cslib (https://github.com/computacaoraiz/Roberts.CS1.C)
@@ -138,11 +139,21 @@ typedef char *string;
  */
 
 string
-get_string (va_list *args, const char *format, ...)
-    __attribute__((format (printf, 2, 3)));
+get_string (const char *format, ...)
+    __attribute__((format (printf, 1, 2)));
 
-#define _GET_STRING_ARGS(first, ...) first, ##__VA_ARGS__
-#define get_string(...) get_string(_GET_STRING_ARGS(NULL, __VA_ARGS__))
+/**
+ * Function: get_char
+ * Usage: c = get_char(format, args);
+ * ----------------------------------
+ * Adapted from Harvard libcs50: prompts user for a line of text from standard
+ * input and returns the equivalent char; if text is not a single char, user is
+ * prompt to retry. If line can't be read, return CHAR_MAX.
+ */
+
+char
+get_char (const char *format, ...)
+    __attribute__((format (printf, 1, 2)));
 
 /**
  * Function: get_int

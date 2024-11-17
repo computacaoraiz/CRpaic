@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic.c
- * Version : 0.1.0
- * Date    : 2024-11-17 01:23 -0300
+ * Version : 0.2.0
+ * Date    : 2024-11-17 14:37 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file implements the "CRpaic.h" interface, a C library specifically
@@ -9,7 +9,8 @@
  * Course in Computer Science," published by Eric S. Roberts in 1997. The goal
  * of this library is to provide a basic set of tools and conventions that
  * increase the readability of C programs, particularly as they are used in a
- * teaching environment.
+ * teaching environment. Although this library is designed for studying PAIC, it
+ * can be applied generically to any C program.
  *
  * This library was based on:
  *    - Eric S. Roberts' cslib (https://github.com/computacaoraiz/Roberts.CS1.C)
@@ -99,7 +100,7 @@
 /**
  * Variable: total_allocations
  * ---------------------------
- * Keep the total number of strings allocated on HEAP by get_string.
+ * Keep the total number of strings allocated on HEAP by _get_string.
  */
 
 static size_t total_allocations = 0;
@@ -117,6 +118,35 @@ static string *arr_strings = NULL;
 /*** Private Subprograms Declarations ***/
 
 /**
+ * Function: _get_string
+ * Usage: s = _get_string(&args, &format);
+ * ---------------------------------------
+ * This internal function is used by get_char, get_int, get_float and other
+ * functions to avoid passing a non-literal format string to a function with
+ * the "format" attribute (get_string) when there are no variadic arguments.
+ * All get_* functions in this library use "get_string" to get the line from
+ * user to processing, and "get_string" receives a format string and variadic
+ * arguments for checking. But when "get_string" is called from inside other
+ * funcionts (like get_int) the "format" is repassed as a non-literal string
+ * and with no variadic arguments, and so the compiler can't perform the
+ * check on the format string. The solution is to separate the functions that
+ * use "format" attribute from those that don't. So in this library, the
+ * internal _get_string funciont does not use "format", but the external
+ * get_string does. As the external get_string uses "format", the compiler
+ * does the validity check normally, ensuring that the format is safe.
+ *
+ * Adapted from Harvard libcs50: prompts user for a line of text from standard
+ * input and returns it as a string (char *), sans trailing line ending.
+ * Supports CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user inputs
+ * only a line ending, return "", not NULL. Return NULL upon error or no input
+ * whatsoever (i.e., just EOF). Stores string on HEAP, but library's destructor
+ * frees memory on program's exit.
+ */
+
+static string
+_get_string (va_list *args, const char *format);
+
+/**
  * Procedure: teardown
  * Usage: teardown( );
  * -------------------
@@ -132,19 +162,76 @@ teardown (void);
  * Function: get_string
  * Usage: s = get_string(format, args);
  * ------------------------------------
- * Adapted from Harvard libcs50: prompts user for a line of text from standard
- * input and returns it as a string (char *), sans trailing line ending.
- * Supports CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user inputs
- * only a line ending, return "", not NULL. Return NULL upon error or no input
- * whatsoever (i.e., just EOF). Stores string on HEAP, but library's destructor
- * frees memory on program's exit.
+ * This function is a wrapper to pass the format string ("format") and variadic
+ * arguments ("ap") to _get_string, who really does the processing of getting a
+ * string from the user.
  */
 
-#undef get_string
-#undef _GET_STRING_ARGS
-
 string
-get_string (va_list *args, const char *format, ...)
+get_string (const char *format, ...)
+{
+    // Initializes argument list:
+    va_list ap;
+    va_start(ap, format);
+
+    // Process the input from user, putting the string in result:
+    string result = _get_string(&ap, format);
+
+    // Finalizes argument list and return result:
+    va_end(ap);
+    return result;
+}
+
+/**
+ * Function: get_char
+ * Usage: c = get_char(format, args);
+ * ----------------------------------
+ * Adapted from Harvard libcs50: prompts user for a line of text from standard
+ * input and returns the equivalent char; if text is not a single char, user is
+ * prompt to retry. If line can't be read, return CHAR_MAX.
+ */
+
+char
+get_char (const char *format, ...)
+{
+    // Initializes argument list
+    va_list ap;
+    va_start(ap, format);
+
+    // Try to get a char from user
+    while (true)
+    {
+        // Get line of text, returning CHAR_MAX on failure
+        string line = _get_string(&ap,  format);
+        if (!line)
+        {
+            va_end(ap);
+            return CHAR_MAX;
+        }
+
+        // Return a char if only a char was provided
+        char c, d;
+        if (sscanf(line, "%c%c", &c, &d) == 1)
+        {
+            va_end(ap);
+            return c;
+        }
+    }
+}
+
+/*** Private Subprograms Definitions ***/
+
+/**
+ * Function: _get_string
+ * Usage: s = _get_string(&args, &format);
+ * ---------------------------------------
+ * Implements _get_string internal function. Receives a pointer to an args list
+ * and a point to a format string, previously validated by get_string, and
+ * return a string.
+ */
+
+static string
+_get_string (va_list *args, const char *format)
 {
     // Checks if the number of allocations has exceeded the theoretical
     // mathematical limit representable in "size_t". This check does not
@@ -167,7 +254,8 @@ get_string (va_list *args, const char *format, ...)
         // the standard way with va_start.
         if (!args)
         {
-            va_start(ap, format);
+            fprintf(stderr, "Error: args cannot be null.\n");
+            return NULL;
         }
 
         // When functions in this library call get_string, they will have
@@ -280,10 +368,8 @@ get_string (va_list *args, const char *format, ...)
     arr_strings[total_allocations++] = s;
 
     // Finally, return the pointer to the new string:
-    return s;
+    return s;    
 }
-
-/*** Private Subprograms Definitions ***/
 
 /**
  * Procedure: teardown
