@@ -3,22 +3,22 @@
 # Set version and date for CRpaic library files.
 
 # Verifica se os argumentos foram fornecidos
-if [ $# -ne 2 ]; then
-    echo "Usage: $0 <file> <version>"
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <version file>"
     exit 1
 fi
 
-# Argumentos
-ARQ=$1
-VERSION=$2
+# Important variables:
+VERSION=$(cat VERSION.TXT)
+DATE=$(date +"%Y-%m-%d %H:%M %z")
 
-# Data:
-DATE=$(date +"%Y-%m-%d %H:%M")
+# Files to be modified:
+FILES="CRpaic.h CRpaic.c"
 
-# Comando sed para alterar a versão
-sed -i "s/^ \* Version : .*/ \* Version : $VERSION/" "$ARQ"
-sed -i "s/^ \* Date    : .*/ \* Date    : $DATE/" "$ARQ"
-
-# Mensagem de confirmação
-echo "A versão no arquivo '$ARQ' foi alterada para '$VERSION' e data para '$DATE'."
+# Execute:
+for i in $FILES; do
+    sed -i "s/^ \* Version : .*/ \* Version : $VERSION/" "$i"
+    sed -i "s/^ \* Date    : .*/ \* Date    : $DATE/" "$i"
+    echo "Version and Date on $i altered."
+done
 

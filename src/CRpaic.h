@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic.h
- * Version : 0.0.2
- * Date    : 2024-11-15 16:35
+ * Version : 0.1.0
+ * Date    : 2024-11-17 01:23 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file creates the "CRpaic.h" interface, a C library specifically designed
@@ -141,7 +141,8 @@ string
 get_string (va_list *args, const char *format, ...)
     __attribute__((format (printf, 2, 3)));
 
-#define get_string (...) get_string(NULL, __VA_ARGS__)
+#define _GET_STRING_ARGS(first, ...) first, ##__VA_ARGS__
+#define get_string(...) get_string(_GET_STRING_ARGS(NULL, __VA_ARGS__))
 
 /**
  * Function: get_int

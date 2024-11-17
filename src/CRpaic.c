@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic.c
- * Version : 0.0.2
- * Date    : 2024-11-15 16:35
+ * Version : 0.1.0
+ * Date    : 2024-11-17 01:23 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file implements the "CRpaic.h" interface, a C library specifically
@@ -141,6 +141,7 @@ teardown (void);
  */
 
 #undef get_string
+#undef _GET_STRING_ARGS
 
 string
 get_string (va_list *args, const char *format, ...)
@@ -230,7 +231,7 @@ get_string (va_list *args, const char *format, ...)
     }
 
     // Check whether user provided no input:
-    if (buffer_size == 0 && c = EOF)
+    if (buffer_size == 0 && c == EOF)
     {
         return NULL;
     }
@@ -303,4 +304,50 @@ teardown (void)
         free(arr_strings);
         arr_strings = NULL;
     }
+}
+
+/*** Miscelaneus ***/
+
+/**
+ * Preprocessor magic
+ * ------------------
+ * Makes initializers work somewhat portably. Modified from:
+ * stackoverflow.com/questions/1113409/attribute-constructor-equivalent-in-vc
+ */
+
+#if defined (_MSC_VER) // MSVC
+    #pragma section(".CRT$XCU",read)
+    #define INITIALIZER_(FUNC,PREFIX) \
+        static void FUNC(void); \
+        __declspec(allocate(".CRT$XCU")) void (*FUNC##_)(void) = FUNC; \
+        __pragma(comment(linker,"/include:" PREFIX #FUNC "_")) \
+        static void FUNC(void)
+    #ifdef _WIN64
+        #define INITIALIZER(FUNC) INITIALIZER_(FUNC,"")
+    #else
+        #define INITIALIZER(FUNC) INITIALIZER_(FUNC,"_")
+    #endif
+#elif defined (__GNUC__) // GCC, Clang, MinGW
+    #define INITIALIZER(FUNC) \
+        static void FUNC (void) __attribute__((constructor)); \
+        static void FUNC (void)
+#else
+    #error The CRpaic library requires some compiler-specific features, \
+           but we do not recognize this compiler/version. Please file an issue \
+           at https://github.com/computacaoraiz/CRpaic
+#endif
+
+/**
+ * Initializer
+ * -----------
+ * Called automatically before execution enters main.
+ */
+
+INITIALIZER(setup)
+{
+    // Disable buffering for standard output:
+    setvbuf(stdout, NULL, _IONBF, 0);
+
+    // At main exit, free allocated strings:
+    atexit(teardown);
 }
