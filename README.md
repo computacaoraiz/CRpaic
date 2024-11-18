@@ -130,4 +130,16 @@ computing and/or C programming.
     - [ ] `ProtectVariable` macro
     - [ ] `ProtectBlock` procedure
     - [ ] `_GCControlBlock` type
-  - [o] **`gccx`**: not necessary in CRpaic
+  - [x] **`gccx`**: not necessary in CRpaic
+  - [ ] **`genlib.h`** and **`genlib.c`**: Mostly not necessary.
+    - [x] `bool` type: unnecessary (students use <stdbool.h>)
+    - [x] `string` type: necessary
+    - [x] `stream` type: unnecessary at moment
+    - [ ] `UNDEFINED` constant: necessary
+    - [x] `GetBlock`: unnecessary (students use malloc, calloc or realloc)
+    - [x] `FreeBlock`: unnecessary (students use free)
+    - [x] `New`: unnecessary (students use malloc, calloc or realloc)
+    - [x] `NewArray`: unnecessary (students use malloc, calloc or realloc)
+    - [ ] `Error` procedure
+    - [x] `repeat` macro: unnecessary (students use while)
+  - (TO BE CONTINUED)
