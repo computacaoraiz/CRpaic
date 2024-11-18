@@ -1,4 +1,4 @@
-# CRpaic: a C library for *"Programming Abstractions in C"* (PAIC)
+# CRpaic: a library for *"Programming Abstractions in C"* (PAIC)
 
 The **`CRpaic`** library is a C library specifically designed for studying the
 book **"Programming Abstractions in C: A Second Course in Computer Science"**
