@@ -82,8 +82,52 @@ computing and/or C programming.
   - [ ] `get_long`: necessary
   - [ ] `get_long_long`: necessary
 - [ ] From **`cslib`**:
-  - [ ] `exception.h` and `exception.c`: Uncertain if necessary at the moment.
+  - [ ] **`exception.h`** and **`exception.c`**: Uncertain if necessary at the
+        moment.
     - [ ] `exception` type
     - [ ] `ctx_block` type
     - [ ] `RaiseException` procedure
     - [ ] `HandlerExists` predicate
+  - [ ] **`extgraph.h`**: Uncertain if necessary at the moment.
+    - [ ] `DrawEllipticalArc` procedure
+    - [ ] `StartFilledRegion` procedure
+    - [ ] `EndFilledRegion` procedure
+    - [ ] `DrawTextString` procedure
+    - [ ] `TextStringWidth` function
+    - [ ] `SetFont` procedure
+    - [ ] `GetFont` function
+    - [ ] `SetPointSize` procedure
+    - [ ] `GetPointSize` function
+    - [ ] `SetStyle` procedure
+    - [ ] `GetStyle` function
+    - [ ] `GetFontAscent` function
+    - [ ] `GetFontDescent` function
+    - [ ] `GetFontHeight` function
+    - [ ] `GetMouseX` function
+    - [ ] `GetMouseY` function
+    - [ ] `MouseButtonIsDown` predicate
+    - [ ] `WaitForMouseDown` procedure
+    - [ ] `WaitForMouseUp` procedure
+    - [ ] `HasColor` predicate
+    - [ ] `SetPenColor` procedure
+    - [ ] `GetPenColor` function
+    - [ ] `DefineColor` predicate
+    - [ ] `SetEraseMode` procedure
+    - [ ] `GetEraseMode` function
+    - [ ] `SetWindowTitle` procedure
+    - [ ] `GetWindowTitle` function
+    - [ ] `UpdateDisplay` procedure
+    - [ ] `Pause` procedure
+    - [ ] `ExitGraphics` procedure
+    - [ ] `SaveGraphicsState` procedure
+    - [ ] `RestoreGraphicsState` procedure
+    - [ ] `GetFullScreenWidth` function
+    - [ ] `GetFullScreenHeight` function
+    - [ ] `SetWindowSize` procedure
+    - [ ] `GetXResolution` function
+    - [ ] `GetYResolution` function
+  - [ ] **`galloc.h`**: Probably not necessary.
+    - [ ] `ProtectVariable` macro
+    - [ ] `ProtectBlock` procedure
+    - [ ] `_GCControlBlock` type
+  - [o] **`gccx`**: not necessary in CRpaic
