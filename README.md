@@ -1,8 +1,8 @@
-# CRpaic: a library for *"Programming Abstractions in C"* (PAIC)
+# CRpaic: a library for *"Programming Abstractions in C"*
 
 The **`CRpaic`** library is a C library specifically designed for studying the
 book **"Programming Abstractions in C: A Second Course in Computer Science"**
-(PAIC). This book was written by [Eric S.
+(**PAIC**). This book was written by [Eric S.
 Roberts](https://cs.stanford.edu/people/eroberts) in 1997, and I consider it to
 be, even today, one of the best books for beginner students to learn important
 concepts in algorithms and data structures, using the C language as the
