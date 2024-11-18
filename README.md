@@ -1,61 +1,89 @@
-# Biblioteca C para o "Programming Abstractions in C" (PAIC)
+# CRpaic: a C library for *"Programming Abstractions in C"* (PAIC)
 
-A biblioteca `CRpaic` é uma biblioteca C especificamente projetada para o estudo
-do livro "**Programming Abstractions in C: A Second Course in Computer
-Science**" (PAIC). Este livro foi escrito por [Eric
-S. Roberts](https://cs.stanford.edu/people/eroberts) em 1997, mas considero que
-é, até hoje, um dos melhores livros para aprender conceitos importantes de
-algoritmos e estruturas de dados, usando a linguagem C como ferramenta de
-implementação. Aqui está a imagem da capa do livro:
+The **`CRpaic`** library is a C library specifically designed for studying the
+book **"Programming Abstractions in C: A Second Course in Computer Science"**
+(PAIC). This book was written by [Eric S.
+Roberts](https://cs.stanford.edu/people/eroberts) in 1997, and I consider it to
+be, even today, one of the best books for beginner students to learn important
+concepts in algorithms and data structures, using the C language as the
+implementation tool. Here is an image of the book cover:
 
 ![Foto da cada do
 PAIC](https://raw.githubusercontent.com/computacaoraiz/CRpaic/master/imgs/paic.jpg)
 
+The need for **CRpaic** arose from an introductory course on Data Structures and
+Algorithms for computer science students at Universidade Vila Velha. I adopted
+*PAIC* as the reference textbook for the students, but many of them struggled to
+obtain, compile, and use the original PAIC library, the **`cslib`**.
 
-# Sobre a `CRpaic`
 
-Em 1995, Eric S. Roberts publicou um livro de introdução à ciência da computação
-voltado para alunos totalmente iniciantes e sem experiência em C, chamado "**The
-Art and Science of C: A Library-Based Introduction to Computer Science**":
+# About `cslib` and `CRpaic`
+
+In 1995, Eric S. Roberts published an introductory computer science book aimed
+at complete beginners with no prior experience in C, titled **"The Art and
+Science of C: A Library-Based Introduction to Computer Science"**:
 
 ![Foto da cada do
 TAASOC](https://raw.githubusercontent.com/computacaoraiz/CRpaic/master/imgs/taasoc.jpg)
 
-Para facilitar o aprendizado pelos alunos, Roberts criou uma biblioteca C
-especial que acompanhava o livro, a **`cslib`**. Essa biblioteca exporta
-diversos tipos de dados e subprogramas para facilitar o aprendizado pelos
-alunos.
+To facilitate student learning, Roberts created a special C library to accompany
+the book, the **`cslib`**. This library provides various data types and
+subprograms to make learning easier for students. In 1997, when publishing
+**"Programming Abstractions in C,"** Roberts reused the same library.
 
-Em 1997, ao publicar o "**Programming Abstractions in C**", Roberts aproveitou a
-mesma biblioteca.
+The **`cslib`** is a comprehensive library offering facilities for input and
+output, graphical windows, memory allocation, and many other features designed
+to help students. Unfortunately, its nearly 30 years of age have rendered some
+parts of it less functional today (particularly the library’s graphical
+features, which can sometimes cause serious issues, including completely
+freezing your computer). Nonetheless, Roberts' idea was influential, and several
+courses have used the **`cslib`** as inspiration to create more modern libraries
+for students. For example, Harvard University's course [CS50: Introduction to
+Computer Science](https://cs50.harvard.edu/x/) developed the
+[**`libcs50`**](https://github.com/cs50/libcs50), which is based on and inspired
+by Roberts' **`cslib`**.
 
-A **`cslib`** é uma grande biblioteca com facilidades de
-entrada e saída de dados, janelas gráficas, alocação de memória e muitas outras
-facilidades para os alunos. Infelizmente seus quase 30 anos fizeram com que
-algumas coisas não funcionem corretamente hoje em dia (em especial as
-facilidades gráficas da biblioteca apresentam alguns problemas que, em
-determinadas situações, podem congelar completamente seu computador). De
-qualquer forma a idéia de Roberts foi importante e diversos cursos se basearam
-na `cslib` para criar bibliotecas mais atuais para os alunos (por exemplo: a
-disciplina [CS50: Introduction do Computer
-Science](https://cs50.harvard.edu/x/), da Universidade de Harvard, criou a
-[`libcs50`](https://github.com/cs50/libcs50) totalmente baseada e inspirada na
-`cslib` de Roberts).
+The **`CRpaic`** library was created with the same spirit: to provide a C
+library that facilitates student learning. However, it is specifically designed
+for studying PAIC. This focus is reflected in the library’s name: “CR” clearly
+stands for "Computação Raiz", and "paic" is an acronym formed from the first
+letters of the words in the book’s title. However, the **`CRpaic`** library is,
+in many ways, different from the **`cslib`**. Here are some differences and
+assumptions:
 
-A **`CRpaic`** nasceu nesse mesmo movimento: fornecer uma biblioteca C para
-facilitar o aprendizado dos alunos, mas com a característica de ser uma
-biblioteca totalmente voltara para o estudo do PAIC (o que é indicado até mesmo
-pelo nome: o "CR", obviamente, é de Comutação Raiz, e o "paic" é um acrônimo
-formado com a primeira letra das palavras do título do livro). Algumas
-características da `CRpaic`:
+* It was based on both, Eric S. Roberts' **`cslib`** and Harvard University's
+  **`libcs50`**;
+* Most of the input functions (e.g., `get_string`, `get_char`, etc.) were based
+  on **`libcs50`**;
+* It is simpler than **`cslib`**: several subprograms that "made things too
+  easy" for students were removed, such as the dynamic memory allocation
+  subprograms. The motivation behind this is that PAIC is not an introductory
+  course, and in this case, students are expected to already know or learn more
+  advanced C functionalities; and
+* Some functions from **`cslib`** that were merely wrappers for functions in the
+  Standard C Library were removed (again, it is expected that students know or
+  learn how to use the functions from the Standard C Library).
 
-* É uma biblioteca especificamente projetada para o estudo do PAIC (mas pode ser
-  utilizada em outros programas e estudos também);
-* Foi baseada na `cslib` (Roberts) e na `libcs50` (Harvard); e
-* É mais simples que a `cslib`: foram retirados diversos subprogramas que
-  "facilitavam demais" a vida para os estudantes, por exemplo, os subprogramas
-  de alocação dinâmica de memória (a motivação para isso é que o PAIC não é um
-  curso introdutório e, nesse caso, espera-se que os alunos conheçam ou aprendam
-  funcionalidades mais avançadas de C).
+Currently, **`CRpaic`** is focused solely on studying *PAIC*, but like
+**`libcs50`**, it has the potential to become a general-purpose library for C
+courses, including introductory courses for students with no experience in
+computing and/or C programming.
 
-(restante em breve)
+
+# Status of development
+
+- [ ] From **`libcs50`**:
+  - [x] `string` type: necessary, already implemented.
+  - [x] `get_char`: necessary, already implemented.
+  - [x] `get_string`: necessary, already implemented.
+  - [ ] `get_int`: necessary
+  - [ ] `get_double`: necessary
+  - [ ] `get_float`: necessary
+  - [ ] `get_long`: necessary
+  - [ ] `get_long_long`: necessary
+- [ ] From **`cslib`**:
+  - [ ] `exception.h` and `exception.c`: Uncertain if necessary at the moment.
+    - [ ] `exception` type
+    - [ ] `ctx_block` type
+    - [ ] `RaiseException` procedure
+    - [ ] `HandlerExists` predicate
