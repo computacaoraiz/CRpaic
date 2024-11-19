@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic.h
- * Version : 0.3.0
- * Date    : 2024-11-19 00:28 -0300
+ * Version : 0.4.0
+ * Date    : 2024-11-19 15:11 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file creates the "CRpaic.h" interface, a C library specifically designed
@@ -169,6 +169,22 @@ get_char (const char *format, ...)
 
 int
 get_int (const char *format, ...)
+    __attribute__((format(printf, 1, 2)));
+
+/**
+ * Function: get_long
+ * Usage: l = get_long(format, args);
+ * ----------------------------------
+ * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
+ * of text from standard input and scans it as an long integer. The long integer
+ * value is returned. If text does not represent a long integer in
+ * [-2^63, 2^63 - 1), or would cause underflow or overflow, or if more
+ * characters follow the number, the user is given a prompt and a chance to
+ * retry. If line can't be read, returns LONG_MAX.
+ */
+
+long int
+get_long (const char *format, ...)
     __attribute__((format(printf, 1, 2)));
 
 /*** End of Interface Boilerplate ***/
