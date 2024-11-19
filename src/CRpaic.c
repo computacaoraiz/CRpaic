@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic.c
- * Version : 0.4.0
- * Date    : 2024-11-19 15:11 -0300
+ * Version : 0.5.0
+ * Date    : 2024-11-19 16:05 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file implements the "CRpaic.h" interface, a C library specifically
@@ -313,6 +313,59 @@ get_long (const char *format, ...)
             // If there is no error, and if there are no invalid characters
             // after line (nptr), and if n is in [LONG_MIN, LONG_MAX), return n:
             if (errno == 0 && *endptr == '\0' && n >= LONG_MIN && n < LONG_MAX)
+            {
+                va_end(ap);
+                return n;
+            }
+        }
+    }
+}
+
+/**
+ * Function: get_long_long
+ * Usage: ll = get_long_long(format, args);
+ * ----------------------------------
+ * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
+ * of text from standard input and scans it as an long long integer. The long
+ * long integer value is returned. If text does not represent a long long
+ * integer in [-2^63, 2^63 - 1), or would cause underflow or overflow, or if
+ * more characters follow the number, the user is given a prompt and a chance to
+ * retry. If line can't be read, returns LLONG_MAX.
+ */
+
+long long int
+get_long_long (const char *format, ...)
+{
+    // Initializes argument list
+    va_list ap;
+    va_start(ap, format);
+
+    // Try to get a long long int from user
+    while (true)
+    {
+        // Get line of text, returning LLONG_MAX on failure
+        string line = _get_string(&ap,  format);
+        if (!line)
+        {
+            va_end(ap);
+            return LLONG_MAX;
+        }
+
+        // Return a long long int if only a long long int (in range) was
+        // provided, considering that the user input is in base 10. Force the
+        // input to have no leading whitespace or invalid characters, and no
+        // trailing whitespace or invalid characters.
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *endptr;
+            errno = 0;
+            long long int n = strtoll(line, &endptr, 10);
+            
+            // If there is no error, and if there are no invalid characters
+            // after line (nptr), and if n is in [LLONG_MIN, LLONG_MAX),
+            // return n:
+            if (errno == 0 && *endptr == '\0'
+                && n >= LLONG_MIN && n < LLONG_MAX)
             {
                 va_end(ap);
                 return n;
