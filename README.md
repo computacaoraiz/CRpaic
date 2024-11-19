@@ -72,11 +72,24 @@ computing and/or C programming.
 
 # Status of development
 
+The list below shows the development status of **`CRpaic`**, based on the
+reimplementation of the `libcs50` and `cslib` libraries. The list should be
+interpreted as follows:
+
+1. If a functionality is **described as necessary**, a completion checkmark
+   indicates that the functionality has already been implemented in **`CRpaic`**
+   (otherwise, it is yet to be implemented);
+2. If a functionality is **described as not necessary**, a completion checkmark
+   indicates that the functionality **will not be implemented** in **CRpaic**;
+   and
+3. If a functionality is marked as uncertain, it is unclear whether it will be
+   implemented in **CRpaic**.
+
 - [ ] From **`libcs50`**:
   - [x] `string` type: necessary, already implemented.
   - [x] `get_char`: necessary, already implemented.
   - [x] `get_string`: necessary, already implemented.
-  - [ ] `get_int`: necessary
+  - [x] `get_int`: necessary
   - [ ] `get_double`: necessary
   - [ ] `get_float`: necessary
   - [ ] `get_long`: necessary
@@ -142,4 +155,82 @@ computing and/or C programming.
     - [x] `NewArray`: unnecessary (students use malloc, calloc or realloc)
     - [ ] `Error` procedure
     - [x] `repeat` macro: unnecessary (students use while)
-  - (TO BE CONTINUED)
+  - [ ] **`glibrary.h`** and **`glibrary.c`**: Uncertain if necessary at the
+        moment.
+    - [ ] `GLRadians` function
+    - [ ] `GLDegrees` function
+    - [ ] `GLRound` function
+    - [ ] `GLMin` function
+    - [ ] `GLMax` function
+    - [ ] `GLMinF` function
+    - [ ] `GLMaxF` function
+  - [ ] **`graphics.h`** and **`graphics.c`**: Uncertain if necessary at the
+        moment.
+    - [ ] `InitGraphics` procedure
+    - [ ] `MovePen` procedure
+    - [ ] `DrawLine` procedure
+    - [ ] `DrawArc` procedure
+    - [ ] `GetWindowWidth` function
+    - [ ] `GetWindowHeight` function
+    - [ ] `GetCurrentX` function
+    - [ ] `GetCurrentY` function
+  - [ ] **`random.h`** and **`random.c`**: Probably not necessary.
+    - [ ] `Randomize` procedure
+    - [ ] `RandomInteger` function
+    - [ ] `RandomReal` function
+    - [ ] `RandomChance` predicate
+  - [ ] **`simpio.h`** and **`simpio.c`**: Necessary
+    - [x] `GetInteger` function: implemented as `get_int`
+    - [ ] `GetLong` function
+    - [ ] `GetReal` function
+    - [ ] `GetLine` function
+    - [ ] `ReadLine` function
+  - [ ] **`strlib.h`** and **`strlib.c`**: Some functions necessary.
+    - [ ] `Concat` function
+    - [ ] `IthChar` function
+    - [ ] `SubString` function
+    - [ ] `CharToString` function
+    - [ ] `StringLenght` function
+    - [ ] `CopyString` function
+    - [ ] `StringEqual` predicate
+    - [ ] `StringCompare` predicate
+    - [ ] `FindChar` function
+    - [ ] `FindString` function
+    - [ ] `ConvertToLowerCase` function
+    - [ ] `ConvertToUpperCase` function
+    - [ ] `IntegerToString` function
+    - [ ] `StringToInteger` function
+    - [ ] `RealToString` function
+    - [ ] `StringToReal` function
+  - [x] **`xcompat.h`** and **`xcompat.c`**: Not necessary
+  - [ ] **`xdisplay.h`** and **`xdisplay.c`**: Uncertain if necessary at the
+        moment.
+    - [ ] `XDOpenDisplay` procedure
+    - [ ] `XDCloseDisplay` procedure
+    - [ ] `XDDisplayFD` function
+    - [ ] `XDProcessXEvent` predicate
+    - [ ] `XDCheckForRedraw` procedure
+    - [ ] `XDSetRedrawFlag` procedure
+    - [ ] `XDClearDisplay` procedure
+    - [ ] `XDDrawLine` procedure
+    - [ ] `XDDrawArc` procedure
+    - [ ] `XDDrawText` procedure
+    - [ ] `XDTextWidth` function
+    - [ ] `XDSetFont` function
+    - [ ] `XDSetTitle` procedure
+    - [ ] `XDSetEraseMode` procedure
+    - [ ] `XDStartRegion` procedure
+    - [ ] `XDEndRegion` procedure
+    - [ ] `XDGetMouse` procedure
+    - [ ] `XDWaitForMouse` procedure
+    - [ ] `XDSetWindowSize` procedure
+    - [ ] `XDGetScreenSize` procedure
+    - [ ] `XDGetResolution` procedure
+    - [ ] `XDGetNColors` function
+    - [ ] `XDSetColor` procedure
+  - [ ] **`xmanager.h`** and **`xmanager.c`**: Uncertain if necessary at the
+        moment.
+    - [ ] `XMInitialize` procedure
+    - [ ] `XMSendCommand` procedure
+    - [ ] `XMGetResponse` procedure
+    - [ ] `XMReleaseClient` procedure
