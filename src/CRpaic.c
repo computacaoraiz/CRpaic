@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic.c
- * Version : 0.2.0
- * Date    : 2024-11-17 14:37 -0300
+ * Version : 0.3.0
+ * Date    : 2024-11-19 00:28 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file implements the "CRpaic.h" interface, a C library specifically
@@ -215,6 +215,57 @@ get_char (const char *format, ...)
         {
             va_end(ap);
             return c;
+        }
+    }
+}
+
+/**
+ * Function: get_int
+ * Usage: i = get_int(format, args);
+ * ---------------------------------
+ * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
+ * of text from standard input and scans it as an integer. The integer value is
+ * returned. If text does not represent an integer in [-2^31, 2^31 - 1), or
+ * would cause underflow or overflow, or if more characters follow the numer,
+ * the user is given a prompt and a chance to retry. If line can't be read,
+ * returns INT_MAX.
+ */
+
+int
+get_int (const char *format, ...)
+{
+    // Initializes argument list
+    va_list ap;
+    va_start(ap, format);
+
+    // Try to get an int from user
+    while (true)
+    {
+        // Get line of text, returning INT_MAX on failure
+        string line = _get_string(&ap,  format);
+        if (!line)
+        {
+            va_end(ap);
+            return INT_MAX;
+        }
+
+        // Return an int if only an int (in range) was provided, considering
+        // that the user input is in base 10. Force the input to have no
+        // leading whitespace or invalid characters, and no trailing whitespace
+        // or invalid characters.
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *endptr;
+            errno = 0;
+            long n = strtol(line, &endptr, 10);
+            
+            // If there is no error, and if there are no invalid characters
+            // after line (nptr), and if n is in [INT_MIN, INT_MAX), return n:
+            if (errno == 0 && *endptr == '\0' && n >= INT_MIN && n < INT_MAX)
+            {
+                va_end(ap);
+                return (int) n;
+            }
         }
     }
 }
