@@ -1,6 +1,6 @@
 # ******************************************************************************
 # File    : Makefile
-# Version : 0.1.1
+# Version : 0.2.0
 # Date    : 2024-11-17 01:23 -0300
 # GitHub  : https://github.com/computacaoraiz/CRpaic
 # --------------------------------------------------
@@ -26,6 +26,7 @@ MINOR_VERSION := $(shell echo $(VERSION) | cut -d'.' -f3)
 # Directories with files to be processed
 DIRSRC := src
 DIRUTIL := util
+MANS := $(wildcard docs/*.3.gz)
 
 # Files to be processed:
 HEADERFILE := $(DIRSRC)/CRpaic.h
@@ -71,6 +72,10 @@ endif
 # Libs to be build:
 LIBS := $(addprefix build/lib/, $(LIB_BASE) $(LIB_VERSION) $(LIB_MAJOR))
 
+# Install dirs (/usr/local by default):
+DESTDIR ?= /usr/local
+MANDIR ?= share/man/man3
+
 
 # ******************************************************************************
 # Default target
@@ -94,6 +99,18 @@ $(LIBS): $(HEADERFILE) $(IMPLEMFILE) Makefile
 	install -m 644 $(IMPLEMFILE) build/src
 	install -m 644 $(HEADERFILE) build/include
 	mv $(LIB_VERSION) $(LIB_BASE) $(LIB_STATIC) $(LIB_MAJOR) build/lib
+
+
+# ******************************************************************************
+# Installation on system
+.PHONY: install
+install: all
+	mkdir -p $(addprefix $(DESTDIR)/, src lib include $(MANDIR))
+	cp -R $(filter-out deb, $(wildcard build/*)) $(DESTDIR)
+	cp -R $(MANS) $(DESTDIR)/$(MANDIR)
+	@if [ "$(uname)" = "Linux" ]; then \
+	    ldconfig $(DESTDIR)/lib; \
+	fi
 
 
 # ******************************************************************************
