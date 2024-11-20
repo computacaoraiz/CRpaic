@@ -85,15 +85,15 @@ interpreted as follows:
 3. If a functionality is marked as uncertain, it is unclear whether it will be
    implemented in **CRpaic**.
 
-- [ ] From **`libcs50`**: Necessary.
+- [x] From **`libcs50`**: Necessary.
   - [x] `string` type
   - [x] `get_char` function
   - [x] `get_string` function
   - [x] `get_int` function
   - [x] `get_long` function
   - [x] `get_long_long` function
-  - [ ] `get_float` function
-  - [ ] `get_double` function
+  - [x] `get_float` function
+  - [x] `get_double` function
 - [ ] From **`cslib`**:
   - [ ] **`exception.h`** and **`exception.c`**: Uncertain if necessary at the
         moment.
@@ -181,8 +181,8 @@ interpreted as follows:
     - [ ] `RandomChance` predicate
   - [ ] **`simpio.h`** and **`simpio.c`**: Necessary
     - [x] `GetInteger` function: implemented as `get_int`
-    - [x] `GetLong` function
-    - [ ] `GetReal` function
+    - [x] `GetLong` function: implemented as `get_long`
+    - [x] `GetReal` function: implemented as `get_float` and `get_double`
     - [ ] `GetLine` function
     - [ ] `ReadLine` function
   - [ ] **`strlib.h`** and **`strlib.c`**: Some functions necessary.
