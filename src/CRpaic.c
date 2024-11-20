@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic.c
- * Version : 0.5.0
- * Date    : 2024-11-19 16:05 -0300
+ * Version : 0.6.0
+ * Date    : 2024-11-20 14:28 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file implements the "CRpaic.h" interface, a C library specifically
@@ -369,6 +369,58 @@ get_long_long (const char *format, ...)
             {
                 va_end(ap);
                 return n;
+            }
+        }
+    }
+}
+
+/**
+ * Function: get_float
+ * Usage: f = get_float(format, args);
+ * -----------------------------------
+ * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
+ * of text from stanard input and scans it as a flot. The float value is
+ * returned. If text does not represent a float, or would cause underflow or
+ * overflow, or if more characters follow the number, the user is given a prompt
+ * and a chance to retry. If line can't be read, return FLT_MAX.
+ */
+
+float
+get_float (const char *format, ...)
+{
+    // Initializes argument list
+    va_list ap;
+    va_start(ap, format);
+
+    // Try to get a float from user
+    while (true)
+    {
+        // Get line of text, returning FLT_MAX on failure
+        string line = _get_string(&ap,  format);
+        if (!line)
+        {
+            va_end(ap);
+            return FLT_MAX;
+        }
+
+        // Return a float if only a float was provided. Force the input to have
+        // no leading whitespace or invalid characters, and no trailing
+        // whitespace or invalid characters.
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *endptr;
+            errno = 0;
+            float f = strtof(line, &endptr);
+            
+            // If there is no error, and if there are no invalid characters
+            // after line (nptr), if float is finite and if float < FLT_MAX
+            // and if user does not input hexadecimal or exponentes, return f:
+            if (errno == 0 && *endptr == '\0'
+                && isfinite(f) != 0 && f < FLT_MAX
+                && strcspn(line, "XxEePp") == strlen(line))
+            {
+                va_end(ap);
+                return f;
             }
         }
     }
