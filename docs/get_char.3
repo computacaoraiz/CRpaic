@@ -1,0 +1,70 @@
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.TH GET_CHAR 3 "2024-11-20" "CRpaic" "CRpaic User's Manual"
+.SH NAME
+get_char \- prompts user for a line of text from stdin and returns the
+equivalent char
+.SH SYNOPSIS
+.nf
+.B #include <CRpaic.h>
+.PP
+.BI "char get_char (const char *" format ", ...);"
+.fi
+.SH DESCRIPTION
+The
+.BR get_char ()
+function prompts user (with a message defined by
+.IR format )
+for a line of text from standard input and returns the equivalent char; if text
+is not a single char, user is prompt to retry. If line can\(aqt be read, return
+CHAR_MAX.
+.PP
+The prompt is formatted like
+.BR printf (3).
+.SH RETURN VALUE
+The
+.BR get_char ()
+function return a char on success, or CHAR_MAX on failure.
+.SH BUGS
+Please report bugs and other issues on
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub:"
+.SH EXAMPLE
+.in +4n
+.EX
+#include <CRpaic.h>
+#include <stdio.h>
+
+int main (void)
+{
+    /* Get a char from user */
+    char c1 = get_char("Enter a character: ");
+
+    /* Check if we get a char */
+    if (c1 == CHAR_MAX)
+    {
+        fprintf(stderr, "Could not get a char.\\n");
+        return 1;
+    }
+
+    printf("char: %c\\n", c1);
+
+    return 0;
+}
+.EE
+.in
+.SH SEE ALSO
+.BR get_double (3),
+.BR get_float (3),
+.BR get_int (3),
+.BR get_long (3),
+.BR get_long_long (3),
+.BR get_string (3),
+.BR printf (3)
+.SH COLOPHON
+This page is part of CRpaic User\(aqs Manual
+.IR man-pages .
+A description of the project, information about reporting bugs, and the latest
+version of this page, can be found at
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub".

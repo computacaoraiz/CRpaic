@@ -1,7 +1,7 @@
 # ******************************************************************************
 # File    : Makefile
-# Version : 0.2.0
-# Date    : 2024-11-17 01:23 -0300
+# Version : 1.1.0
+# Date    : 2024-11-21 01:19 -0300
 # GitHub  : https://github.com/computacaoraiz/CRpaic
 # --------------------------------------------------
 # This Makefile builds the CRpaic library, creating the static and dynamic
@@ -23,10 +23,12 @@ MAJOR_VERSION := $(shell echo $(VERSION) | cut -d'.' -f1)
 MID_VERSION := $(shell echo $(VERSION) | cut -d'.' -f2)
 MINOR_VERSION := $(shell echo $(VERSION) | cut -d'.' -f3)
 
-# Directories with files to be processed
+# Directories and files to be processed
 DIRSRC := src
 DIRUTIL := util
+MANSSRC := $(wildcard docs/*.3)
 MANS := $(wildcard docs/*.3.gz)
+MANUAL := $(MANSSRC:.3=.3.gz)
 
 # Files to be processed:
 HEADERFILE := $(DIRSRC)/CRpaic.h
@@ -82,9 +84,6 @@ MANDIR ?= share/man/man3
 .PHONY: all
 all: $(LIBS)
 
-
-# ******************************************************************************
-# Specific targets
 $(LIBS): $(HEADERFILE) $(IMPLEMFILE) Makefile
 	@printf "\n===> Processing %s <===\n" "$@"
 	$(CC) $(CFLAGS) -fPIC -shared $(SHAREDLIB_NAME) -o $(LIB_VERSION) \
@@ -102,32 +101,59 @@ $(LIBS): $(HEADERFILE) $(IMPLEMFILE) Makefile
 
 
 # ******************************************************************************
-# Installation on system
+# Creates the man-pages
+.PHONY: mans
+mans: $(MANUAL)
+
+%.3.gz: %.3
+	gzip -ckf $< > $@
+
+
+# ******************************************************************************
+# Install this version of CRpaic library on system
 .PHONY: install
 install: all
 	mkdir -p $(addprefix $(DESTDIR)/, src lib include $(MANDIR))
 	cp -R $(filter-out deb, $(wildcard build/*)) $(DESTDIR)
 	cp -R $(MANS) $(DESTDIR)/$(MANDIR)
-	@if [ "$(uname)" = "Linux" ]; then \
-	    ldconfig $(DESTDIR)/lib; \
-	fi
+ifeq ($(OS), Linux)
+	ldconfig $(DESTDIR)/lib
+endif
 
 
 # ******************************************************************************
-# Cleanup of files at the end of the build process
+# Remove this version of CRpaic from system
+.PHONY: uninstall
+uninstall:
+	rm -f $(DESTDIR)/include/CRpaic.h
+	rm -f $(DESTDIR)/src/CRpaic.c
+	rm -f $(addprefix $(DESTDIR)/lib/, $(LIB_BASE) $(LIB_MAJOR) \
+	    $(LIB_VERSION) $(LIB_STATIC) $(LIB_OBJECT))
+	rm -f $(addprefix $(DESTDIR)/$(MANDIR)/, $(notdir $(MANS)))
+ifeq ($(OS), Linux)
+	ldconfig $(DESTDIR)/lib
+endif
+
+
+# ******************************************************************************
+# Cleanup of files at the end of the build process (by default does not remove
+# compressed man-pages from docs directory)
 .PHONY: clean
 clean:
-	rm -f src/*~
-	rm -f src/a.out
-	rm -f src/*.o
-	rm -f src/*.a
-	rm -f src/core
-	rm -f src/graphics.ps
 	rm -fr build
+	rm -f docs/*~
+	rm -f src/*~
+	rm -f src/*.a
+	rm -f src/*.o
+	rm -f src/a.out
+	rm -f tests/*~
+	rm -f tests/*.a
+	rm -f tests/*.o
+	rm -f tests/a.out
+
 
 # ******************************************************************************
 # Just check the VERSION used to build the library:
 .PHONY: version
 version:
 	@echo $(VERSION)
-
