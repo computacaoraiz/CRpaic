@@ -2,31 +2,31 @@
 \\$2 \(laURL: \\$1 \(ra\\$3
 ..
 .if \n[.g] .mso www.tmac
-.TH GET_CHAR 3 "2024-11-21" "CRpaic" "CRpaic User's Manual"
+.TH GET_LONG_DOUBLE 3 "2024-11-21" "CRpaic" "CRpaic User's Manual"
 .SH NAME
-get_char \- prompts user for a line of text from stdin and returns the
-equivalent char
+get_long_double \- prompts user for a line of text from stdin and returns the
+equivalent long_double
 .SH SYNOPSIS
 .nf
 .B #include <CRpaic.h>
 .PP
-.BI "char get_char (const char *" format ", ...);"
+.BI "long double get_long_double (const char *" format ", ...);"
 .fi
 .SH DESCRIPTION
 The
-.BR get_char ()
+.BR get_long_double ()
 function prompts user (with a message defined by
 .IR format )
-for a line of text from standard input and returns the equivalent char; if text
-is not a single char, user is prompt to retry. If line can\(aqt be read, return
-CHAR_MAX.
+for a line of text from standard input and returns the equivalent long double;
+if text is not a long double, user is prompt to retry. If line can\(aqt be read,
+return LDBL_MAX.
 .PP
 The prompt is formatted like
 .BR printf (3).
 .SH RETURN VALUE
 The
-.BR get_char ()
-function return a char on success, or CHAR_MAX on failure.
+.BR get_long_double ()
+function return a long double on success, or LDBL_MAX on failure.
 .SH BUGS
 Please report bugs and other issues on
 .URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub:"
@@ -38,28 +38,28 @@ Please report bugs and other issues on
 
 int main (void)
 {
-    /* Get a char from user */
-    char c1 = get_char("Enter a character: ");
+    /* Get a long double from user */
+    long double ld = get_long_double("Enter a long double: ");
 
-    /* Check if we get a char */
-    if (c1 == CHAR_MAX)
+    /* Check if we get a long double */
+    if (ld == LDBL_MAX)
     {
-        fprintf(stderr, "Could not get a char.\\n");
+        fprintf(stderr, "Could not get a long double.\\n");
         return 1;
     }
 
-    printf("char: %c\\n", c1);
+    printf("long double: %.2Lf\\n", ld);
 
     return 0;
 }
 .EE
 .in
 .SH SEE ALSO
+.BR get_char (3),
 .BR get_double (3),
 .BR get_float (3),
 .BR get_int (3),
 .BR get_long (3),
-.BR get_long_double (3),
 .BR get_long_long (3),
 .BR get_string (3),
 .BR printf (3)

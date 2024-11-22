@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic.h
- * Version : 1.0.0
- * Date    : 2024-11-20 14:44 -0300
+ * Version : 1.1.0
+ * Date    : 2024-11-21 23:26 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file creates the "CRpaic.h" interface, a C library specifically designed
@@ -231,6 +231,21 @@ get_float (const char *format, ...)
 
 double
 get_double (const char *format, ...)
+    __attribute__((format(printf, 1, 2)));
+
+/**
+ * Function: get_long_double
+ * Usage: d = get_long_double(format, args);
+ * -----------------------------------------
+ * Prompts user for a line of text, reads the line of text from stanard input
+ * and scans it as a long double. The long double value is returned. If text
+ * does not represent a long double, or would cause underflow or overflow, or if
+ * more characters follow the number, the user is given a prompt and a chance to
+ * retry. If line can't be read, return LDBL_MAX.
+ */
+
+long double
+get_long_double (const char *format, ...)
     __attribute__((format(printf, 1, 2)));
 
 /*** End of Interface Boilerplate ***/
