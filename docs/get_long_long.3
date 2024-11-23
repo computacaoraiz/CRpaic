@@ -1,0 +1,72 @@
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.TH GET_LONG_LONG 3 "2024-11-23" "CRpaic" "CRpaic User's Manual"
+.SH NAME
+get_long_long \- prompts user for a line of text from stdin and returns the
+equivalent long long int
+.SH SYNOPSIS
+.nf
+.B #include <CRpaic.h>
+.PP
+.BI "long long int get_long_long (const char *" format ", ...);"
+.fi
+.SH DESCRIPTION
+The
+.BR get_long_long ()
+function prompts user (with a message defined by
+.IR format )
+for a line of text from standard input and returns the equivalent long long int;
+if text does not represent a long long int or would cause overflow, user is
+reprompted. If line can\(aqt be read, return LLONG_MAX.
+.PP
+The prompt is formatted like
+.BR printf (3).
+.SH RETURN VALUE
+The
+.BR get_long_long ()
+function return the long long int equivalent to the line read from stdin in
+[LLONG_MIN, LLONG_MAX), on success, or LLONG_MAX on failure.
+.SH BUGS
+Please report bugs and other issues on
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub:"
+.SH EXAMPLE
+.in +4n
+.EX
+#include <CRpaic.h>
+#include <stdio.h>
+
+int main (void)
+{
+    /* Get a long long int from user */
+    long long int i = get_long_long("Enter a long long int: ");
+
+    /* Check if we get a valid long long int */
+    if (i == LLONG_MAX)
+    {
+        fprintf(stderr, "Could not get a long long int.\\n");
+        return 1;
+    }
+
+    printf("long long int: %lld\\n", i);
+
+    return 0;
+}
+.EE
+.in
+.SH SEE ALSO
+.BR get_char (3),
+.BR get_double (3),
+.BR get_float (3),
+.BR get_int (3),
+.BR get_long (3),
+.BR get_long_double (3),
+.BR get_string (3),
+.BR printf (3)
+.SH COLOPHON
+This page is part of CRpaic User\(aqs Manual
+.IR man-pages .
+A description of the project, information about reporting bugs, and the latest
+version of this page, can be found at
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub".

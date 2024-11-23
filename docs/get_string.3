@@ -1,0 +1,74 @@
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.TH GET_STRING 3 "2024-11-21" "CRpaic" "CRpaic User's Manual"
+.SH NAME
+get_string \- prompts user for a line of text from stdin and returns it as a
+string
+.SH SYNOPSIS
+.nf
+.B #include <CRpaic.h>
+.PP
+.BI "char *get_string (const char *" format ", ...);"
+.fi
+.SH DESCRIPTION
+The
+.BR get_string ()
+function prompts user (with a message defined by
+.IR format )
+for a line of text from standard input and returns it as a string (char *),
+sans trailing line ending. Supports CR (\\r), LF (\\n), and CRLF (\\r\\n) as
+line endings. Stores string on heap, but library\(aqs destructor frees memory on
+program\(aqs exit.
+.PP
+The prompt is formatted like
+.BR printf (3).
+.SH RETURN VALUE
+The
+.BR get_string ()
+function returns the read line as a string. If user inputs only a line ending,
+returns \(dq\(dq, not NULL. Returns NULL upon error or no input whatsoever
+(i.e., just EOF).
+.SH BUGS
+Please report bugs and other issues on
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub:"
+.SH EXAMPLE
+.in +4n
+.EX
+#include <CRpaic.h>
+#include <stdio.h>
+
+int main (void)
+{
+    /* Get a string from user */
+    string name = get_string("Enter your name: ");
+
+    /* Check if we get a valid string */
+    if (!name)
+    {
+        fprintf(stderr, "Could not get a string.\\n");
+        return 1;
+    }
+
+    printf("name: %s\\n", name);
+
+    return 0;
+}
+.EE
+.in
+.SH SEE ALSO
+.BR get_char (3),
+.BR get_double (3),
+.BR get_float (3),
+.BR get_int (3),
+.BR get_long (3),
+.BR get_long_double (3),
+.BR get_long_long (3),
+.BR printf (3)
+.SH COLOPHON
+This page is part of CRpaic User\(aqs Manual
+.IR man-pages .
+A description of the project, information about reporting bugs, and the latest
+version of this page, can be found at
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub".

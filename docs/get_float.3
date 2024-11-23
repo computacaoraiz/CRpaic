@@ -1,0 +1,74 @@
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.TH GET_FLOAT 3 "2024-11-21" "CRpaic" "CRpaic User's Manual"
+.SH NAME
+get_float \- prompts user for a line of text from stdin and returns the
+equivalent float
+.SH SYNOPSIS
+.nf
+.B #include <CRpaic.h>
+.PP
+.BI "float get_float (const char *" format ", ...);"
+.fi
+.SH DESCRIPTION
+The
+.BR get_float ()
+function prompts user (with a message defined by
+.IR format )
+for a line of text from standard input and returns the equivalent float as
+precisely as possible; if text does not represent a float or would cause
+underflow or overflow, user is reprompted. If line can\(aqt be read, returns
+FLT_MAX.
+.PP
+The prompt is formatted like
+.BR printf (3).
+.SH RETURN VALUE
+The
+.BR get_float ()
+function returns the float equivalent to the line read from stdin in
+[FLT_MIN, FLT_MAX), as precisely as possible. If line can\(aqt be read,
+returns FLT_MAX.
+.SH BUGS
+Please report bugs and other issues on
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub:"
+.SH EXAMPLE
+.in +4n
+.EX
+#include <CRpaic.h>
+#include <stdio.h>
+
+int main (void)
+{
+    /* Get a float from user */
+    float f = get_float("Enter a float: ");
+
+    /* Check if we get a valid float */
+    if (f == FLT_MAX)
+    {
+        fprintf(stderr, "Could not get a float.\\n");
+        return 1;
+    }
+
+    printf("float: %.2f\\n", f);
+
+    return 0;
+}
+.EE
+.in
+.SH SEE ALSO
+.BR get_char (3),
+.BR get_double (3),
+.BR get_int (3),
+.BR get_long (3),
+.BR get_long_double (3),
+.BR get_long_long (3),
+.BR get_string (3),
+.BR printf (3)
+.SH COLOPHON
+This page is part of CRpaic User\(aqs Manual
+.IR man-pages .
+A description of the project, information about reporting bugs, and the latest
+version of this page, can be found at
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub".
