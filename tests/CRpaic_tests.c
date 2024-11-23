@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic_tests.c
- * Version : 0.1.0
- * Date    : 2024-11-22 22:113 -0300
+ * Version : 0.2.0
+ * Date    : 2024-11-23 15:29 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * Implements the CRpaic_tests.h interface.
@@ -57,7 +57,7 @@ void test_get_char (void)
 
     // Test 'A':
     input = "A\n";
-    input_file = fmemopen((void *) input, sizeof(input), "r");
+    input_file = fmemopen((void *) input, strlen(input), "r");
     if (!input_file)
     {
         CU_FAIL("Failed to create simulated input stream.\n");
@@ -70,7 +70,7 @@ void test_get_char (void)
 
     // Test ' ':
     input = " \n";
-    input_file = fmemopen((void *) input, sizeof(input), "r");
+    input_file = fmemopen((void *) input, strlen(input), "r");
     if (!input_file)
     {
         CU_FAIL("Failed to create simulated input stream.\n");
@@ -83,7 +83,7 @@ void test_get_char (void)
 
     // Test '0':
     input = "0\n";
-    input_file = fmemopen((void *) input, sizeof(input), "r");
+    input_file = fmemopen((void *) input, strlen(input), "r");
     if (!input_file)
     {
         CU_FAIL("Failed to create simulated input stream.\n");
@@ -96,7 +96,7 @@ void test_get_char (void)
 
     // Test '\'':
     input = "\'\n";
-    input_file = fmemopen((void *) input, sizeof(input), "r");
+    input_file = fmemopen((void *) input, strlen(input), "r");
     if (!input_file)
     {
         CU_FAIL("Failed to create simulated input stream.\n");
@@ -109,7 +109,7 @@ void test_get_char (void)
 
     // Test '\"':
     input = "\"\n";
-    input_file = fmemopen((void *) input, sizeof(input), "r");
+    input_file = fmemopen((void *) input, strlen(input), "r");
     if (!input_file)
     {
         CU_FAIL("Failed to create simulated input stream.\n");
@@ -122,7 +122,7 @@ void test_get_char (void)
 
     // Test '%':
     input = "%\n";
-    input_file = fmemopen((void *) input, sizeof(input), "r");
+    input_file = fmemopen((void *) input, strlen(input), "r");
     if (!input_file)
     {
         CU_FAIL("Failed to create simulated input stream.\n");
@@ -134,8 +134,8 @@ void test_get_char (void)
     fclose(input_file);
 
     // Test '':
-    input = "";
-    input_file = fmemopen((void *) input, sizeof(input), "r");
+    input = "\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
     if (!input_file)
     {
         CU_FAIL("Failed to create simulated input stream.\n");
@@ -148,7 +148,7 @@ void test_get_char (void)
 
     // Test 'ab':
     input = "ab\n";
-    input_file = fmemopen((void *) input, sizeof(input), "r");
+    input_file = fmemopen((void *) input, strlen(input), "r");
     if (!input_file)
     {
         CU_FAIL("Failed to create simulated input stream.\n");
@@ -157,6 +157,381 @@ void test_get_char (void)
     stdin = input_file;
     result = get_char("Enter a char: ");
     CU_ASSERT_EQUAL(result, CHAR_MAX);
+    fclose(input_file);
+
+    // Restore stdin:
+    stdin = original_stdin;
+}
+
+/**
+ * Test case: test_get_int
+ * ------------------------
+ */
+
+void test_get_int (void)
+{
+    // stdin backup:
+    FILE *original_stdin = stdin;
+
+    // Test input:
+    char *input;
+    FILE *input_file;
+
+    // Result int:
+    int result;
+
+    // Test 0:
+    input = "0\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_int("Enter an int: ");
+    CU_ASSERT_EQUAL(result, 0);
+    fclose(input_file);
+
+    // Test -3:
+    input = "-3\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_int("Enter an int: ");
+    CU_ASSERT_EQUAL(result, -3);
+    fclose(input_file);
+
+    // Test INT_MAX - 1
+    input = "2147483646\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_int("Enter an int: ");
+    CU_ASSERT_EQUAL(result, INT_MAX - 1);
+    fclose(input_file);
+
+    // Test INT_MIN
+    input = "-2147483648\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_int("Enter an int: ");
+    CU_ASSERT_EQUAL(result, INT_MIN);
+    fclose(input_file);
+
+    // Test -0
+    input = "-0\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_int("Enter an int: ");
+    CU_ASSERT_EQUAL(result, 0);
+    fclose(input_file);
+
+    // Test '':
+    input = "\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_int("Enter an int: ");
+    CU_ASSERT_EQUAL(result, INT_MAX);
+    fclose(input_file);
+
+    // Test 'a':
+    input = "";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_int("Enter an int: ");
+    CU_ASSERT_EQUAL(result, INT_MAX);
+    fclose(input_file);
+
+    // Test 4000000000:
+    input = "4000000000\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_int("Enter an int: ");
+    CU_ASSERT_EQUAL(result, INT_MAX);
+    fclose(input_file);
+
+    // Restore stdin:
+    stdin = original_stdin;
+}
+
+/**
+ * Test case: test_get_long
+ * ------------------------
+ */
+
+void test_get_long (void)
+{
+    // stdin backup:
+    FILE *original_stdin = stdin;
+
+    // Test input:
+    char *input;
+    FILE *input_file;
+
+    // Result int:
+    long int result;
+
+    // Test 0:
+    input = "0\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long("Enter a lon int: ");
+    CU_ASSERT_EQUAL(result, 0);
+    fclose(input_file);
+
+    // Test -3:
+    input = "-3\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long("Enter a long int: ");
+    CU_ASSERT_EQUAL(result, -3);
+    fclose(input_file);
+
+    // Test LONG_MAX - 1
+    input = "9223372036854775806\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long("Enter a long int: ");
+    CU_ASSERT_EQUAL(result, LONG_MAX - 1);
+    fclose(input_file);
+
+    // Test LONG_MIN
+    input = "-9223372036854775808\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long("Enter a long int: ");
+    CU_ASSERT_EQUAL(result, LONG_MIN);
+    fclose(input_file);
+
+    // Test -0
+    input = "-0\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long("Enter a long int: ");
+    CU_ASSERT_EQUAL(result, 0);
+    fclose(input_file);
+
+    // Test '':
+    input = "\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long("Enter a long int: ");
+    CU_ASSERT_EQUAL(result, LONG_MAX);
+    fclose(input_file);
+
+    // Test 'a':
+    input = "";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long("Enter a long int: ");
+    CU_ASSERT_EQUAL(result, LONG_MAX);
+    fclose(input_file);
+
+    // Test 10000000000000000000:
+    input = "10000000000000000000\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long("Enter a long int: ");
+    CU_ASSERT_EQUAL(result, LONG_MAX);
+    fclose(input_file);
+
+    // Restore stdin:
+    stdin = original_stdin;
+}
+
+/**
+ * Test case: test_get_long_long
+ * -----------------------------
+ */
+
+void test_get_long_long (void)
+{
+    // stdin backup:
+    FILE *original_stdin = stdin;
+
+    // Test input:
+    char *input;
+    FILE *input_file;
+
+    // Result int:
+    long long int result;
+
+    // Test 0:
+    input = "0\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long_long("Enter a long long int: ");
+    CU_ASSERT_EQUAL(result, 0);
+    fclose(input_file);
+
+    // Test -3:
+    input = "-3\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long_long("Enter a long long int: ");
+    CU_ASSERT_EQUAL(result, -3);
+    fclose(input_file);
+
+    // Test LLONG_MAX - 1
+    input = "9223372036854775806\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long_long("Enter a long long int: ");
+    CU_ASSERT_EQUAL(result, LLONG_MAX - 1);
+    fclose(input_file);
+
+    // Test LLONG_MIN
+    input = "-9223372036854775808\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long_long("Enter a long long int: ");
+    CU_ASSERT_EQUAL(result, LLONG_MIN);
+    fclose(input_file);
+
+    // Test -0
+    input = "-0\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long_long("Enter a long long int: ");
+    CU_ASSERT_EQUAL(result, 0);
+    fclose(input_file);
+
+    // Test '':
+    input = "\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long_long("Enter a long long int: ");
+    CU_ASSERT_EQUAL(result, LLONG_MAX);
+    fclose(input_file);
+
+    // Test 'a':
+    input = "";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long_long("Enter a long long int: ");
+    CU_ASSERT_EQUAL(result, LLONG_MAX);
+    fclose(input_file);
+
+    // Test 10000000000000000000:
+    input = "10000000000000000000\n";
+    input_file = fmemopen((void *) input, strlen(input), "r");
+    if (!input_file)
+    {
+        CU_FAIL("Failed to create simulated input stream.\n");
+        return;
+    }
+    stdin = input_file;
+    result = get_long_long("Enter a long long int: ");
+    CU_ASSERT_EQUAL(result, LLONG_MAX);
     fclose(input_file);
 
     // Restore stdin:

@@ -1,7 +1,7 @@
 /**
  * File    : tests.c
- * Version : 0.0.1
- * Date    : 2024-11-22 22:113 -0300
+ * Version : 0.2.0
+ * Date    : 2024-11-23 15:29 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * Driver program to run the CRpaic_tests.h Unit Tests.
@@ -72,6 +72,33 @@ int main (void)
     {
         fprintf(stderr,
                 "Impossible to add \'get_char\' Test Case to I/O Test Suite.\n");
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    // get_int test case
+    if (!CU_add_test(io_suite, "get_int test case", test_get_int))
+    {
+        fprintf(stderr,
+                "Impossible to add \'get_int\' Test Case to I/O Test Suite.\n");
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    // get_long test case
+    if (!CU_add_test(io_suite, "get_long test case", test_get_long))
+    {
+        fprintf(stderr,
+                "Impossible to add \'get_long\' Test Case to I/O Test Suite.\n");
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    // get_long_long test case
+    if (!CU_add_test(io_suite, "get_long_long test case", test_get_long_long))
+    {
+        fprintf(stderr,
+                "Impossible to add \'get_long_long\' Test Case to I/O Test Suite.\n");
         CU_cleanup_registry();
         return CU_get_error();
     }
