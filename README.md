@@ -70,6 +70,53 @@ courses, including introductory courses for students with no experience in
 computing and/or C programming.
 
 
+# Installation
+
+You must have a Linux computer with development tools, particularly **make**,
+the **gcc** compiler, the standard C library **glibc**, and some common C header
+files. You also need access as a `root` user (usually via the **sudo** command).
+
+## How to install?
+
+0. Download the latest release from
+   [CRpaic releases](https://github.com/computacaoraiz/CRpaic/releases);
+0. Extract the file `CRpaic-*.*`
+0. `cd CRpaic-*`
+0. `make all`
+0. `sudo make install`
+
+By default, we install to `/usr/local` (and this is the recommend default
+install directory). If you'd like to change the installation
+location (and if you know what you are doing), you can run
+`sudo DESTDIR=/path/to/install make install` as desired.
+
+## How to uninstall?
+Using the downloaded release (from installation):
+
+0. `cd CRpaic-*`
+0. `sudo make uninstall`
+
+If you have installed on a non default directory, you can run
+`sudo DESTDIR=/path/to/install make uninstall`.
+
+## Troubleshooting
+
+0. If, when compiling a program, you see `/usr/bin/ld: cannot find -lCRpaic`:
+    Add `export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH` to your
+    `.bashrc`.
+0. If, when compiling a program, you see `fatal error: 'CRpaic.h' file not
+    found`: Add `export C_INCLUDE_PATH=/usr/local/include` to your `.bashrc`.
+0. If, when executing a program, you see `error while loading shared libraries:
+   libCRpaic.so.1: cannot open shared object file: No such file or directory`:
+   Add `export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH` to your
+   `.bashrc`.
+
+
+# Usage
+
+Link with `-lCRpaic`. See `man get_*` manual pages after installation.
+
+
 # Status of development
 
 The list below shows the development status of **`CRpaic`**, based on the
