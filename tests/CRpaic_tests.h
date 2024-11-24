@@ -50,6 +50,7 @@
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
 #include <limits.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -82,6 +83,34 @@ void test_get_long (void);
  */
 
 void test_get_long_long (void);
+
+/**
+ * Test case: test_get_float
+ * -------------------------
+ */
+
+void test_get_float (void);
+
+/**
+ * Test case: test_get_double
+ * --------------------------
+ */
+
+void test_get_double (void);
+
+/**
+ * Test case: test_get_long_double
+ * -------------------------------
+ */
+
+void test_get_long_double (void);
+
+/**
+ * Test case: test_get_string
+ * --------------------------
+ */
+
+void test_get_string (void);
 
 /*** End of Interface Boilerplate ***/
 

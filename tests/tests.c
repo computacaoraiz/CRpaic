@@ -71,7 +71,8 @@ int main (void)
     if (!CU_add_test(io_suite, "get_char test case", test_get_char))
     {
         fprintf(stderr,
-                "Impossible to add \'get_char\' Test Case to I/O Test Suite.\n");
+                "Impossible to add \'get_char\' Test Case "
+                "to I/O Test Suite.\n");
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -80,7 +81,8 @@ int main (void)
     if (!CU_add_test(io_suite, "get_int test case", test_get_int))
     {
         fprintf(stderr,
-                "Impossible to add \'get_int\' Test Case to I/O Test Suite.\n");
+                "Impossible to add \'get_int\' Test Case "
+                "to I/O Test Suite.\n");
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -89,7 +91,8 @@ int main (void)
     if (!CU_add_test(io_suite, "get_long test case", test_get_long))
     {
         fprintf(stderr,
-                "Impossible to add \'get_long\' Test Case to I/O Test Suite.\n");
+                "Impossible to add \'get_long\' Test Case "
+                "to I/O Test Suite.\n");
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -98,7 +101,50 @@ int main (void)
     if (!CU_add_test(io_suite, "get_long_long test case", test_get_long_long))
     {
         fprintf(stderr,
-                "Impossible to add \'get_long_long\' Test Case to I/O Test Suite.\n");
+                "Impossible to add \'get_long_long\' Test Case "
+                "to I/O Test Suite.\n");
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    // get_float test case
+    if (!CU_add_test(io_suite, "get_float test case", test_get_float))
+    {
+        fprintf(stderr,
+                "Impossible to add \'get_float\' Test Case "
+                "to I/O Test Suite.\n");
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    // get_double test case
+    if (!CU_add_test(io_suite, "get_double test case", test_get_double))
+    {
+        fprintf(stderr,
+                "Impossible to add \'get_double\' Test Case "
+                "to I/O Test Suite.\n");
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    // get_long_double test case
+    if (!CU_add_test(io_suite, "get_long_double test case",
+                     test_get_long_double))
+    {
+        fprintf(stderr,
+                "Impossible to add \'get_long_double\' Test Case "
+                "to I/O Test Suite.\n");
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    // get_string test case
+    if (!CU_add_test(io_suite, "get_string test case",
+                     test_get_string))
+    {
+        fprintf(stderr,
+                "Impossible to add \'get_string\' Test Case "
+                "to I/O Test Suite.\n");
         CU_cleanup_registry();
         return CU_get_error();
     }
