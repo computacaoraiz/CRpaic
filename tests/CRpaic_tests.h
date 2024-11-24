@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic_tests.h
- * Version : 0.2.0
- * Date    : 2024-11-23 15:29 -0300
+ * Version : 1.1.0
+ * Date    : 2024-11-23 22:40 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * Creates CRpaic_tests.h, a Unit Tests interface for CRpaic library, using the

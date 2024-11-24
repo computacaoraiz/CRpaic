@@ -181,9 +181,9 @@ interpreted as follows:
     - [ ] `RandomChance` predicate
   - [ ] **`simpio.h`** and **`simpio.c`**: Necessary
     - [x] `GetInteger` function: implemented as `get_int`
-    - [x] `GetLong` function: implemented as `get_long`
-    - [x] `GetReal` function: implemented as `get_float` and `get_double`
-    - [ ] `GetLine` function
+    - [x] `GetLong` function: implemented as `get_long` and `get_long_long`
+    - [x] `GetReal` function: implemented as `get_float`, `get_double` and `get_long_double`
+    - [x] `GetLine` function: implemented as `get_string`
     - [ ] `ReadLine` function
   - [ ] **`strlib.h`** and **`strlib.c`**: Some functions necessary.
     - [ ] `Concat` function
