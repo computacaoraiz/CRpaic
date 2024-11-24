@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic_tests.c
- * Version : 1.1.0
- * Date    : 2024-11-23 22:40 -0300
+ * Version : 1.2.0
+ * Date    : 2024-11-24 15:43 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * Implements the CRpaic_tests.h interface.
@@ -1064,4 +1064,49 @@ void test_get_string (void)
 
     // Restore stdin:
     stdin = original_stdin;
+}
+
+/*** Subprograms Declarations for String Subprograms Test Suite ***/
+
+/**
+ * Test case: substring
+ * --------------------
+ */
+
+void test_substring (void)
+{
+    string s = "Abrantes Araújo Silva Filho";
+    string sub;
+
+    sub = substring(s, 0, 7);
+    CU_ASSERT_STRING_EQUAL(sub, "Abrantes");
+    free(sub);
+
+    sub = substring(s, 8, 8);
+    CU_ASSERT_STRING_EQUAL(sub, " ");
+    free(sub);
+
+    sub = substring(s, -2, 7);
+    CU_ASSERT_STRING_EQUAL(sub, "Abrantes");
+    free(sub);
+
+    sub = substring(s, 0, 200);
+    CU_ASSERT_STRING_EQUAL(sub, "Abrantes Araújo Silva Filho");
+    free(sub);
+
+    sub = substring(s, -200, 200);
+    CU_ASSERT_STRING_EQUAL(sub, "Abrantes Araújo Silva Filho");
+    free(sub);
+
+    sub = substring(s, 0, 0);
+    CU_ASSERT_STRING_EQUAL(sub, "A");
+    free(sub);
+
+    sub = substring(s, 200, 0);
+    CU_ASSERT_STRING_EQUAL(sub, "");
+    free(sub);
+
+    sub = substring(NULL, 0, 7);
+    CU_ASSERT_PTR_NULL(sub);
+    free(sub);
 }

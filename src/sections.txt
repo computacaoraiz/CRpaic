@@ -1,0 +1,26 @@
+This are the sections that are used in CRpaic interface and implementation. The
+numbering of sections and subsections are just a reference to organize contents.
+
+Section   Content
+-----------------
+0         Interface boilerplate (start and finish)
+
+1         Feature Macros and Includes
+
+2         Symbolic Constants and Global's
+2.1       Private constants and global's
+2.2       Exported constants and global's
+
+3         Data types
+3.1       Private data types
+3.2       Exported data types
+
+4         Subprograms Declarations
+4.1       Private subprograms declarations
+4.2       Exported subprograms declarations
+
+5.        Subprograms Definitions
+5.1       Private subprograms definitions
+5.2       Exported subprograms definitions
+
+6.        Miscellaneous

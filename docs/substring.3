@@ -1,0 +1,120 @@
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.TH SUBSTRING 3 "2024-11-24" "CRpaic" "CRpaic User's Manual"
+.SH NAME
+substring \- returns a copy of the substring of \(dqs\(dq consisting of the
+characters between index positions \(dqp1\(dq and \(dqp2\(dq, inclusive.
+.SH SYNOPSIS
+.nf
+.B #include <CRpaic.h>
+.PP
+.BI "char *substring (const char *" s ", int " p1 ", int " p2 ");"
+.fi
+.SH DESCRIPTION
+The
+.BR substring ()
+takes three arguments: a string
+.IR s
+and two integer indices,
+.IR p1
+and
+.IR p2 ,
+which represent positions in the string. It returns a copy of the substring in
+.IR s
+containing the characters between
+.IR p1
+and
+.IR p2 ,
+inclusive.
+.PP
+The user must provide a valid string
+.IR s
+and must free the memory allocated for the substring, after use.
+.SH RETURN VALUE
+The
+.BR substring ()
+function returns the (pointer to) the copy of the substring in
+.IR s
+containing the characters between
+.IR p1
+and
+.IR p2 ,
+inclusive. The following special cases apply:
+.PP
+.IP a) 4
+If
+.IR p1
+< 0, it is assumed to be 0;
+.PP
+.IP b) 4
+If
+.IR p2
+> (\c
+.BR strlen\c
+.RI ( s )
+- 1), it is assumed to be (\c
+.BR strlen\c
+.RI ( s )
+- 1);
+.PP
+.IP c) 4
+If
+.IR p2
+<
+.IR p1
+the function returns the empty string; and
+.PP
+.IP d) 4
+If user does not provides a valid string
+.IR s ,
+or if there is an error on the allocation of memory for the new substring, the
+function returns NULL.
+.SH BUGS
+The
+.BR substring ()
+function counts index position using bytes, not characters. This could cause
+errors if the string
+.IR s
+contain multibyte characters. For exemplo: the word \(dqComputação\(dq contain
+12 bytes (plus one additional byte for \(aq\\0\(aq). You must be very careful if
+the string to be processed constains multibyte characters.
+.PP
+Please report bugs and other issues on
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub:"
+.SH EXAMPLE
+.in +4n
+.EX
+#include <CRpaic.h>
+#include <stdio.h>
+
+int main (void)
+{
+    /* Create a test string */
+    string s = "CRpaic Library";
+
+    /* Get and print just the name of library */
+    string sub = substring(s, 0, 5);
+    if (!sub)
+    {
+        fprintf(stderr, "Could not get substring.\\n");
+        return 1;
+    }
+    printf("Substring: %s\\n", sub);
+
+    /* Don't forget to free the memory allocated for the substring! */
+    free(sub);
+    
+    return 0;
+}
+.EE
+.in
+.SH SEE ALSO
+.BR get_string (3)
+.SH COLOPHON
+This page is part of CRpaic User\(aqs Manual
+.IR man-pages .
+A description of the project, information about reporting bugs, and the latest
+version of this page, can be found at
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub".

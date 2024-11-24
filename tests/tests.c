@@ -1,7 +1,7 @@
 /**
  * File    : tests.c
- * Version : 1.1.0
- * Date    : 2024-11-23 22:40 -0300
+ * Version : 1.2.0
+ * Date    : 2024-11-24 15:43 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * Driver program to run the CRpaic_tests.h Unit Tests.
@@ -145,6 +145,25 @@ int main (void)
         fprintf(stderr,
                 "Impossible to add \'get_string\' Test Case "
                 "to I/O Test Suite.\n");
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    // Creates String Test Suite
+    CU_pSuite str_suite = CU_add_suite("String Test Suite", NULL, NULL);
+    if (!io_suite)
+    {
+        fprintf(stderr, "Impossible to create String Test Suite.\n");
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    // get_char test case
+    if (!CU_add_test(str_suite, "substring test case", test_substring))
+    {
+        fprintf(stderr,
+                "Impossible to add \'substring\' Test Case "
+                "to String Test Suite.\n");
         CU_cleanup_registry();
         return CU_get_error();
     }

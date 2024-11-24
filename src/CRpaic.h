@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic.h
- * Version : 1.1.0
- * Date    : 2024-11-21 23:26 -0300
+ * Version : 1.2.0
+ * Date    : 2024-11-24 15:42 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file creates the "CRpaic.h" interface, a C library specifically designed
@@ -77,12 +77,12 @@
  *        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*** Start of Interface Boilerplate ***/
+/*** 0. Start of Interface Boilerplate ***/
 
 #ifndef _CRPAIC_H
 #define _CRPAIC_H
 
-/*** Includes ***/
+/*** 1. Feature Macros and Includes ***/
 
 #include <float.h>
 #include <limits.h>
@@ -92,11 +92,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*** Symbolic Constants ***/
+/*** 2. Symbolic Constants and Globals ***/
+
+/*** 2.1. Private Constants and Globals ***/
+
+/*** 2.2. Exported Constants and Globals ***/
 
 /**
- * Constant: UNDEFINED
- * -------------------
+ * 2.2.1 Constant: UNDEFINED
+ * -------------------------
  * Symbolic constant to indicate an undefined pointer value.
  * From Roberts' cslib: "Besides NULL, the only other constant of pointer type
  * is UNDEFINED, which is used in certain packages as a special sentinel to
@@ -107,11 +111,15 @@
 #define UNDEFINED ((void *) undefined_object)
 extern char undefined_object[];
 
-/*** Data Types ***/
+/*** 3. Data Types ***/
+
+/*** 3.1. Private Data Types ***/
+
+/*** 3.2. Exported Data Types ***/
 
 /**
- * Type: string
- * ------------
+ * 3.2.1. Type: string
+ * -------------------
  * Data type for (pointers to) strings (array of chars).
  * From Roberts' cslib: "The type string is identical to the type 'char *',
  * which is traditionally used in C programs. This type is defined to improve
@@ -122,12 +130,16 @@ extern char undefined_object[];
 
 typedef char *string;
 
-/*** Subprograms Declarations ***/
+/*** 4. Subprograms Declarations ***/
 
-/*** I/O Subprograms Declarations ***/
+/*** 4.1. Private Subprograms Declarations ***/
+
+/*** 4.2. Exported Subprograms Declarations ***/
+
+/*** 4.2.1. I/O Subprograms Declarations ***/
 
 /**
- * Function: get_string
+ * 4.2.1.1. Function: get_string
  * Usage: s = get_string(format, args);
  * ------------------------------------
  * Adapted from Harvard libcs50: prompts user for a line of text from standard
@@ -143,7 +155,7 @@ get_string (const char *format, ...)
     __attribute__((format (printf, 1, 2)));
 
 /**
- * Function: get_char
+ * 4.2.1.2. Function: get_char
  * Usage: c = get_char(format, args);
  * ----------------------------------
  * Adapted from Harvard libcs50: prompts user for a line of text from standard
@@ -156,7 +168,7 @@ get_char (const char *format, ...)
     __attribute__((format (printf, 1, 2)));
 
 /**
- * Function: get_int
+ * 4.2.1.3. Function: get_int
  * Usage: i = get_int(format, args);
  * ---------------------------------
  * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
@@ -172,7 +184,7 @@ get_int (const char *format, ...)
     __attribute__((format(printf, 1, 2)));
 
 /**
- * Function: get_long
+ * 4.2.1.4. Function: get_long
  * Usage: l = get_long(format, args);
  * ----------------------------------
  * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
@@ -188,7 +200,7 @@ get_long (const char *format, ...)
     __attribute__((format(printf, 1, 2)));
 
 /**
- * Function: get_long_long
+ * 4.2.1.5. Function: get_long_long
  * Usage: ll = get_long_long(format, args);
  * ----------------------------------------
  * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
@@ -204,7 +216,7 @@ get_long_long (const char *format, ...)
     __attribute__((format(printf, 1, 2)));
 
 /**
- * Function: get_float
+ * 4.2.1.6. Function: get_float
  * Usage: f = get_float(format, args);
  * -----------------------------------
  * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
@@ -219,7 +231,7 @@ get_float (const char *format, ...)
     __attribute__((format(printf, 1, 2)));
 
 /**
- * Function: get_double
+ * 4.2.1.7. Function: get_double
  * Usage: d = get_double(format, args);
  * -----------------------------------
  * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
@@ -234,7 +246,7 @@ get_double (const char *format, ...)
     __attribute__((format(printf, 1, 2)));
 
 /**
- * Function: get_long_double
+ * 4.2.1.8. Function: get_long_double
  * Usage: d = get_long_double(format, args);
  * -----------------------------------------
  * Prompts user for a line of text, reads the line of text from stanard input
@@ -248,6 +260,30 @@ long double
 get_long_double (const char *format, ...)
     __attribute__((format(printf, 1, 2)));
 
-/*** End of Interface Boilerplate ***/
+/*** 4.2.2. String Subprograms Declarations ***/
+
+/**
+ * 4.2.2.1. Function: substring
+ * Usage: s = substring(s, p1, p2);
+ * --------------------------------
+ * Adapted from Robert's cslib: returns a copy of the substring of "s"
+ * consisting of the characters between index positions "p1" and "p2",
+ * inclusive. The following special cases apply:
+ *
+ *     1. If p1 < 0, it is assumed to be 0;
+ *     2. If p2 > (strlen(s) - 1), it is assumed to be (strlen(s) - 1); and
+ *     3. If p2 < p1, the function returns the empty string.
+ *
+ * The user must provide a valid string s argument (not NULL). If user provides
+ * an invalid string (a NULL string), returns NULL. If there is an error on
+ * memory allocation for the substring, returns NULL.
+ *
+ * The user must free the memory of substring after use.
+ */
+
+string
+substring (const string s, int p1, int p2);
+
+/*** 0. End of Interface Boilerplate ***/
 
 #endif

@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic_tests.h
- * Version : 1.1.0
- * Date    : 2024-11-23 22:40 -0300
+ * Version : 1.2.0
+ * Date    : 2024-11-24 15:43 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * Creates CRpaic_tests.h, a Unit Tests interface for CRpaic library, using the
@@ -111,6 +111,15 @@ void test_get_long_double (void);
  */
 
 void test_get_string (void);
+
+/*** Subprograms Declarations for String Subprograms Test Suite ***/
+
+/**
+ * Test case: substring
+ * --------------------
+ */
+
+void test_substring (void);
 
 /*** End of Interface Boilerplate ***/
 

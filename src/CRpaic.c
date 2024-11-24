@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic.c
- * Version : 1.1.0
- * Date    : 2024-11-21 23:26 -0300
+ * Version : 1.2.0
+ * Date    : 2024-11-24 15:42 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file implements the "CRpaic.h" interface, a C library specifically
@@ -77,7 +77,7 @@
  *        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*** Includes ***/
+/*** 1. Feature Macros and Includes ***/
 
 #include <ctype.h>
 #include <errno.h>
@@ -93,32 +93,40 @@
 
 #include "CRpaic.h"
 
-/*** Symbolic Constants ***/
+/*** 2. Symbolic Constants and Globals ***/
 
-/*** Global Variables and Constants ***/
+/*** 2.1. Private Constants and Globals ***/
 
 /**
- * Variable: total_allocations
- * ---------------------------
+ * 2.1.1. Variable: total_allocations
+ * ----------------------------------
  * Keep the total number of strings allocated on HEAP by _get_string.
  */
 
 static size_t total_allocations = 0;
 
 /**
- * Variable: arr_strings
- * ---------------------
+ * 2.1.2. Variable: arr_strings
+ * ----------------------------
  * Array of strings allocated on HEAP by get_string.
  */
 
 static string *arr_strings = NULL;
 
-/*** Data Types ***/
+/*** 2.2. Exported Constants and Globals ***/
 
-/*** Private Subprograms Declarations ***/
+/*** 3. Data Types ***/
+
+/*** 3.1. Private Data Types ***/
+
+/*** 3.2. Exported Data Types ***/
+
+/*** 4. Subprograms Declarations ***/
+
+/*** 4.1. Private Subprograms Declarations ***/
 
 /**
- * Function: _get_string
+ * 4.1.1 Function: _get_string
  * Usage: s = _get_string(&args, &format);
  * ---------------------------------------
  * This internal function is used by get_char, get_int, get_float and other
@@ -147,394 +155,23 @@ static string
 _get_string (va_list *args, const char *format);
 
 /**
- * Procedure: teardown
+ * 4.1.2. Procedure: teardown
  * Usage: teardown( );
- * -------------------
+ * ---------------------------
  * Iterate on arrays of strings allocated, and free strings.
  */
 
 static void
 teardown (void);
 
-/*** Subprograms Definitions ***/
+/*** 4.2. Exported Subprograms Declarations ***/
+
+/*** 5. Subprograms Definitions ***/
+
+/*** 5.1. Private Subprograms Definitions ***/
 
 /**
- * Function: get_string
- * Usage: s = get_string(format, args);
- * ------------------------------------
- * This function is a wrapper to pass the format string ("format") and variadic
- * arguments ("ap") to _get_string, who really does the processing of getting a
- * string from the user.
- */
-
-string
-get_string (const char *format, ...)
-{
-    // Initializes argument list:
-    va_list ap;
-    va_start(ap, format);
-
-    // Process the input from user, putting the string in result:
-    string result = _get_string(&ap, format);
-
-    // Finalizes argument list and return result:
-    va_end(ap);
-    return result;
-}
-
-/**
- * Function: get_char
- * Usage: c = get_char(format, args);
- * ----------------------------------
- * Adapted from Harvard libcs50: prompts user for a line of text from standard
- * input and returns the equivalent char; if text is not a single char, user is
- * prompt to retry. If line can't be read, return CHAR_MAX.
- */
-
-char
-get_char (const char *format, ...)
-{
-    // Initializes argument list
-    va_list ap;
-    va_start(ap, format);
-
-    // Try to get a char from user
-    while (true)
-    {
-        // Get line of text, returning CHAR_MAX on failure
-        string line = _get_string(&ap,  format);
-        if (!line)
-        {
-            va_end(ap);
-            return CHAR_MAX;
-        }
-
-        // Return a char if only a char was provided
-        char c, d;
-        if (sscanf(line, "%c%c", &c, &d) == 1)
-        {
-            va_end(ap);
-            return c;
-        }
-    }
-}
-
-/**
- * Function: get_int
- * Usage: i = get_int(format, args);
- * ---------------------------------
- * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
- * of text from standard input and scans it as an integer. The integer value is
- * returned. If text does not represent an integer in [-2^31, 2^31 - 1), or
- * would cause underflow or overflow, or if more characters follow the numer,
- * the user is given a prompt and a chance to retry. If line can't be read,
- * returns INT_MAX.
- */
-
-int
-get_int (const char *format, ...)
-{
-    // Initializes argument list
-    va_list ap;
-    va_start(ap, format);
-
-    // Try to get an int from user
-    while (true)
-    {
-        // Get line of text, returning INT_MAX on failure
-        string line = _get_string(&ap,  format);
-        if (!line)
-        {
-            va_end(ap);
-            return INT_MAX;
-        }
-
-        // Return an int if only an int (in range) was provided, considering
-        // that the user input is in base 10. Force the input to have no
-        // leading whitespace or invalid characters, and no trailing whitespace
-        // or invalid characters.
-        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
-        {
-            char *endptr;
-            errno = 0;
-            long int n = strtol(line, &endptr, 10);
-            
-            // If there is no error, and if there are no invalid characters
-            // after line (nptr), and if n is in [INT_MIN, INT_MAX), return n:
-            if (errno == 0 && *endptr == '\0' && n >= INT_MIN && n < INT_MAX)
-            {
-                va_end(ap);
-                return (int) n;
-            }
-        }
-    }
-}
-
-/**
- * Function: get_long
- * Usage: l = get_long(format, args);
- * ----------------------------------
- * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
- * of text from standard input and scans it as an long integer. The long integer
- * value is returned. If text does not represent a long integer in
- * [-2^63, 2^63 - 1), or would cause underflow or overflow, or if more
- * characters follow the number, the user is given a prompt and a chance to
- * retry. If line can't be read, returns LONG_MAX.
- */
-
-long int
-get_long (const char *format, ...)
-{
-    // Initializes argument list
-    va_list ap;
-    va_start(ap, format);
-
-    // Try to get a long int from user
-    while (true)
-    {
-        // Get line of text, returning LONG_MAX on failure
-        string line = _get_string(&ap,  format);
-        if (!line)
-        {
-            va_end(ap);
-            return LONG_MAX;
-        }
-
-        // Return a long int if only a long int (in range) was provided,
-        // considering that the user input is in base 10. Force the input to
-        // have no leading whitespace or invalid characters, and no trailing
-        // whitespace or invalid characters.
-        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
-        {
-            char *endptr;
-            errno = 0;
-            long int n = strtol(line, &endptr, 10);
-            
-            // If there is no error, and if there are no invalid characters
-            // after line (nptr), and if n is in [LONG_MIN, LONG_MAX), return n:
-            if (errno == 0 && *endptr == '\0' && n >= LONG_MIN && n < LONG_MAX)
-            {
-                va_end(ap);
-                return n;
-            }
-        }
-    }
-}
-
-/**
- * Function: get_long_long
- * Usage: ll = get_long_long(format, args);
- * ----------------------------------
- * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
- * of text from standard input and scans it as an long long integer. The long
- * long integer value is returned. If text does not represent a long long
- * integer in [-2^63, 2^63 - 1), or would cause underflow or overflow, or if
- * more characters follow the number, the user is given a prompt and a chance to
- * retry. If line can't be read, returns LLONG_MAX.
- */
-
-long long int
-get_long_long (const char *format, ...)
-{
-    // Initializes argument list
-    va_list ap;
-    va_start(ap, format);
-
-    // Try to get a long long int from user
-    while (true)
-    {
-        // Get line of text, returning LLONG_MAX on failure
-        string line = _get_string(&ap,  format);
-        if (!line)
-        {
-            va_end(ap);
-            return LLONG_MAX;
-        }
-
-        // Return a long long int if only a long long int (in range) was
-        // provided, considering that the user input is in base 10. Force the
-        // input to have no leading whitespace or invalid characters, and no
-        // trailing whitespace or invalid characters.
-        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
-        {
-            char *endptr;
-            errno = 0;
-            long long int n = strtoll(line, &endptr, 10);
-            
-            // If there is no error, and if there are no invalid characters
-            // after line (nptr), and if n is in [LLONG_MIN, LLONG_MAX),
-            // return n:
-            if (errno == 0 && *endptr == '\0'
-                && n >= LLONG_MIN && n < LLONG_MAX)
-            {
-                va_end(ap);
-                return n;
-            }
-        }
-    }
-}
-
-/**
- * Function: get_float
- * Usage: f = get_float(format, args);
- * -----------------------------------
- * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
- * of text from stanard input and scans it as a flot. The float value is
- * returned. If text does not represent a float, or would cause underflow or
- * overflow, or if more characters follow the number, the user is given a prompt
- * and a chance to retry. If line can't be read, return FLT_MAX.
- */
-
-float
-get_float (const char *format, ...)
-{
-    // Initializes argument list
-    va_list ap;
-    va_start(ap, format);
-
-    // Try to get a float from user
-    while (true)
-    {
-        // Get line of text, returning FLT_MAX on failure
-        string line = _get_string(&ap,  format);
-        if (!line)
-        {
-            va_end(ap);
-            return FLT_MAX;
-        }
-
-        // Return a float if only a float was provided. Force the input to have
-        // no leading whitespace or invalid characters, and no trailing
-        // whitespace or invalid characters.
-        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
-        {
-            char *endptr;
-            errno = 0;
-            float f = strtof(line, &endptr);
-            
-            // If there is no error, and if there are no invalid characters
-            // after line (nptr), if float is finite and if float < FLT_MAX
-            // and if user does not input hexadecimal or exponentes, return f:
-            if (errno == 0 && *endptr == '\0'
-                && isfinite(f) != 0 && f < FLT_MAX
-                && strcspn(line, "XxEePp") == strlen(line))
-            {
-                va_end(ap);
-                return f;
-            }
-        }
-    }
-}
-
-/**
- * Function: get_double
- * Usage: d = get_double(format, args);
- * -----------------------------------
- * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
- * of text from stanard input and scans it as a double. The double value is
- * returned. If text does not represent a double, or would cause underflow or
- * overflow, or if more characters follow the number, the user is given a prompt
- * and a chance to retry. If line can't be read, return DBL_MAX.
- */
-
-double
-get_double (const char *format, ...)
-{
-    // Initializes argument list
-    va_list ap;
-    va_start(ap, format);
-
-    // Try to get a double from user
-    while (true)
-    {
-        // Get line of text, returning DBL_MAX on failure
-        string line = _get_string(&ap,  format);
-        if (!line)
-        {
-            va_end(ap);
-            return DBL_MAX;
-        }
-
-        // Return a double if only a double was provided. Force the input to
-        // have no leading whitespace or invalid characters, and no trailing
-        // whitespace or invalid characters.
-        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
-        {
-            char *endptr;
-            errno = 0;
-            double d = strtod(line, &endptr);
-            
-            // If there is no error, and if there are no invalid characters
-            // after line (nptr), if double is finite and if double < DBL_MAX
-            // and if user does not input hexadecimal or exponentes, return f:
-            if (errno == 0 && *endptr == '\0'
-                && isfinite(d) != 0 && d < DBL_MAX
-                && strcspn(line, "XxEePp") == strlen(line))
-            {
-                va_end(ap);
-                return d;
-            }
-        }
-    }
-}
-
-/**
- * Function: get_long_double
- * Usage: d = get_long_double(format, args);
- * -----------------------------------------
- * Prompts user for a line of text, reads the line of text from stanard input
- * and scans it as a long double. The long double value is returned. If text
- * does not represent a long double, or would cause underflow or overflow, or if
- * more characters follow the number, the user is given a prompt and a chance to
- * retry. If line can't be read, return LDBL_MAX.
- */
-
-long double
-get_long_double (const char *format, ...)
-{
-    // Initializes argument list
-    va_list ap;
-    va_start(ap, format);
-
-    // Try to get a long double from user
-    while (true)
-    {
-        // Get line of text, returning LDBL_MAX on failure
-        string line = _get_string(&ap,  format);
-        if (!line)
-        {
-            va_end(ap);
-            return LDBL_MAX;
-        }
-
-        // Return a long double if only a long double was provided. Force the
-        // input to have no leading whitespace or invalid characters, and no
-        // trailing whitespace or invalid characters.
-        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
-        {
-            char *endptr;
-            errno = 0;
-            long double ld = strtold(line, &endptr);
-            
-            // If there is no error, and if there are no invalid characters
-            // after line (nptr), if long double is finite and if
-            // long double < LDBL_MAX and if user does not input hexadecimal or
-            // exponentes, return ld:
-            if (errno == 0 && *endptr == '\0'
-                && isfinite(ld) != 0 && ld < LDBL_MAX
-                && strcspn(line, "XxEePp") == strlen(line))
-            {
-                va_end(ap);
-                return ld;
-            }
-        }
-    }
-}
-
-/*** Private Subprograms Definitions ***/
-
-/**
- * Function: _get_string
+ * 5.1.1. Function: _get_string
  * Usage: s = _get_string(&args, &format);
  * ---------------------------------------
  * Implements _get_string internal function. Receives a pointer to an args list
@@ -684,9 +321,9 @@ _get_string (va_list *args, const char *format)
 }
 
 /**
- * Procedure: teardown
+ * 5.1.2. Procedure: teardown
  * Usage: teardown( );
- * -------------------
+ * --------------------------
  * Called automatically after execution exits main.
  */
 
@@ -705,7 +342,449 @@ teardown (void)
     }
 }
 
-/*** Miscelaneus ***/
+/*** 5.2. Exported Subprograms Definitions ***/
+
+/*** 5.2.1. I/O Subprograms Definitions ***/
+
+/**
+ * 5.2.1.1 Function: get_string
+ * Usage: s = get_string(format, args);
+ * ------------------------------------
+ * This function is a wrapper to pass the format string ("format") and variadic
+ * arguments ("ap") to _get_string, who really does the processing of getting a
+ * string from the user.
+ */
+
+string
+get_string (const char *format, ...)
+{
+    // Initializes argument list:
+    va_list ap;
+    va_start(ap, format);
+
+    // Process the input from user, putting the string in result:
+    string result = _get_string(&ap, format);
+
+    // Finalizes argument list and return result:
+    va_end(ap);
+    return result;
+}
+
+/**
+ * 5.2.1.2. Function: get_char
+ * Usage: c = get_char(format, args);
+ * ----------------------------------
+ * Adapted from Harvard libcs50: prompts user for a line of text from standard
+ * input and returns the equivalent char; if text is not a single char, user is
+ * prompt to retry. If line can't be read, return CHAR_MAX.
+ */
+
+char
+get_char (const char *format, ...)
+{
+    // Initializes argument list
+    va_list ap;
+    va_start(ap, format);
+
+    // Try to get a char from user
+    while (true)
+    {
+        // Get line of text, returning CHAR_MAX on failure
+        string line = _get_string(&ap,  format);
+        if (!line)
+        {
+            va_end(ap);
+            return CHAR_MAX;
+        }
+
+        // Return a char if only a char was provided
+        char c, d;
+        if (sscanf(line, "%c%c", &c, &d) == 1)
+        {
+            va_end(ap);
+            return c;
+        }
+    }
+}
+
+/**
+ * 5.2.1.3. Function: get_int
+ * Usage: i = get_int(format, args);
+ * ---------------------------------
+ * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
+ * of text from standard input and scans it as an integer. The integer value is
+ * returned. If text does not represent an integer in [-2^31, 2^31 - 1), or
+ * would cause underflow or overflow, or if more characters follow the numer,
+ * the user is given a prompt and a chance to retry. If line can't be read,
+ * returns INT_MAX.
+ */
+
+int
+get_int (const char *format, ...)
+{
+    // Initializes argument list
+    va_list ap;
+    va_start(ap, format);
+
+    // Try to get an int from user
+    while (true)
+    {
+        // Get line of text, returning INT_MAX on failure
+        string line = _get_string(&ap,  format);
+        if (!line)
+        {
+            va_end(ap);
+            return INT_MAX;
+        }
+
+        // Return an int if only an int (in range) was provided, considering
+        // that the user input is in base 10. Force the input to have no
+        // leading whitespace or invalid characters, and no trailing whitespace
+        // or invalid characters.
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *endptr;
+            errno = 0;
+            long int n = strtol(line, &endptr, 10);
+            
+            // If there is no error, and if there are no invalid characters
+            // after line (nptr), and if n is in [INT_MIN, INT_MAX), return n:
+            if (errno == 0 && *endptr == '\0' && n >= INT_MIN && n < INT_MAX)
+            {
+                va_end(ap);
+                return (int) n;
+            }
+        }
+    }
+}
+
+/**
+ * 5.2.1.4. Function: get_long
+ * Usage: l = get_long(format, args);
+ * ----------------------------------
+ * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
+ * of text from standard input and scans it as an long integer. The long integer
+ * value is returned. If text does not represent a long integer in
+ * [-2^63, 2^63 - 1), or would cause underflow or overflow, or if more
+ * characters follow the number, the user is given a prompt and a chance to
+ * retry. If line can't be read, returns LONG_MAX.
+ */
+
+long int
+get_long (const char *format, ...)
+{
+    // Initializes argument list
+    va_list ap;
+    va_start(ap, format);
+
+    // Try to get a long int from user
+    while (true)
+    {
+        // Get line of text, returning LONG_MAX on failure
+        string line = _get_string(&ap,  format);
+        if (!line)
+        {
+            va_end(ap);
+            return LONG_MAX;
+        }
+
+        // Return a long int if only a long int (in range) was provided,
+        // considering that the user input is in base 10. Force the input to
+        // have no leading whitespace or invalid characters, and no trailing
+        // whitespace or invalid characters.
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *endptr;
+            errno = 0;
+            long int n = strtol(line, &endptr, 10);
+            
+            // If there is no error, and if there are no invalid characters
+            // after line (nptr), and if n is in [LONG_MIN, LONG_MAX), return n:
+            if (errno == 0 && *endptr == '\0' && n >= LONG_MIN && n < LONG_MAX)
+            {
+                va_end(ap);
+                return n;
+            }
+        }
+    }
+}
+
+/**
+ * 5.2.1.5. Function: get_long_long
+ * Usage: ll = get_long_long(format, args);
+ * ----------------------------------
+ * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
+ * of text from standard input and scans it as an long long integer. The long
+ * long integer value is returned. If text does not represent a long long
+ * integer in [-2^63, 2^63 - 1), or would cause underflow or overflow, or if
+ * more characters follow the number, the user is given a prompt and a chance to
+ * retry. If line can't be read, returns LLONG_MAX.
+ */
+
+long long int
+get_long_long (const char *format, ...)
+{
+    // Initializes argument list
+    va_list ap;
+    va_start(ap, format);
+
+    // Try to get a long long int from user
+    while (true)
+    {
+        // Get line of text, returning LLONG_MAX on failure
+        string line = _get_string(&ap,  format);
+        if (!line)
+        {
+            va_end(ap);
+            return LLONG_MAX;
+        }
+
+        // Return a long long int if only a long long int (in range) was
+        // provided, considering that the user input is in base 10. Force the
+        // input to have no leading whitespace or invalid characters, and no
+        // trailing whitespace or invalid characters.
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *endptr;
+            errno = 0;
+            long long int n = strtoll(line, &endptr, 10);
+            
+            // If there is no error, and if there are no invalid characters
+            // after line (nptr), and if n is in [LLONG_MIN, LLONG_MAX),
+            // return n:
+            if (errno == 0 && *endptr == '\0'
+                && n >= LLONG_MIN && n < LLONG_MAX)
+            {
+                va_end(ap);
+                return n;
+            }
+        }
+    }
+}
+
+/**
+ * 5.2.1.6. Function: get_float
+ * Usage: f = get_float(format, args);
+ * -----------------------------------
+ * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
+ * of text from stanard input and scans it as a flot. The float value is
+ * returned. If text does not represent a float, or would cause underflow or
+ * overflow, or if more characters follow the number, the user is given a prompt
+ * and a chance to retry. If line can't be read, return FLT_MAX.
+ */
+
+float
+get_float (const char *format, ...)
+{
+    // Initializes argument list
+    va_list ap;
+    va_start(ap, format);
+
+    // Try to get a float from user
+    while (true)
+    {
+        // Get line of text, returning FLT_MAX on failure
+        string line = _get_string(&ap,  format);
+        if (!line)
+        {
+            va_end(ap);
+            return FLT_MAX;
+        }
+
+        // Return a float if only a float was provided. Force the input to have
+        // no leading whitespace or invalid characters, and no trailing
+        // whitespace or invalid characters.
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *endptr;
+            errno = 0;
+            float f = strtof(line, &endptr);
+            
+            // If there is no error, and if there are no invalid characters
+            // after line (nptr), if float is finite and if float < FLT_MAX
+            // and if user does not input hexadecimal or exponentes, return f:
+            if (errno == 0 && *endptr == '\0'
+                && isfinite(f) != 0 && f < FLT_MAX
+                && strcspn(line, "XxEePp") == strlen(line))
+            {
+                va_end(ap);
+                return f;
+            }
+        }
+    }
+}
+
+/**
+ * 5.2.1.7. Function: get_double
+ * Usage: d = get_double(format, args);
+ * -----------------------------------
+ * Adapted from Harvard libcs50: prompts user for a line of text, reads the line
+ * of text from stanard input and scans it as a double. The double value is
+ * returned. If text does not represent a double, or would cause underflow or
+ * overflow, or if more characters follow the number, the user is given a prompt
+ * and a chance to retry. If line can't be read, return DBL_MAX.
+ */
+
+double
+get_double (const char *format, ...)
+{
+    // Initializes argument list
+    va_list ap;
+    va_start(ap, format);
+
+    // Try to get a double from user
+    while (true)
+    {
+        // Get line of text, returning DBL_MAX on failure
+        string line = _get_string(&ap,  format);
+        if (!line)
+        {
+            va_end(ap);
+            return DBL_MAX;
+        }
+
+        // Return a double if only a double was provided. Force the input to
+        // have no leading whitespace or invalid characters, and no trailing
+        // whitespace or invalid characters.
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *endptr;
+            errno = 0;
+            double d = strtod(line, &endptr);
+            
+            // If there is no error, and if there are no invalid characters
+            // after line (nptr), if double is finite and if double < DBL_MAX
+            // and if user does not input hexadecimal or exponentes, return f:
+            if (errno == 0 && *endptr == '\0'
+                && isfinite(d) != 0 && d < DBL_MAX
+                && strcspn(line, "XxEePp") == strlen(line))
+            {
+                va_end(ap);
+                return d;
+            }
+        }
+    }
+}
+
+/**
+ * 5.2.1.8. Function: get_long_double
+ * Usage: d = get_long_double(format, args);
+ * -----------------------------------------
+ * Prompts user for a line of text, reads the line of text from stanard input
+ * and scans it as a long double. The long double value is returned. If text
+ * does not represent a long double, or would cause underflow or overflow, or if
+ * more characters follow the number, the user is given a prompt and a chance to
+ * retry. If line can't be read, return LDBL_MAX.
+ */
+
+long double
+get_long_double (const char *format, ...)
+{
+    // Initializes argument list
+    va_list ap;
+    va_start(ap, format);
+
+    // Try to get a long double from user
+    while (true)
+    {
+        // Get line of text, returning LDBL_MAX on failure
+        string line = _get_string(&ap,  format);
+        if (!line)
+        {
+            va_end(ap);
+            return LDBL_MAX;
+        }
+
+        // Return a long double if only a long double was provided. Force the
+        // input to have no leading whitespace or invalid characters, and no
+        // trailing whitespace or invalid characters.
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *endptr;
+            errno = 0;
+            long double ld = strtold(line, &endptr);
+            
+            // If there is no error, and if there are no invalid characters
+            // after line (nptr), if long double is finite and if
+            // long double < LDBL_MAX and if user does not input hexadecimal or
+            // exponentes, return ld:
+            if (errno == 0 && *endptr == '\0'
+                && isfinite(ld) != 0 && ld < LDBL_MAX
+                && strcspn(line, "XxEePp") == strlen(line))
+            {
+                va_end(ap);
+                return ld;
+            }
+        }
+    }
+}
+
+/*** 5.2.2. String Subprograms Declarations ***/
+
+/**
+ * 5.2.2.1. Function: substring
+ * Usage: s = substring(s, p1, p2);
+ * --------------------------------
+ * Adapted from Robert's cslib: returns a copy of the substring of "s"
+ * consisting of the characters between index positions "p1" and "p2",
+ * inclusive. The following special cases apply:
+ *
+ *     1. If p1 < 0, it is assumed to be 0;
+ *     2. If p2 > (strlen(s) - 1), it is assumed to be (strlen(s) - 1); and
+ *     3. If p2 < p1, the function returns the empty string.
+ *
+ * The user must provide a valid string s argument (not NULL). If user provides
+ * an invalid string (a NULL string), returns NULL. If there is an error on
+ * memory allocation for the substring, returns NULL.
+ *
+ * The user must free the memory of substring after use.
+ */
+
+string
+substring (const string s, int p1, int p2)
+{
+    // If user does not provides a valid string, return NULL:
+    if (!s)
+    {
+        return NULL;
+    }
+
+    // Adjust p1 and p2 to conform to limits of string length:
+    int n = strlen(s);
+    if (p1 < 0)
+        p1 = 0;
+    if (p2 >= n)
+        p2 = n - 1;
+
+    // Calculates how much space we'll need to alocate (not counting final \0)
+    // for the new substring. If p1 > p2 we keep tam = 0 (the user provides
+    // erroneous input and we'll return just an empty string).
+    int tam = 0;
+    if (p1 <= p2)
+        tam = p2 - p1 + 1;
+
+    // Alocates the new substring, adding 1 for final \0:
+    string temp = malloc(sizeof(char) * (tam + 1));
+    if (!temp)
+    {
+        return NULL;
+    }
+
+    // Makes a copy of the substring between p1 and p2, inclusive. After the
+    // copy, include final \0.
+    int i = p1, j = 0;
+    while (i <= p2)
+    {
+        temp[j++] = s[i++];
+    }
+    temp[j] = '\0';
+
+    // Return the substring:
+    return temp;
+}
+
+
+/*** 6. Miscelaneus ***/
 
 /**
  * Preprocessor magic

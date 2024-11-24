@@ -235,7 +235,7 @@ interpreted as follows:
   - [ ] **`strlib.h`** and **`strlib.c`**: Some functions necessary.
     - [ ] `Concat` function
     - [ ] `IthChar` function
-    - [ ] `SubString` function
+    - [x] `SubString` function: implemented as `substring`
     - [ ] `CharToString` function
     - [ ] `StringLenght` function
     - [ ] `CopyString` function
