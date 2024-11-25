@@ -121,6 +121,13 @@ void test_get_string (void);
 
 void test_substring (void);
 
+/**
+ * Test case: ithchar
+ * ------------------
+ */
+
+void test_ithchar (void);
+
 /*** End of Interface Boilerplate ***/
 
 #endif

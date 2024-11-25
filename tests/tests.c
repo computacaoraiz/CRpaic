@@ -158,11 +158,21 @@ int main (void)
         return CU_get_error();
     }
 
-    // get_char test case
+    // substring test case
     if (!CU_add_test(str_suite, "substring test case", test_substring))
     {
         fprintf(stderr,
                 "Impossible to add \'substring\' Test Case "
+                "to String Test Suite.\n");
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    // ithchar test case
+    if (!CU_add_test(str_suite, "ithchar test case", test_ithchar))
+    {
+        fprintf(stderr,
+                "Impossible to add \'ithchar\' Test Case "
                 "to String Test Suite.\n");
         CU_cleanup_registry();
         return CU_get_error();

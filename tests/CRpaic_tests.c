@@ -1110,3 +1110,38 @@ void test_substring (void)
     CU_ASSERT_PTR_NULL(sub);
     free(sub);
 }
+
+/**
+ * Test case: ithchar
+ * ------------------
+ */
+
+void test_ithchar (void)
+{
+    string s = "Abrantes";
+    char c;
+
+    c = ithchar(s, 0);
+    CU_ASSERT_EQUAL(c, 'A');
+
+    c = ithchar(s, -100);
+    CU_ASSERT_EQUAL(c, 'A');
+
+    c = ithchar(s, 7);
+    CU_ASSERT_EQUAL(c, 's');
+
+    c = ithchar(s, 8);
+    CU_ASSERT_EQUAL(c, '\0');
+
+    c = ithchar(s, 200);
+    CU_ASSERT_EQUAL(c, '\0');
+
+    c = ithchar(s, 4);
+    CU_ASSERT_EQUAL(c, 'n');
+
+    c = ithchar(s, 3);
+    CU_ASSERT_EQUAL(c, 'a');
+
+    c = ithchar(s, 6);
+    CU_ASSERT_EQUAL(c, 'e');
+}

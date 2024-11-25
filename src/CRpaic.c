@@ -783,6 +783,41 @@ substring (const string s, int p1, int p2)
     return temp;
 }
 
+/**
+ * 5.2.2.2. Function: ithchar
+ * Usage: c = ithchar(s, i);
+ * -------------------------
+ * Adapted from Robert's cslib: returns the caracter at the position "i" in the
+ * string "s". It is included in the library to make the type string a true
+ * abstract data type in the sense that all of the necessary operations can be
+ * invoked using functions (which means that the client relies only on the
+ * operations defined for the type string, and not on the underlying
+ * representation). Calling ithchar(s, i) is like selecting s[i], except that
+ * ithchar checks to see if "i" is within the range of legal index positions,
+ * which extend from 0 to strlen(s). Calling ithchar(s, strlen(s)) returns the
+ * null character at the end of string. The following special cases apply:
+ *
+ *     1. If i < 0, it is assumed to be 0 to point to first character; and
+ *     2. If i > strlen(s), it is assumed to be strlen(s) to point to last
+ *        character.
+ *
+ * The function does not accept a NULL string as argument (has the attribute
+ * "nonnull"), so the user must provide a valid string "s".
+ */
+
+char
+ithchar (const string s, int i)
+{
+    int len = strlen(s);
+
+    if (i < 0)
+        i = 0;
+    if (i > len)
+        i = len;
+
+    return s[i];
+}
+
 
 /*** 6. Miscelaneus ***/
 
