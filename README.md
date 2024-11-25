@@ -114,7 +114,26 @@ If you have installed on a non default directory, you can run
 
 # Usage
 
-Link with `-lCRpaic`. See `man get_*` manual pages after installation.
+Link with `-lCRpaic`. See library manual pages after installation for
+instructions and examples of use.
+
+**ATTENTION:** The `get_string` function implemented by **CRpaic** has a very
+different interface from the `get_string` function implemented by
+**libcs50**. This fact **CAUSES AN INCOMPATIBILITY** between these two
+libraries. In other words, despite their similarities, if you use the
+`<CRpaic.h>` library, you must ensure that you link with `-lCRpaic`, not with
+`-lcs50`.
+
+If you have both libraries installed (**CRpaic** and **libcs50**), you must take
+**SPECIAL CARE** during linking to avoid linking with the wrong library. Check
+the `LDLIBS` configuration in your `~/.bashrc` file to ensure that you are
+linking with `-lCRpaic`. You can have both libraries installed, but you have to
+link with the correct one:
+
+* If you use `<CRpaic.h>`, you MUST link with `-lCRpaic`; and
+* If you use `<cs50.h>`, you MUST link with `-lcs50`.
+
+If you only have **CRpaic** installed, there’s no need to worry.
 
 
 # Status of development
