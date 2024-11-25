@@ -1,6 +1,6 @@
 # ******************************************************************************
 # File    : Makefile
-# Version : 1.1.0
+# Version : 1.1.1
 # Date    : 2024-11-21 01:19 -0300
 # GitHub  : https://github.com/computacaoraiz/CRpaic
 # --------------------------------------------------
@@ -13,7 +13,7 @@
 # Important variables
 
 # Version of CRpaic library:
-VERSION := 1.2.0
+VERSION := 1.3.0
 ifeq ($(VERSION), $(shell cat src/VERSION.TXT))
 else
     $(error VERSION in Makefile ($(VERSION)) does not match src/VERSION.TXT \
@@ -142,6 +142,7 @@ endif
 clean:
 	rm -fr build
 	rm -f docs/*~
+	rm -f docs/examples/*~
 	rm -f src/*~
 	rm -f src/*.a
 	rm -f src/*.o

@@ -253,7 +253,7 @@ interpreted as follows:
     - [ ] `ReadLine` function
   - [ ] **`strlib.h`** and **`strlib.c`**: Some functions necessary.
     - [ ] `Concat` function
-    - [ ] `IthChar` function
+    - [x] `IthChar` function: implemented as `ithchar`
     - [x] `SubString` function: implemented as `substring`
     - [ ] `CharToString` function
     - [ ] `StringLenght` function

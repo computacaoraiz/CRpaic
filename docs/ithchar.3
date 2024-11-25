@@ -1,0 +1,106 @@
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.TH ITHCHAR 3 "2024-11-25" "CRpaic" "CRpaic User's Manual"
+.SH NAME
+ithchar \- returns the character at the position \(dqi\(dq in the string
+\(dqs\(dq
+.SH SYNOPSIS
+.nf
+.B #include <CRpaic.h>
+.PP
+.BI "char ithchar (const char *" s ", int " i ");"
+.fi
+.SH DESCRIPTION
+The
+.BR ithchar ()
+function takes two arguments: a string
+.IR s
+and a integer index,
+.IR i ,
+which represent positions in the string. It returns a copy of the char in
+.IR s
+at position
+.IR i .
+.PP
+The user must provide a valid string
+.IR s
+terminated by \(aq\\0\(aq.
+.SH RETURN VALUE
+The
+.BR ithchar ()
+function returns the character at the position
+.IR i
+in the string
+.IR s .
+The following special cases apply:
+.PP
+.IP a) 4
+If
+.IR i
+< 0, it is assumed to be 0 (point to first character);
+.PP
+.IP b) 4
+If
+.IR i
+>
+.BR strlen\c
+.RI ( s )\c
+, it is assumed to be
+.BR strlen\c
+.RI ( s )
+(point to last character \(aq\\0\(aq).
+.PP
+.SH BUGS
+The
+.BR ithchar ()
+function counts index position using bytes, not characters. This could cause
+errors if the string
+.IR s
+contain multibyte characters. For example: the word \(dqComputação\(dq contain
+12 bytes (plus one additional byte for \(aq\\0\(aq). You must be very careful if
+the string to be processed constains multibyte characters.
+.PP
+Please report bugs and other issues on
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub:"
+.SH EXAMPLE
+.in +4n
+.EX
+#include <CRpaic.h>
+#include <stdio.h>
+
+int main (void)
+{
+    /* Creates tests strings: */
+    string s1 = \(dqCRpaic Library\(dq;
+    string s2 = \(dqComputação\(dq;
+
+    /* Get and print just the upper case letter L: */
+    char c1 = ithchar(s1, 7); 
+    printf(\(dqChar: %c\\n\(dq, c1);
+
+    /* BE CAREFUL with operations on strings containing multibyte characters! */
+
+    /* Get and print the letter o: */
+    char c2 = ithchar(s2, 11);
+    printf(\(dqChar: %c\\n\(dq, c2);    // OK, prints \(aqo\(aq
+
+    /* Get and print the letter ç: */
+    char c3 = ithchar(s2, 7); 
+    printf(\(dqChar: %c\\n\(dq, c3);    // NOT OK, prints garbage
+    
+    return 0;
+}
+.EE
+.in
+.SH SEE ALSO
+.BR get_char (3),
+.BR get_string (3),
+.BR substring (3)
+.SH COLOPHON
+This page is part of CRpaic User\(aqs Manual
+.IR man-pages .
+A description of the project, information about reporting bugs, and the latest
+version of this page, can be found at
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub".
