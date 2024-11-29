@@ -818,6 +818,41 @@ ithchar (const string s, int i)
     return s[i];
 }
 
+/**
+ * 5.2.2.3. Function: concat
+ * Usage: str3 = concat(str1, str2);
+ * ---------------------------------
+ * Adapted from Robert's cslib: this function concatenates two strings by
+ * joining them end to end. The function appends a copy of the string "str2"
+ * (including the null character) to the end of "str1" (the initial character of
+ * "str2" overwrites the null character at the end of "str1"), creating a new
+ * string that is returned. Both "str1" and "str2" are not altered. The user
+ * must provide valid strings (the function does not accept NULL strings)
+ * terminated by '\0'. If there are some error in the concatenation, returns
+ * NULL. The user must free the memory for the concatenated string after use.
+ */
+
+string
+concat (const string restrict str1, const string restrict str2)
+{
+    if (!str1 || !str2)
+        return NULL;
+    
+    size_t len1 = strlen(str1);
+    size_t len2 = strlen(str2);
+
+    string s = malloc(len1 + len2 + 1);
+    if (!s)
+    {
+        return NULL;
+    }
+
+    (void) strcpy(s, str1);
+    (void) strcpy(s + len1, str2);
+
+    return s;
+}
+
 
 /*** 6. Miscelaneus ***/
 

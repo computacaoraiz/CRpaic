@@ -310,6 +310,31 @@ char
 ithchar (const string s, int i)
     __attribute__((nonnull(1)));
 
+/**
+ * 4.2.2.3. Function: concat
+ * Usage: str3 = concat(str1, str2);
+ * ---------------------------------
+ * Adapted from Robert's cslib: this function concatenates two strings by
+ * joining them end to end. The function appends a copy of the string "str2"
+ * (including the null character) to the end of a copy of "str1" (the initial
+ * character of "str2" overwrites the null character at the end of "str1"),
+ * creating a new string that is returned. Both "str1" and "str2" are not
+ * altered in any way. The user must provide valid strings terminated by '\0'.
+ * The following cases apply:
+ *
+ *     1. If the user inputs 2 valid strings, the function returns a NEW
+ *        string with a copy of "str1" concatenated with a copy of "str2";
+ *     2. If the user inputs one or two NULL pointers, the function also
+ *        returns NULL;
+ *     3. If the user inputs invalid strings (without the terminating '\0', for
+ *        example), the behavior is undefined.
+ *
+ * The user must free the memory for the concatenated string after use.
+ */
+
+string
+concat (const string restrict str1, const string restrict str2);
+
 /*** 0. End of Interface Boilerplate ***/
 
 #endif
