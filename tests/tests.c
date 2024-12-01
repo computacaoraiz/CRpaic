@@ -1,7 +1,7 @@
 /**
  * File    : tests.c
- * Version : 1.3.0
- * Date    : 2024-11-25 08:23 -0300
+ * Version : 1.4.0
+ * Date    : 2024-12-01 16:11 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * Driver program to run the CRpaic_tests.h Unit Tests.
@@ -173,6 +173,16 @@ int main (void)
     {
         fprintf(stderr,
                 "Impossible to add \'ithchar\' Test Case "
+                "to String Test Suite.\n");
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    // concat test case
+    if (!CU_add_test(str_suite, "concat test case", test_concat))
+    {
+        fprintf(stderr,
+                "Impossible to add \'concat\' Test Case "
                 "to String Test Suite.\n");
         CU_cleanup_registry();
         return CU_get_error();

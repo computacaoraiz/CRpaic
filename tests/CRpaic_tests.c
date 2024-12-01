@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic_tests.c
- * Version : 1.3.0
- * Date    : 2024-11-25 08:23 -0300
+ * Version : 1.4.0
+ * Date    : 2024-12-01 16:11 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * Implements the CRpaic_tests.h interface.
@@ -1144,4 +1144,54 @@ void test_ithchar (void)
 
     c = ithchar(s, 6);
     CU_ASSERT_EQUAL(c, 'e');
+}
+
+/**
+ * Test case: concat
+ * -----------------
+ */
+
+void test_concat (void)
+{
+    string s1 = "ban";
+    string s2 = "ana";
+    string s3 = "cada";
+    string s4 = "nias";
+    string s5 = " júlia";
+    string s6 = "";
+    string s7 = "";
+    string s8 = " ";
+    string r;
+
+    r = concat(s1, s2);
+    CU_ASSERT_STRING_EQUAL(r, "banana");
+    free(r);
+
+    r = concat(s1, s3);
+    CU_ASSERT_STRING_EQUAL(r, "bancada");
+    free(r);
+
+    r = concat(s2, s4);
+    CU_ASSERT_STRING_EQUAL(r, "ananias");
+    free(r);
+
+    r = concat(s2, s5);
+    CU_ASSERT_STRING_EQUAL(r, "ana júlia");
+    free(r);
+
+    r = concat(s2, s6);
+    CU_ASSERT_STRING_EQUAL(r, "ana");
+    free(r);
+
+    r = concat(s6, s7);
+    CU_ASSERT_STRING_EQUAL(r, "");
+    free(r);
+
+    r = concat(s7, s5);
+    CU_ASSERT_STRING_EQUAL(r, " júlia");
+    free(r);
+
+    r = concat(s5, s8);
+    CU_ASSERT_STRING_EQUAL(r, " júlia ");
+    free(r);
 }

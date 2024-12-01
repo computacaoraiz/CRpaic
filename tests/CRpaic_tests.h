@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic_tests.h
- * Version : 1.3.0
- * Date    : 2024-11-25 08:23 -0300
+ * Version : 1.4.0
+ * Date    : 2024-12-01 16:11 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * Creates CRpaic_tests.h, a Unit Tests interface for CRpaic library, using the
@@ -127,6 +127,13 @@ void test_substring (void);
  */
 
 void test_ithchar (void);
+
+/**
+ * Test case: concat
+ * -----------------
+ */
+
+void test_concat (void);
 
 /*** End of Interface Boilerplate ***/
 

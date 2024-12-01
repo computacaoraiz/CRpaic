@@ -1,0 +1,116 @@
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.TH CONCAT 3 "2024-12-01" "CRpaic" "CRpaic User's Manual"
+.SH NAME
+concat \- returns a new string with a copy of \(dqstr1\(dq concatenated with a
+copy of \(dqstr2\(dq
+.SH SYNOPSIS
+.nf
+.B #include <CRpaic.h>
+.PP
+.BI "char *concat (const char * restrict " str1 ", const char * restrict " str2 ");"
+.fi
+.SH DESCRIPTION
+The
+.BR concat ()
+function takes two arguments: a string
+.IR str1
+and a string
+.IR str2 ,
+which must be valid null terminated (\(aq\\0\(aq) strings, and must not overlap
+or be aliases of each other, and return a (pointer to) new string with a copy of
+.IR str1
+concatenated with a copy of
+.IR str2 .
+The function appends a copy of the string
+.IR str2
+(including the null character) to the end of a copy of
+.IR str1
+(the initial character of
+.IR str2
+overwrites the null character at the end of
+.IR str1\c
+), creating a new string that is returned. Both
+.IR str1
+and
+.IR str2
+are not altered in any way.
+The new string is allocated on Heap.
+.PP
+The user must provide valid null terminated strings (\(aq\\0\(aq), and the user
+must free the memory for the concatenated string after use.
+.SH RETURN VALUE
+The
+.BR concat ()
+function returns a (pointer to) a new string with a copy of
+.IR str1
+concatenated with a copy of
+.IR str2 .
+The following special cases apply:
+.PP
+.IP a) 4
+If the user inputs 2 valid strings, the function returns a (pointer to) NEW
+string with a copy of
+.IR str1
+concatenated with a copy of
+.IR str2 ;
+.PP
+.IP b) 4
+If the user inputs one or two NULL pointers, the function returns NULL;
+.PP
+.IP c) 4
+If the user inputs invalid strings (without the terminating \(aq\\0\(aq, for
+example), the behavior is undefined.
+.PP
+.SH BUGS
+The
+.BR concat ()
+function has undefined behavior if the user inputs one or two invalid
+strings. Besides, the strings must not overlap in any way, and must not be
+aliases (the user can not provide the same strings on both parameters).
+.PP
+Please report bugs and other issues on
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub:"
+.SH EXAMPLE
+.in +4n
+.EX
+#include <CRpaic.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main (void)
+{
+    /* Some tests strings */
+    string s1 = \(dqfoo\(dq;
+    string s2 = \(dq \(dq;
+    string s3 = \(dqbar\(dq;
+
+    /* Concatenating strings */
+    string s4 = concat(s1, s2);
+    string s5 = concat(s4, s3);
+    printf(\(dqs4: %s\\n\(dq, s4);    // prints \(dqfoo \(dq
+    printf(\(dqs5: %s\\n\(dq, s5);    // prints \(dqfoo bar\(dq
+
+    /* Don\(aqt forget to free the allocated memory! */
+    free(s4);
+    s4 = NULL;
+    free(s5);
+    s5 = NULL;
+
+    return 0;
+}
+.EE
+.in
+.SH SEE ALSO
+.BR get_char (3),
+.BR get_string (3),
+.BR ithchar (3),
+.BR substring (3)
+.SH COLOPHON
+This page is part of CRpaic User\(aqs Manual
+.IR man-pages .
+A description of the project, information about reporting bugs, and the latest
+version of this page, can be found at
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub".

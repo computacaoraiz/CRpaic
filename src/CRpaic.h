@@ -1,7 +1,7 @@
 /**
  * File    : CRpaic.h
- * Version : 1.3.0
- * Date    : 2024-11-25 08:23 -0300
+ * Version : 1.4.0
+ * Date    : 2024-12-01 16:11 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file creates the "CRpaic.h" interface, a C library specifically designed
