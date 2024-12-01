@@ -1,7 +1,7 @@
 # TODO list:
 
-- [] create v1.4.0
-- [o] merge master
+- [x] create v1.4.0
+- [x] merge master
 - [x] update README
 - [x] increment version of library and tests
 - [x] man page for concat
