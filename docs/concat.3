@@ -82,14 +82,27 @@ Please report bugs and other issues on
 
 int main (void)
 {
-    /* Some tests strings */
+    /* Some test strings */
     string s1 = \(dqfoo\(dq;
     string s2 = \(dq \(dq;
     string s3 = \(dqbar\(dq;
 
     /* Concatenating strings */
     string s4 = concat(s1, s2);
+    if (!s4)
+    {
+        fprintf(stderr, \(dqInvalid argument or error in concat function.\\n\(dq);
+        return 1;
+    }
+    
     string s5 = concat(s4, s3);
+    if (!s5)
+    {
+        fprintf(stderr, \(dqInvalid argument or error in concat function.\\n\(dq);
+        return 1;
+    }
+
+    /* Print results */
     printf(\(dqs4: %s\\n\(dq, s4);    // prints \(dqfoo \(dq
     printf(\(dqs5: %s\\n\(dq, s5);    // prints \(dqfoo bar\(dq
 
