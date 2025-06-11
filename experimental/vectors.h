@@ -5,50 +5,50 @@
 #include <stdio.h>
 
 // int vectors
-typedef struct st_intvec *intvec;
-typedef struct st_uintvec *uintvec;
-typedef struct st_lintvec *lintvec;
-typedef struct st_ulintvec *ulintvec;
-typedef struct st_llintvec *llintvec;
-typedef struct st_ullintvec *ullintvec;
+typedef struct st_intvector *intvector;
+typedef struct st_uintvector *uintvector;
+typedef struct st_lintvector *lintvector;
+typedef struct st_ulintvector *ulintvector;
+typedef struct st_llintvector *llintvector;
+typedef struct st_ullintvector *ullintvector;
 
 // char vectors (string vectors)
-typedef struct st_charvec *charvec;
 typedef struct st_strvector *strvector;
 
-// float vectors
-typedef struct st_floatvec *floatvec;
-typedef struct st_doublevec *doublevec;
-typedef struct st_ldoublevec *ldoublevec;
+// floating point vectors
+typedef struct st_floatvector *floatvector;
+typedef struct st_doublevector *doublevector;
+typedef struct st_ldoublevector *ldoublevector;
 
+// status messagens
 typedef enum
 {
     OK,
-    ERRO_ALOCACAO,
-    ERRO_ARGUMENTO,
-    ERRO_POSICAO,
-    ERRO_CHEIO,
-    ERRO_VAZIO,
-    ERRO_NAO_ESPECIFICADO
-} statvec;
+    ERROR_MEMORY,
+    ERROR_ARGUMENT,
+    ERROR_POSITION,
+    ERROR_FULL,
+    ERROR_EMPTY,
+    ERROR_UNSPECIFIED
+} statusvector;
 
 // int vectors
-intvec
-intvec_create (const size_t n);
+intvector
+intvector_create (const size_t n);
 
-statvec
+statusvector
 intvec_delete (intvec *iv);
 
-statvec
+statusvector
 intvec_pushback (const int i, intvec iv);
 
-statvec
+statusvec
 intvec_pushin (const int i, intvec iv, const size_t pos);
 
-statvec
+statusvec
 intvec_getsize (const intvec iv, size_t &n);
 
-statvec
+statusvec
 intvec_getint (const intvec iv, const size_t pos, int &i);
 
 bool
