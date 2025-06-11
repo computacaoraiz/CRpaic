@@ -1,5 +1,10 @@
 # TODO list:
 
+- [ ] readme de cada subdiretório no branch v2
+- [ ] organização inicial no branch v2
+- [x] ajuste de upstream para branch v2
+- [x] branch para a v2
+
 - [x] create v1.4.0
 - [x] merge master
 - [x] update README
