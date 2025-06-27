@@ -1,0 +1,204 @@
+/**
+ * File    : CRpaic_errors.h
+ * Version : 
+ * Date    : xxxx-xx-xx xx:xx -0300
+ * GitHub  : https://github.com/computacaoraiz/CRpaic
+ * --------------------------------------------------
+ * This file creates the "CRpaic_errors.h" interface, a collection of usefull
+ * utilities to check, display and treat errors in functions and systems calls
+ * inside CRpaic library.
+ *
+ * The ideas behind these errors handling routines are based on Marc J. Rochkind
+ * book: "Advanced UNIX Programming", 2º edition, published on 2004.
+ */
+
+/*** 0. Start of Interface Boilerplate ***/
+
+#ifndef CRPAIC_ERRORS_H
+#define CRPAIC_ERRORS_H
+
+/*** 1. Feature Macros and Includes ***/
+
+#include <errno.h>>
+#include <stdio.h>
+
+/*** 2. Symbolic Constants and Globals ***/
+
+/*** 2.1. Private Constants and Globals ***/
+
+/*** 2.2. Exported Constants and Globals ***/
+
+/*** 3. Data Types ***/
+
+/*** 3.1. Private Data Types ***/
+
+/*** 3.2. Exported Data Types ***/
+
+/**
+ * 3.2.1. Type: errcodes
+ * ---------------------
+ */
+
+struct st_syserrorcodes
+{
+    int code;
+    int value;
+    char *symbol;
+    char *description;
+};
+
+typedef struct st_syserrorcodes syserrorcodes;
+
+const syserrorcodes syserrcodes[] =
+{
+    {E2BIG, 7, "E2BIG", "Argument list too long"},
+    {EACCES, 13, "EACCES", "Permission denied"},
+    {EADDRINUSE, 98, "EADDRINUSE", "Address already in use"},
+    {EADDRNOTAVAIL, 99, "EADDRNOTAVAIL", "Cannot assign requested address"},
+    {EADV, 68, "EADV", "Advertise error"},
+    {EAFNOSUPPORT, 97, "EAFNOSUPPORT", "Address family not supported by protocol"},
+    {EAGAIN, 11, "EAGAIN", "Resource temporarily unavailable"},
+    {EALREADY, 114, "EALREADY", "Operation already in progress"},
+    {EBADE, 52, "EBADE", "Invalid exchange"},
+    {EBADF, 9, "EBADF", "Bad file descriptor"},
+    {EBADFD, 77, "EBADFD", "File descriptor in bad state"},
+    {EBADMSG, 74, "EBADMSG", "Bad message"},
+    {EBADR, 53, "EBADR", "Invalid request descriptor"},
+    {EBADRQC, 56, "EBADRQC", "Invalid request code"},
+    {EBADSLT, 57, "EBADSLT", "Invalid slot"},
+    {EBFONT, 59, "EBFONT", "Bad font file format"},
+    {EBUSY, 16, "EBUSY", "Device or resource busy"},
+    {ECANCELED, 125, "ECANCELED", "Operation canceled"},
+    {ECHILD, 10, "ECHILD", "No child processes"},
+    {ECHRNG, 44, "ECHRNG", "Channel number out of range"},
+    {ECOMM, 70, "ECOMM", "Communication error on send"},
+    {ECONNABORTED, 103, "ECONNABORTED", "Software caused connection abort"},
+    {ECONNREFUSED, 111, "ECONNREFUSED", "Connection refused"},
+    {ECONNRESET, 104, "ECONNRESET", "Connection reset by peer"},
+    {EDEADLK, 35, "EDEADLK", "Resource deadlock avoided"},
+    {EDEADLOCK, 35, "EDEADLOCK", "Resource deadlock avoided"},
+    {EDESTADDRREQ, 89, "EDESTADDRREQ", "Destination address required"},
+    {EDOM, 33, "EDOM", "Numerical argument out of domain"},
+    {EDOTDOT, 73, "EDOTDOT", "RFS specific error"},
+    {EDQUOT, 122, "EDQUOT", "Disk quota exceeded"},
+    {EEXIST, 17, "EEXIST", "File exists"},
+    {EFAULT, 14, "EFAULT", "Bad address"},
+    {EFBIG, 27, "EFBIG", "File too large"},
+    {EHOSTDOWN, 112, "EHOSTDOWN", "Host is down"},
+    {EHOSTUNREACH, 113, "EHOSTUNREACH", "No route to host"},
+    {EHWPOISON, 133, "EHWPOISON", "Memory page has hardware error"},
+    {EIDRM, 43, "EIDRM", "Identifier removed"},
+    {EILSEQ, 84, "EILSEQ", "Invalid or incomplete multibyte or wide character"},
+    {EINPROGRESS, 115, "EINPROGRESS", "Operation now in progress"},
+    {EINTR, 4, "EINTR", "Interrupted system call"},
+    {EINVAL, 22, "EINVAL", "Invalid argument"},
+    {EIO, 5, "EIO", "Input/output error"},
+    {EISCONN, 106, "EISCONN", "Transport endpoint is already connected"},
+    {EISDIR, 21, "EISDIR", "Is a directory"},
+    {EISNAM, 120, "EISNAM", "Is a named type file"},
+    {EKEYEXPIRED, 127, "EKEYEXPIRED", "Key has expired"},
+    {EKEYREJECTED, 129, "EKEYREJECTED", "Key was rejected by service"},
+    {EKEYREVOKED, 128, "EKEYREVOKED", "Key has been revoked"},
+    {EL2HLT, 51, "EL2HLT", "Level 2 halted"},
+    {EL2NSYNC, 45, "EL2NSYNC", "Level 2 not synchronized"},
+    {EL3HLT, 46, "EL3HLT", "Level 3 halted"},
+    {EL3RST, 47, "EL3RST", "Level 3 reset"},
+    {ELIBACC, 79, "ELIBACC", "Can not access a needed shared library"},
+    {ELIBBAD, 80, "ELIBBAD", "Accessing a corrupted shared library"},
+    {ELIBEXEC, 83, "ELIBEXEC", "Cannot exec a shared library directly"},
+    {ELIBMAX, 82, "ELIBMAX", "Attempting to link in too many shared libraries"},
+    {ELIBSCN, 81, "ELIBSCN", ".lib section in a.out corrupted"},
+    {ELNRNG, 48, "ELNRNG", "Link number out of range"},
+    {ELOOP, 40, "ELOOP", "Too many levels of symbolic links"},
+    {EMEDIUMTYPE, 124, "EMEDIUMTYPE", "Wrong medium type"},
+    {EMFILE, 24, "EMFILE", "Too many open files"},
+    {EMLINK, 31, "EMLINK", "Too many links"},
+    {EMSGSIZE, 90, "EMSGSIZE", "Message too long"},
+    {EMULTIHOP, 72, "EMULTIHOP", "Multihop attempted"},
+    {ENAMETOOLONG, 36, "ENAMETOOLONG", "File name too long"},
+    {ENAVAIL, 119, "ENAVAIL", "No XENIX semaphores available"},
+    {ENETDOWN, 100, "ENETDOWN", "Network is down"},
+    {ENETRESET, 102, "ENETRESET", "Network dropped connection on reset"},
+    {ENETUNREACH, 101, "ENETUNREACH", "Network is unreachable"},
+    {ENFILE, 23, "ENFILE", "Too many open files in system"},
+    {ENOANO, 55, "ENOANO", "No anode"},
+    {ENOBUFS, 105, "ENOBUFS", "No buffer space available"},
+    {ENOCSI, 50, "ENOCSI", "No CSI structure available"},
+    {ENODATA, 61, "ENODATA", "No data available"},
+    {ENODEV, 19, "ENODEV", "No such device"},
+    {ENOENT, 2, "ENOENT", "No such file or directory"},
+    {ENOEXEC, 8, "ENOEXEC", "Exec format error"},
+    {ENOKEY, 126, "ENOKEY", "Required key not available"},
+    {ENOLCK, 37, "ENOLCK", "No locks available"},
+    {ENOLINK, 67, "ENOLINK", "Link has been severed"},
+    {ENOMEDIUM, 123, "ENOMEDIUM", "No medium found"},
+    {ENOMEM, 12, "ENOMEM", "Cannot allocate memory"},
+    {ENOMSG, 42, "ENOMSG", "No message of desired type"},
+    {ENONET, 64, "ENONET", "Machine is not on the network"},
+    {ENOPKG, 65, "ENOPKG", "Package not installed"},
+    {ENOPROTOOPT, 92, "ENOPROTOOPT", "Protocol not available"},
+    {ENOSPC, 28, "ENOSPC", "No space left on device"},
+    {ENOSR, 63, "ENOSR", "Out of streams resources"},
+    {ENOSTR, 60, "ENOSTR", "Device not a stream"},
+    {ENOSYS, 38, "ENOSYS", "Function not implemented"},
+    {ENOTBLK, 15, "ENOTBLK", "Block device required"},
+    {ENOTCONN, 107, "ENOTCONN", "Transport endpoint is not connected"},
+    {ENOTDIR, 20, "ENOTDIR", "Not a directory"},
+    {ENOTEMPTY, 39, "ENOTEMPTY", "Directory not empty"},
+    {ENOTNAM, 118, "ENOTNAM", "Not a XENIX named type file"},
+    {ENOTRECOVERABLE, 131, "ENOTRECOVERABLE", "State not recoverable"},
+    {ENOTSOCK, 88, "ENOTSOCK", "Socket operation on non-socket"},
+    {ENOTSUP, 95, "ENOTSUP", "Operation not supported"},
+    {ENOTTY, 25, "ENOTTY", "Inappropriate ioctl for device"},
+    {ENOTUNIQ, 76, "ENOTUNIQ", "Name not unique on network"},
+    {ENXIO, 6, "ENXIO", "No such device or address"},
+    {EOPNOTSUPP, 95, "EOPNOTSUPP", "Operation not supported"},
+    {EOVERFLOW, 75, "EOVERFLOW", "Value too large for defined data type"},
+    {EOWNERDEAD, 130, "EOWNERDEAD", "Owner died"},
+    {EPERM, 1, "EPERM", "Operation not permitted"},
+    {EPFNOSUPPORT, 96, "EPFNOSUPPORT", "Protocol family not supported"},
+    {EPIPE, 32, "EPIPE", "Broken pipe"},
+    {EPROTO, 71, "EPROTO", "Protocol error"},
+    {EPROTONOSUPPORT, 93, "EPROTONOSUPPORT", "Protocol not supported"},
+    {EPROTOTYPE, 91, "EPROTOTYPE", "Protocol wrong type for socket"},
+    {ERANGE, 34, "ERANGE", "Numerical result out of range"},
+    {EREMCHG, 78, "EREMCHG", "Remote address changed"},
+    {EREMOTE, 66, "EREMOTE", "Object is remote"},
+    {EREMOTEIO, 121, "EREMOTEIO", "Remote I/O error"},
+    {ERESTART, 85, "ERESTART", "Interrupted system call should be restarted"},
+    {ERFKILL, 132, "ERFKILL", "Operation not possible due to RF-kill"},
+    {EROFS, 30, "EROFS", "Read-only file system"},
+    {ESHUTDOWN, 108, "ESHUTDOWN", "Cannot send after transport endpoint shutdown"},
+    {ESOCKTNOSUPPORT, 94, "ESOCKTNOSUPPORT", "Socket type not supported"},
+    {ESPIPE, 29, "ESPIPE", "Illegal seek"},
+    {ESRCH, 3, "ESRCH", "No such process"},
+    {ESRMNT, 69, "ESRMNT", "Srmount error"},
+    {ESTALE, 116, "ESTALE", "Stale file handle"},
+    {ESTRPIPE, 86, "ESTRPIPE", "Streams pipe error"},
+    {ETIME, 62, "ETIME", "Timer expired"},
+    {ETIMEDOUT, 110, "ETIMEDOUT", "Connection timed out"},
+    {ETOOMANYREFS, 109, "ETOOMANYREFS", "Too many references: cannot splice"},
+    {ETXTBSY, 26, "ETXTBSY", "Text file busy"},
+    {EUCLEAN, 117, "EUCLEAN", "Structure needs cleaning"},
+    {EUNATCH, 49, "EUNATCH", "Protocol driver not attached"},
+    {EUSERS, 87, "EUSERS", "Too many users"},
+    {EWOULDBLOCK, 11, "EWOULDBLOCK", "Resource temporarily unavailable"},
+    {EXDEV, 18, "EXDEV", "Invalid cross-device link"},
+    {EXFULL, 54, "EXFULL", "Exchange full"}
+};
+
+/*** 4. Subprograms Declarations ***/
+
+/*** 4.1. Private Subprograms Declarations ***/
+
+/*** 4.2. Exported Subprograms Declarations ***/
+
+const char *
+errsymbol (int errno_arg);
+
+const char *
+syserrmsg (char *buf, size_t buf_max, const char *msg, int errno_arg);
+
+/*** 0. End of Interface Boilerplate ***/
+
+#endif

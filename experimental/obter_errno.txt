@@ -1,0 +1,18 @@
+O seguinte comando gera uma listagem dos símbolos, valores e descrição
+dos códigos de ERRNO. Para que isso funcione corretamente o package
+"moreutils" deve estar instalado. Essa listagem será carregada para
+uma struct apropriada.
+
+errno -ls | sort | awk -F" " '{ out = $1"," OFS $2"," OFS "\""$1"\","
+for (i = 3; i <= NF; i++) {
+    if (i == 3) {
+        out = out OFS "\""$i
+    }
+    else if (i == NF) {
+        out = out OFS $i"\""
+    }
+    else {
+        out = out OFS $i
+    }
+}
+print "{" out "},"}'
