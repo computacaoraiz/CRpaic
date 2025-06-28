@@ -10,7 +10,7 @@
 #ifndef CRPAIC_IO_H
 #define CRPAIC_IO_H
 
-#include <crpaic_globals.h>
+#include <CRpaic_globals.h>
 #include <float.h>
 #include <limits.h>
 #include <stdarg.h>
@@ -24,15 +24,15 @@
  * Usage: s = crpaic_get_string(format, args);
  * -------------------------------------------
  * Prompts user for a line of text from standard input and returns it as a
- * 'crpaic_string' type (char *), sans trailing line ending. Supports CR (\r),
- * LF (\n), and CRLF (\r\n) as line endings. If user inputs only a line ending,
+ * 'string' type (char *), sans trailing line ending. Supports CR (\r), LF (\n),
+ * and CRLF (\r\n) as line endings. If user inputs only a line ending,
  * return "" (the empty string), not NULL. Return NULL upon error or no input
  * whatsoever (i.e., just EOF). Stores string on HEAP, but library's destructor
  * frees memory on program's exit, making this function very friendly for
  * beginner's programmers.
  */
 
-crpaic_string
+string
 crpaic_get_string (const char *format, ...)
     __attribute__((format (printf, 1, 2)));
 

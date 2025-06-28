@@ -11,9 +11,9 @@
 #define CRPAIC_GLOBALS_H
 
 /**
- * Type: crpaic_string
- * -------------------
- * Type for (pointers to) strings (array of chars). The type 'crpaic_string' is
+ * Type: string
+ * ------------
+ * Type for (pointers to) strings (array of chars). The type 'string' is
  * identical to the type 'char *', which is traditionally used in C programs.
  * This type is defined to improve program readability for students, because at
  * the abstraction levels at which the type string is used, it is usually not
@@ -22,6 +22,8 @@
  * students can (and must) use 'char *' for more control.
  */
 
-typedef char *crpaic_string;
+#ifndef string
+typedef char *string;
+#endif
 
 #endif

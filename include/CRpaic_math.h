@@ -1,0 +1,142 @@
+/**
+ * File    : crpaic_math.h
+ * Date    : 0000-00-00 00:00 -0300
+ * GitHub  : https://github.com/computacaoraiz/CRpaic
+ * --------------------------------------------------
+ * This file creates the "crpaic_math.h" interface, a module for general
+ * math utilities and functions.
+ */
+
+#ifndef CRPAIC_MATH_H
+#define CRPAIC_MATH_H
+
+#include <CRpaic_globals.h>
+
+/**
+ * Mathematical Constants:
+ * -----------------------
+ * Several important mathematical constants, defined as symbolic constants. The
+ * constants have 30 significant digits (1 integer digit and 29 decimal digits),
+ * which is probably much more accurate than you will ever need. For more
+ * information about the number of decimals digits, see:
+ * https://www.jpl.nasa.gov/edu/news/how-many-decimals-of-pi-do-we-really-need
+ */
+
+#ifndef CRPAIC_PHI
+#define CRPAIC_PHI      1.61803398874989484820458683436    /* phi */
+#endif
+
+#ifndef CRPAIC_E
+#define CRPAIC_E        2.71828182845904523536028747135    /* e */
+#endif
+
+#ifndef CRPAIC_LOG2E
+#define CRPAIC_LOG2E    1.44269504088896340735992468100    /* log_2 (e) */
+#endif
+
+#ifndef CRPAIC_LOG10E
+#define CRPAIC_LOG10E   0.43429448190325182765112891892    /* log_10 (e) */
+#endif
+
+#ifndef CRPAIC_SQRT2
+#define CRPAIC_SQRT2    1.41421356237309504880168872421    /* sqrt(2) */
+#endif
+
+#ifndef CRPAIC_SQRT1_2
+#define CRPAIC_SQRT1_2  0.70710678118654752440084436210    /* sqrt(1/2) */
+#endif
+
+#ifndef CRPAIC_SQRT3
+#define CRPAIC_SQRT3    1.73205080756887729352744634151    /* sqrt(3) */
+#endif
+
+#ifndef CRPAIC_PI
+#define CRPAIC_PI       3.14159265358979323846264338328    /* pi */
+#endif
+
+#ifndef CRPAIC_PI_2
+#define CRPAIC_PI_2     1.57079632679489661923132169164    /* pi/2 */
+#endif
+
+#ifndef CRPAIC_PI_4
+#define CRPAIC_PI_4     0.78539816339744830961566084582    /* pi/4 */
+#endif
+
+#ifndef CRPAIC_SQRTPI
+#define CRPAIC_SQRTPI   1.77245385090551602729816748334    /* sqrt(pi) */
+#endif
+
+#ifndef CRPAIC_2_SQRTPI
+#define CRPAIC_2_SQRTPI 1.12837916709551257389615890312    /* 2/sqrt(pi) */
+#endif
+
+#ifndef CRPAIC_1_PI
+#define CRPAIC_1_PI     0.31830988618379067153776752675    /* 1/pi */
+#endif
+
+#ifndef CRPAIC_2_PI
+#define CRPAIC_2_PI     0.63661977236758134307553505349    /* 2/pi */
+#endif
+
+#ifndef CRPAIC_LN10
+#define CRPAIC_LN10     2.30258509299404568401799145468    /* ln(10) */
+#endif
+
+#ifndef CRPAIC_LN2
+#define CRPAIC_LN2      0.69314718055994530941723212146    /* ln(2) */
+#endif
+
+#ifndef CRPAIC_LNPI
+#define CRPAIC_LNPI     1.14472988584940017414342735135    /* ln(pi) */
+#endif
+
+#ifndef CRPAIC_EULER
+#define CRPAIC_EULER    0.57721566490153286060651209008    /* Euler constant */
+#endif
+
+/**
+ * Predicate: crpaic_is_prime
+ * Use: if (crpaic_is_prime(n)) . . .
+ * ----------------------------------
+ * Receives a non-negative long long int number "n" and returns a boolean value
+ * indicating whether "n" is prime (true) or not (false). For n <= 1, always
+ * return false.
+ */
+
+bool
+crpaic_is_prime (const long long int n);
+
+/**
+ * Predicate: crpaic_is_even
+ * Use: if (crpaic_is_even(n)) . . .
+ * ---------------------------------
+ * Receives a long long int number "n" and returns a boolean value indicating
+ * whether "n" is even (true) of not (false).
+ */
+
+bool
+crpaic_is_even (const long long int n);
+
+/**
+ * Predicate: crpaic_is_odd
+ * Use: if (crpaic_is_odd(n)) . . .
+ * --------------------------------
+ * Receives a long long int number "n" and returns a boolean value indicating
+ * whether "n" is odd (true) of not (false).
+ */
+
+bool
+crpaic_is_odd (const long long int n);
+
+/**
+ * Function: crpaic_gcd
+ * Usage: i = crpaic_gcd(a, b);
+ * ----------------------------
+ * Receives two integers, a and b, and returns the greatest common divisor
+ * between them.
+ */
+
+int
+crpaic_gcd (int a, int b);
+
+#endif
