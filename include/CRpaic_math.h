@@ -1,15 +1,17 @@
 /**
- * File    : crpaic_math.h
+ * File    : CRpaic_math.h
  * Date    : 0000-00-00 00:00 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
- * This file creates the "crpaic_math.h" interface, a module for general
- * math utilities and functions.
+ * This file creates the "CRpaic_math.h" interface, a module for general
+ * math utilities and functions used by CRpaic library.
  */
 
 #ifndef CRPAIC_MATH_H
 #define CRPAIC_MATH_H
 
+#include <stdbool.h>
+#include <stdint.h>
 #include <CRpaic_globals.h>
 
 /**
@@ -20,6 +22,8 @@
  * which is probably much more accurate than you will ever need. For more
  * information about the number of decimals digits, see:
  * https://www.jpl.nasa.gov/edu/news/how-many-decimals-of-pi-do-we-really-need
+ *
+ * All constants (except PHI) were copied from the GNU Scientific Library (GSL).
  */
 
 #ifndef CRPAIC_PHI
@@ -96,15 +100,136 @@
 
 /**
  * Predicate: crpaic_is_prime
- * Use: if (crpaic_is_prime(n)) . . .
- * ----------------------------------
- * Receives a non-negative long long int number "n" and returns a boolean value
- * indicating whether "n" is prime (true) or not (false). For n <= 1, always
- * return false.
+ * Usage: if (crpaic_is_prime(n)) . . .
+ * ------------------------------------
+ * Family of predicates (and a _Generic macro) that receive an integer (of
+ * various types), signed or unsigned, and return a boolean value indicating
+ * whether the integer is prime (true) or not (false). This family of predicates
+ * receives an integer value returns a boolean indicating whether the number is
+ * prime (true) or not (false).
+ * 
+ * The user can pass integers of the following type to the macro:
+ *    shor int, int, long int, long lont int
+ *    unsigned short int, unsiged int, unsigned long int, unsigned long long int
+ *    int8_t, int16_t, int32_t, int64_4
+ *    uint8_t, uint16_t, uint32_t, uint64_t
+ *
+ * The following types are not implemented as they do not appear frequently in
+ * teaching environments (if the user uses these types, we can get a situation
+ * of undefined behavior):
+ *    int_fast8_t, int_fast16_t, int_fast32_t, int_fast64_t
+ *    uint_fast8_t, uint_fast16_t, uint_fast32_t, uint_fast64_t
+ *    int_least8_t, int_least16_t, int_least32_t, int_least64_t
+ *    uint_least8_t, uint_least16_t, uint_least32_t, uint_least64_t
  */
 
-bool
-crpaic_is_prime (const long long int n);
+/* Declaration of the base function: */
+bool crpaic_is_prime_ulli (unsigned long long int n);
+
+/* Definition of wrappers for other primitive integer types: */
+static inline bool crpaic_is_prime_si (short int n)
+{
+    return n < 2 ? false : crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_usi (unsigned short int n)
+{
+    return crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_i (int n)
+{
+    return n < 2 ? false : crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_ui (unsigned int n)
+{
+    return crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_li (long int n)
+{
+    return n < 2 ? false : crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_uli (unsigned long int n)
+{
+    return crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_lli (long long int n)
+{
+    return n < 2 ? false : crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_ulli_safe (unsigned long long int n)
+{
+    return crpaic_is_prime_ulli(n);
+}
+
+/* Definition of wrappers for <stdint.h> integer types: */
+static inline bool crpaic_is_prime_i8 (int8_t n)
+{
+    return n < 2 ? false : crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_ui8 (uint8_t n)
+{
+    return crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_i16 (int16_t n)
+{
+    return n < 2 ? false : crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_ui16 (uint16_t n)
+{
+    return crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_i32 (int32_t n)
+{
+    return n < 2 ? false : crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_ui32 (uint32_t n)
+{
+    return crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_i64 (int64_t n)
+{
+    return n < 2 ? false : crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+static inline bool crpaic_is_prime_ui64 (uint64_t n)
+{
+    return crpaic_is_prime_ulli((unsigned long long int) n);
+}
+
+/* Generic macro for the dispatch of correct function: */
+#define crpaic_is_prime(x) _Generic((x),           \
+             /* standard int types */              \
+             short int: crpaic_is_prime_si,        \
+    unsigned short int: crpaic_is_prime_usi,       \
+                   int: crpaic_is_prime_i,         \
+          unsigned int: crpaic_is_prime_ui,        \
+              long int: crpaic_is_prime_li,        \
+     unsigned long int: crpaic_is_prime_uli,       \
+         long long int: crpaic_is_prime_lli,       \
+unsigned long long int: crpaic_is_prime_ulli_safe, \
+             /* <stdint.h> int types */            \
+                int8_t: crpaic_is_prime_i8,        \
+               uint8_t: crpaic_is_prime_ui8,       \
+               int16_t: crpaic_is_prime_i16,       \
+              uint16_t: crpaic_is_prime_ui16,      \
+               int32_t: crpaic_is_prime_i32,       \
+              uint32_t: crpaic_is_prime_ui32,      \
+               int64_t: crpaic_is_prime_i64,       \
+              uint64_t: crpaic_is_prime_ui64,      \
+             /* fallback */                        \
+               default: crpaic_is_prime_ulli_safe)(x)
 
 /**
  * Predicate: crpaic_is_even
