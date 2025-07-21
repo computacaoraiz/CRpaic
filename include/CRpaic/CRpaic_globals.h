@@ -7,6 +7,7 @@
  * declarations that will be used by several other modules.
  */
 
+/* Start of include guard: */
 #ifndef CRPAIC_GLOBALS_H
 #define CRPAIC_GLOBALS_H
 
@@ -26,4 +27,5 @@
 typedef char *string;
 #endif
 
+/* End of include guard: */
 #endif

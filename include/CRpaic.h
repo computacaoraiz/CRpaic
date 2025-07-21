@@ -76,6 +76,7 @@
  *        OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/* Start of include guard: */
 #ifndef CRPAIC_H
 #define CRPAIC_H
 
@@ -84,13 +85,13 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <CRpaic_globals.h>
+#include <CRpaic/CRpaic_version.h>
+#include <CRpaic/CRpaic_globals.h>
+#include <CRpaic/math/CRpaic_math.h>
 
-#include <CRpaic_io.h>
-#include <CRpaic_math.h>
-#include <CRpaic_string.h>
-
+/* End of include guard: */
 #endif
