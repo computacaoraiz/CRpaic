@@ -208,7 +208,7 @@ clean:
 	rm -fr $(BUILDDIR)/CRpaic
 	rm -f $(LIBDIR)/*.a
 	rm -f $(LIBDIR)/*.so.$(VERSION)
-	rm -f $(DOCSDIR)/*.3.gz
+	@#rm -f $(DOCSDIR)/*.3.gz
 
 
 # ******************************************************************************
