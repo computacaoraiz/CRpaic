@@ -1,12 +1,12 @@
 /**
  * File    : CRpaic.h
- * Date    : 0000-00-00 00:00 -0300
+ * Date    : 2025-07-22 08:13 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file creates the "CRpaic.h" interface, a C library specifically designed
  * for studying the book "Programming Abstractions in C: A Second Course in
  * Computer Science," published by Eric S. Roberts in 1997. The goal of this
- * library is to provide a basic set of tools and conventions thar increase the
+ * library is to provide a basic set of tools and conventions that increase the
  * readability of C programs, particularly as they are used in a teaching
  * environment. Although this library is designed for studying PAIC, it can be
  * applied generically to any C program.
@@ -18,7 +18,7 @@
  * CRpaic.h is distributed under MIT License:
  * https://opensource.org/license/mit
  *
- * Copyright (C) 2024, Computação Raiz
+ * Copyright (C) 2025, Computação Raiz
  *                     Abrantes Araújo Silva Filho
  *                     (abrantesasf at computacaoraiz dot com dot br)
  *

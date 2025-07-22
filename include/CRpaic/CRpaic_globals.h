@@ -1,6 +1,6 @@
 /**
  * File    : crpaic_globals.h
- * Date    : 0000-00-00 00:00 -0300
+ * Date    : 2025-07-22 08:15 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file creates the "crpaic_globals.h" interface, a module for general

@@ -1,6 +1,6 @@
 /**
  * File    : CRpaic_version.h
- * Date    : 0000-00-00 00:00 -0300
+ * Date    : 2025-07-22 08:16 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * Symbolic constants with the version of CRpaic Library. Most usefull for the
