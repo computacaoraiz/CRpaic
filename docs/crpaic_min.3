@@ -1,0 +1,171 @@
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.TH CRPAIC_MIN 3 "2025-07-22" "CRpaic" "CRpaic User's Manual"
+.SH NAME
+crpaic_min - return the lesser of two numbers
+.SH SYNOPSIS
+.nf
+.B #include <CRpaic.h>
+.PP
+.BI "TYPE crpaic_min (" n1 ", " n2 ");"
+.PP
+.BI "char crpaic_min_c (char const " n1 ", char const " n2 ");"
+.BI "unsigned char crpaic_min_uc (unsigned char const " n1 ","
+.BI "                             unsigned char const " n2 ");"
+.PP
+.BI "short int crpaic_min_si (short int const " n1 ", short int const " n2 ");"
+.BI "unsigned short int crpaic_min_usi (unsigned short int const " n1 ","
+.BI "                                   unsigned short int const " n2 ");"
+.PP
+.BI "int crpaic_min_i (int const " n1 ", int const " n2 ");"
+.BI "unsigned int crpaic_min_ui (unsigned int const " n1 ","
+.BI "                            unsigned int const " n2 ");"
+.PP
+.BI "long int crpaic_min_li (long int const " n1 ", long int const " n2 ");"
+.BI "unsigned long int crpaic_min_uli (unsigned long int const " n1 ","
+.BI "                                  unsigned long int const " n2 ");"
+.PP
+.BI "long long int crpaic_min_lli (long long int const " n1 ","
+.BI "                              long long int const " n2 ");"
+.BI "unsigned long long int crpaic_min_ulli ("
+.BI "    unsigned long long int const " n1 ","
+.BI "    unsigned long long int const " n2 ");"
+.PP
+.BI "float crpaic_min_f (float const " f1 ", float const " f2 ");"
+.PP
+.BI "double crpaic_min_d (double const " d1 ", double const " d2 ");"
+.PP
+.BI "long double crpaic_min_ld (long double const " ld1 ","
+.BI "                           long double const " ld2 ");"
+.fi
+.SH DESCRIPTION
+The
+.BR crpaic_min ()
+function is a family of functions that takes as arguments two numbers
+.IR n1
+and
+.IR n2
+(of any integer of floating-point data type) and return the lesser of the two.
+The user can pass the following types of arguments:
+.PP
+    a) Signed or unsigned integers: char, short int, int, long int,
+       long long int, int8_t, uint8_t, int16_t, uint16_t, int32_t, uint32_t,
+       int64_t, uint64_t;
+.PP
+    b) Floating-point numbers: float, double, long double.
+.PP
+The
+.BR crpaic_min ()
+function is a _Generic macro that dispatches the arguments
+.IR n1
+and
+.IR n2
+to the correct specific function depending on the data type of
+.IR n1
+(the first argument). The client program can directly use one of the specific
+functions to a given data type but, in general, it is recommended to use only
+the generic
+.BR crpaic_min ()
+macro in cliente programs.
+.PP
+The user MUST pass two arguments of the same type (or, at least, two
+arguments of compatible types, eg.: int and int32_t). If the user passed two
+arguments of different types, the behavior would be undefined and the return
+value could be wrong (due to C's type promotion and casting rules). To
+prevent this, the _Generic dispatch macro verify the type compatibility of
+the arguments and stop the compilation if the types are different (or not
+compatible).
+.PP
+Functions specific to a given data type are indicated by a standardized suffix,
+for example,
+.BR crpaic_min_si ()
+takes two short int as arguments;
+.BR crpaic_min_uli ()
+takes two unsigned long int as arguments. OK, I know that embedding the
+argument\(aqs data type in the function name (know as \(dqHungarian
+Notation\(dq) is stupid. However, due to the purely academic nature of the
+CRpaic library and to the use of the generic dispatch macro that works for any
+numeric data type (integer and floating-point), I don\(aqt see any major
+problems with this practice.
+.SH RETURN VALUE
+The
+.BR crpaic_min ()
+return the lesser of two numbers. The TYPE of the return value will always be
+the same type as the first argument; that is, the type of the first argument,
+.IR n1 ,
+determines the type of the returned value.
+.SH ERRORS
+.BR crpaic_min ()
+does not set any
+.IR errno
+even in the event of an error.
+.SH ATTRIBUTES
+.BR crpaic_min ()
+is Reentrant and Thread-Safe (Multi Thread-Save; MT-Safe). For more explanation
+about these concepts, see
+.BR attributes (7).
+.SH CONFORMING TO
+Not applicable.
+.SH EXAMPLE
+.in +4n
+.EX
+#include <CRpaic.h>
+#include <stdio.h>
+
+int main (void)
+{
+    long int i = 10;
+    int64_t j = 20;
+
+    /* long int and int64_t are compatible types, the compilation can be done */
+    long int n = crpaic_min(i, j);
+
+    /* print 10 */
+    printf(\(dq%ld\\n\(dq, n);
+
+    /* some doubles */
+    double d1 = 30.0;
+    double d2 = 50.0;
+
+    /* same data type, not problem */
+    double r = crpaic_min(d1, d2);
+
+    /* print 30.00 */
+    printf(\(dq%.2f\\n\(dq, r);
+    
+    return 0;
+}
+.EE
+.in
+.SH APPLICATION USAGE
+The arguments 
+.IR n1
+and
+.IR n2
+can be of virtually any numeric data types (integer or floating-point), but the
+user must ensure that their types are the same or, at least, compatible. It\(aqs
+best to use the generic dispatch macro,
+.BR crpaic_min (),
+instead of using the specific functions.
+.SH RATIONALE
+Determining the lesser of two numbers is an extremely common operation in
+programming, and therefore,
+.BR crpaic_min ()
+can be used in a wide range of computational problems.
+.SH BUGS
+Please report bugs and other issues on
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub:"
+.SH FUTURE DIRECTIONS
+None.
+.SH SEE ALSO
+.BR crpaic_max ()
+.SH CHANGE HISTORY
+First released in CRpaic version 2.0.0.
+.SH COLOPHON
+This page is part of CRpaic User\(aqs Manual
+.IR man-pages .
+A description of the project, information about reporting bugs, and the latest
+version of this page, can be found at
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub".
