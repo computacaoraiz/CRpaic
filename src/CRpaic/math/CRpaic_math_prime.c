@@ -54,7 +54,7 @@ crpaic_next_prime_c (char n)
 
     while (n < CHAR_MAX)
     {
-        if (crpaic_is_prime((unsigned long long int) ++n))
+        if (crpaic_is_prime(++n))
             return n;
     }
     
@@ -66,7 +66,7 @@ crpaic_next_prime_uc (unsigned char n)
 {
     while (n < UCHAR_MAX)
     {
-        if (crpaic_is_prime((unsigned long long int) ++n))
+        if (crpaic_is_prime(++n))
             return n;
     }
     
@@ -81,7 +81,7 @@ crpaic_next_prime_si (short int n)
 
     while (n < SHRT_MAX)
     {
-        if (crpaic_is_prime((unsigned long long int) ++n))
+        if (crpaic_is_prime(++n))
             return n;
     }
     
@@ -93,7 +93,7 @@ crpaic_next_prime_usi (unsigned short int n)
 {
     while (n < USHRT_MAX)
     {
-        if (crpaic_is_prime((unsigned long long int) ++n))
+        if (crpaic_is_prime(++n))
             return n;
     }
     
@@ -108,7 +108,7 @@ crpaic_next_prime_i (int n)
 
     while (n < INT_MAX)
     {
-        if (crpaic_is_prime((unsigned long long int) ++n))
+        if (crpaic_is_prime(++n))
             return n;
     }
     
@@ -120,7 +120,7 @@ crpaic_next_prime_ui (unsigned int n)
 {
     while (n < UINT_MAX)
     {
-        if (crpaic_is_prime((unsigned long long int) ++n))
+        if (crpaic_is_prime(++n))
             return n;
     }
     
@@ -135,7 +135,7 @@ crpaic_next_prime_li (long int n)
 
     while (n < LONG_MAX)
     {
-        if (crpaic_is_prime((unsigned long long int) ++n))
+        if (crpaic_is_prime(++n))
             return n;
     }
     
@@ -147,7 +147,7 @@ crpaic_next_prime_uli (unsigned long int n)
 {
     while (n < ULONG_MAX)
     {
-        if (crpaic_is_prime((unsigned long long int) ++n))
+        if (crpaic_is_prime(++n))
             return n;
     }
     
@@ -162,7 +162,7 @@ crpaic_next_prime_lli (long long int n)
 
     while (n < LLONG_MAX)
     {
-        if (crpaic_is_prime((unsigned long long int) ++n))
+        if (crpaic_is_prime(++n))
             return n;
     }
     

@@ -1,0 +1,67 @@
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.TH <SUBPROGRAM> 3 "2025-07-21" "CRpaic" "CRpaic User's Manual"
+.SH NAME
+<subprogram> - xxx
+.SH SYNOPSIS
+.nf
+.B #include <CRpaic.h>
+.PP
+.BI "return_type subprogram (type " arg ");"
+.PP
+.BI "return_type subprogram (type " arg ")"
+.BI "return_type subprogram (type " arg ")"
+.fi
+.SH DESCRIPTION
+xxx
+.BR subprogram ()
+xxx
+.IR arg
+xxx.
+.SH RETURN VALUE
+xxx
+.BR subprogram ()
+xxx
+.IR arg
+xxx.
+.SH ERRORS
+.BR subprogram ()
+xxx
+.IR errno
+xxx.
+.SH ATTRIBUTES
+.BR subprogram ()
+xxx. See
+.BR attributes (7).
+.SH CONFORMING TO
+Not applicable.
+.SH EXAMPLE
+.in +4n
+.EX
+<program code here!>
+.EE
+.in
+.SH APPLICATION USAGE
+xxx
+.IR arg
+.BR subprogram (),
+xxx.
+.SH RATIONALE
+xxx.
+.SH BUGS
+Please report bugs and other issues on
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub:"
+.SH FUTURE DIRECTIONS
+None.
+.SH SEE ALSO
+.BR subprogram ()
+.SH CHANGE HISTORY
+First released in CRpaic version 2.0.0.
+.SH COLOPHON
+This page is part of CRpaic User\(aqs Manual
+.IR man-pages .
+A description of the project, information about reporting bugs, and the latest
+version of this page, can be found at
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub".

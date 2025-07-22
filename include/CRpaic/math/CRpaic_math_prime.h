@@ -90,7 +90,7 @@ static inline bool crpaic_is_prime_uli (unsigned long int n)
 }
 
 /* long long ints */
-static inline bool crpaic_is_prime_lli (unsigned long long int n)
+static inline bool crpaic_is_prime_lli (long long int n)
 {
     return n < 2 ? false : crpaic_is_prime_ulli((unsigned long long int) n);
 }

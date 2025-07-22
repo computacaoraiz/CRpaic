@@ -1,0 +1,122 @@
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.TH CRPAIC_IS_PRIME 3 "2025-07-21" "CRpaic" "CRpaic User's Manual"
+.SH NAME
+crpaic_is_prime - checks if an integer is a prime number
+.SH SYNOPSIS
+.nf
+.B #include <CRpaic.h>
+.PP
+.BI "bool crpaic_is_prime (" n ");"
+
+.BI "bool crpaic_is_prime_c (char " n ")"
+.BI "bool crpaic_is_prime_uc (unsigned char " n ")"
+.BI "bool crpaic_is_prime_si (short int " n ")"
+.BI "bool crpaic_is_prime_usi (unsigned short int " n ")"
+.BI "bool crpaic_is_prime_i (int " n ")"
+.BI "bool crpaic_is_prime_ui (unsigned int " n ")"
+.BI "bool crpaic_is_prime_li (long int " n ")"
+.BI "bool crpaic_is_prime_uli (unsigned long int " n ")"
+.BI "bool crpaic_is_prime_lli (long long int " n ")"
+.BI "bool crpaic_is_prime_ulli (unsigned long long int " n ");"
+.fi
+.SH DESCRIPTION
+The
+.BR crpaic_is_prime ()
+predicate is a family of predicates that takes as an argument a number
+.IR n
+of any integer type (char, short int, int, long int, long long int, int8_t,
+uint8_t, int16_t, uint16_t, int32_t, uint32_t, int64_t, uint64_t), signed or
+unsigned, and checks whether this number is a prime number (a prime number is a
+natural number greater than 1 that has exactly two distinct positive divisors,
+namely 1 and itself).
+.PP
+The
+.BR crpaic_is_prime ()
+predicate is a _Generic macro that dispatches the argument
+.IR n
+to the correct specific predicate depending on the data type of
+.IR n .
+The client program can directly use one of the predicates specific to a given
+data type but, in general, it is recommended to use only the generic
+.BR crpaic_is_prime ()
+macro in client programs.
+.PP
+Predicates specific to a given data type are indicated by a standardized suffix,
+for example:
+.BR crpaic_is_prime_si ()
+takes a short int as an argument;
+.BR crpaic_is_prime_uli ()
+takes an unsigned long int as an argument. OK, I know that embedding the
+argument\(aqs data type in the predicate name (known as \(dqHungarian
+Notation\(dq) is stupid. However, due to the purely academic nature of the
+CRpaic library and to the use of the generic dispatch macro that works for any
+integer data type, I don\(aqt see any major problems with this practice.
+.SH RETURN VALUE
+The
+.BR crpaic_is_prime ()
+predicate returns the boolean true if the argument
+.IR n
+is a prime number, or returns the boolean false if the argument
+.IR n
+is not a prime number.
+.SH ERRORS
+.BR crpaic_is_prime ()
+does not set any
+.IR errno
+even in the event of an error.
+.SH ATTRIBUTES
+.BR crpaic_is_prime ()
+is Reentrant and Thread-Safe (Multi Thread-Safe; MT-Safe). For more explanation
+about this concepts, see
+.BR attributes (7)
+.SH CONFORMING TO
+Not applicable.
+.SH EXAMPLE
+.in +4n
+.EX
+#include <CRpaic.h>
+#include <stdio.h>
+
+int main (void)
+{
+    long long int n = 10009;
+    
+    if (crpaic_is_prime(n))
+        printf(\(dq%lld is prime.\\n\(dq, n);
+    else
+        printf(\(dq%lld is not prime.\\n\(dq, n);
+
+    return 0;
+}
+.EE
+.in
+.SH APPLICATION USAGE
+The argument
+.IR n
+can be of virtually any integer data type. It\(aqs best to use the generic
+dispatch macro,
+.BR crpaic_is_prime (),
+instead of using the specific predicates.
+.SH RATIONALE
+Determining whether a number is prime is a common operation in programming, and
+therefore,
+.BR crpaic_is_prime ()
+can be used in a wide range of computational problems.
+.SH BUGS
+Please report bugs and other issues on
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub:"
+.SH FUTURE DIRECTIONS
+None.
+.SH SEE ALSO
+.BR crpaic_next_prime ()
+.SH CHANGE HISTORY
+First released in CRpaic version 2.0.0.
+.SH COLOPHON
+This page is part of CRpaic User\(aqs Manual
+.IR man-pages .
+A description of the project, information about reporting bugs, and the latest
+version of this page, can be found at
+.URL "https://github.com/computacaoraiz/CRpaic/" "CRpaic's GitHub".
