@@ -96,18 +96,36 @@ static inline bool crpaic_is_prime_lli (long long int n)
 }
 
 /* Generic macro for the dispatch of correct function: */
-#define crpaic_is_prime(x) _Generic((x),           \
-                  char: crpaic_is_prime_c,         \
-         unsigned char: crpaic_is_prime_uc,        \
-             short int: crpaic_is_prime_si,        \
-    unsigned short int: crpaic_is_prime_usi,       \
-                   int: crpaic_is_prime_i,         \
-          unsigned int: crpaic_is_prime_ui,        \
-              long int: crpaic_is_prime_li,        \
-     unsigned long int: crpaic_is_prime_uli,       \
-         long long int: crpaic_is_prime_lli,       \
-unsigned long long int: crpaic_is_prime_ulli,      \
-               default: crpaic_is_prime_ulli)(x)
+#define crpaic_is_prime(x)     \
+    ({  \
+        __auto_type __x = (x); \
+        \
+        _Static_assert( \
+        __builtin_types_compatible_p(__typeof__(__x), char)                 || \
+        __builtin_types_compatible_p(__typeof__(__x), unsigned char)        || \
+        __builtin_types_compatible_p(__typeof__(__x), short int)            || \
+        __builtin_types_compatible_p(__typeof__(__x), unsigned short int)   || \
+        __builtin_types_compatible_p(__typeof__(__x), int)                  || \
+        __builtin_types_compatible_p(__typeof__(__x), unsigned int)         || \
+        __builtin_types_compatible_p(__typeof__(__x), long int)             || \
+        __builtin_types_compatible_p(__typeof__(__x), unsigned long int)    || \
+        __builtin_types_compatible_p(__typeof__(__x), long long int)        || \
+        __builtin_types_compatible_p(__typeof__(__x), unsigned long long int), \
+                       "ERROR: argument must be an integer type.");            \
+        \
+        _Generic((__x),                               \
+                  char: crpaic_is_prime_c,            \
+         unsigned char: crpaic_is_prime_uc,           \
+             short int: crpaic_is_prime_si,           \
+    unsigned short int: crpaic_is_prime_usi,          \
+                   int: crpaic_is_prime_i,            \
+          unsigned int: crpaic_is_prime_ui,           \
+              long int: crpaic_is_prime_li,           \
+     unsigned long int: crpaic_is_prime_uli,          \
+         long long int: crpaic_is_prime_lli,          \
+unsigned long long int: crpaic_is_prime_ulli,         \
+               default: crpaic_is_prime_ulli)((__x)); \
+    })
 
 /**
  * Predicate: crpaic_next_prime
@@ -146,18 +164,36 @@ long long int crpaic_next_prime_lli (long long int n);
 unsigned long long int crpaic_next_prime_ulli (unsigned long long int n);
 
 /* Generic macro for the dispatch of correct function: */
-#define crpaic_next_prime(x) _Generic((x),         \
-                  char: crpaic_next_prime_c,       \
-         unsigned char: crpaic_next_prime_uc,      \
-             short int: crpaic_next_prime_si,      \
-    unsigned short int: crpaic_next_prime_usi,     \
-                   int: crpaic_next_prime_i,       \
-          unsigned int: crpaic_next_prime_ui,      \
-              long int: crpaic_next_prime_li,      \
-     unsigned long int: crpaic_next_prime_uli,     \
-         long long int: crpaic_next_prime_lli,     \
-unsigned long long int: crpaic_next_prime_ulli,    \
-               default: crpaic_next_prime_ulli)(x)
+#define crpaic_next_prime(x)   \
+    ({  \
+        __auto_type __x = (x); \
+        \
+        _Static_assert( \
+        __builtin_types_compatible_p(__typeof__(__x), char)                 || \
+        __builtin_types_compatible_p(__typeof__(__x), unsigned char)        || \
+        __builtin_types_compatible_p(__typeof__(__x), short int)            || \
+        __builtin_types_compatible_p(__typeof__(__x), unsigned short int)   || \
+        __builtin_types_compatible_p(__typeof__(__x), int)                  || \
+        __builtin_types_compatible_p(__typeof__(__x), unsigned int)         || \
+        __builtin_types_compatible_p(__typeof__(__x), long int)             || \
+        __builtin_types_compatible_p(__typeof__(__x), unsigned long int)    || \
+        __builtin_types_compatible_p(__typeof__(__x), long long int)        || \
+        __builtin_types_compatible_p(__typeof__(__x), unsigned long long int), \
+                       "ERROR: argument must be an integer type.");            \
+        \
+        _Generic((__x),                                 \
+                  char: crpaic_next_prime_c,            \
+         unsigned char: crpaic_next_prime_uc,           \
+             short int: crpaic_next_prime_si,           \
+    unsigned short int: crpaic_next_prime_usi,          \
+                   int: crpaic_next_prime_i,            \
+          unsigned int: crpaic_next_prime_ui,           \
+              long int: crpaic_next_prime_li,           \
+     unsigned long int: crpaic_next_prime_uli,          \
+         long long int: crpaic_next_prime_lli,          \
+unsigned long long int: crpaic_next_prime_ulli,         \
+               default: crpaic_next_prime_ulli)((__x)); \
+    })
 
 /* End of include guard: */
 #endif

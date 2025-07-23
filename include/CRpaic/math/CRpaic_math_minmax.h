@@ -97,7 +97,7 @@ crpaic_max_ld (long double const ld1, long double const ld2);
         \
         _Static_assert(__builtin_types_compatible_p(                 \
                        __typeof__(__x), __typeof__(__y)),            \
-                       "ERROR: Arguments must have the same type."); \
+                       "ERROR: arguments must have the same type."); \
         \
         _Generic((__x),                               \
                   char: crpaic_max_c,                 \
@@ -198,7 +198,7 @@ crpaic_min_ld (long double const ld1, long double const ld2);
         \
         _Static_assert(__builtin_types_compatible_p(                 \
                        __typeof__(__x), __typeof__(__y)),            \
-                       "ERROR: Arguments must have the same type."); \
+                       "ERROR: arguments must have the same type."); \
         \
         _Generic((__x),                               \
                   char: crpaic_min_c,                 \
