@@ -33,7 +33,7 @@ ifneq ($(VERSION), $(shell cat src/VERSION.TXT))
 endif
 
 # C standard:
-CSTD ?= c17
+CSTD ?= gnu17
 
 # Programs to use:
 CC := gcc
@@ -48,7 +48,7 @@ DOCSDIR  := docs
 
 # Compiler flags:
 CFLAGS := -std=$(CSTD) -MMD -MP \
-          -Wall -Wextra -Werror -Wpedantic -Wconversion -Wunused-result
+          -Wall -Wextra -Werror -Wconversion -Wunused-result
 
 MODE ?= PRODUCTION
 ifeq ($(MODE), DEBUG)
