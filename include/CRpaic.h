@@ -1,6 +1,6 @@
 /**
  * File    : CRpaic.h
- * Date    : 2025-07-22 08:13 -0300
+ * Date    : 2025-07-24 01:07 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file creates the "CRpaic.h" interface, a C library specifically designed
@@ -80,6 +80,7 @@
 #ifndef CRPAIC_H
 #define CRPAIC_H
 
+#include <errno.h>
 #include <float.h>
 #include <limits.h>
 #include <stdarg.h>

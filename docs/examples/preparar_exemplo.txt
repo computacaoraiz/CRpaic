@@ -1,0 +1,7 @@
+O seguinte comando SED prepara um exemplo de código em .c para inclusão em
+uma man page. As seguintes substituições são feitas:
+  \ por \\
+  " por \(dq
+A saída é feita no stdout.
+
+sed -e 's/\\/\\\\/g' -e 's/"/\\(dq/g' ARQUIVO.c

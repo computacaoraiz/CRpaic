@@ -1,6 +1,6 @@
 /**
  * File    : CRpaic_math.h
- * Date    : 2025-07-21 14:12 -0300
+ * Date    : 2025-07-24 03:45 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * Utilities for prime numbers.
@@ -10,6 +10,7 @@
 #ifndef CRPAIC_MATH_PRIME_H
 #define CRPAIC_MATH_PRIME_H
 
+#include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
