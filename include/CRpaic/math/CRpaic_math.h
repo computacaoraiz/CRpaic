@@ -18,8 +18,9 @@
 #include <stdint.h>
 
 #include <CRpaic/math/CRpaic_math_const.h>
-#include <CRpaic/math/CRpaic_math_prime.h>
 #include <CRpaic/math/CRpaic_math_minmax.h>
+#include <CRpaic/math/CRpaic_math_oddeven.h>
+#include <CRpaic/math/CRpaic_math_prime.h>
 
 /* End of include guard: */
 #endif

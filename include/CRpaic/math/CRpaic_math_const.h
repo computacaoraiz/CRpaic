@@ -1,6 +1,6 @@
 /**
  * File    : CRpaic_math_const.h
- * Date    : 0000-00-00 00:00 -0300
+ * Date    : 2025-07-24 20:45 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * Several important mathematical constants, defined as symbolic constants. The

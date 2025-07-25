@@ -32,8 +32,19 @@ xxx
 .IR errno
 xxx.
 .SH ATTRIBUTES
+The
 .BR subprogram ()
-xxx. See
+is:
+.TP
+.BR Thread-Safe ?
+Yes, this function is Multi Thread-Safe (MT-Safe).
+No, this function not not Multi Thread-Safe (MT-Unsafe).
+.TP
+.BR Reentrant ?
+No, this function is not reentrant.
+Yes, this function is reentrant.
+.PP
+For more explanation about these concepts, see
 .BR attributes (7).
 .SH CONFORMING TO
 Not applicable.

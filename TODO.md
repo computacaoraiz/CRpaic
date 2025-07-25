@@ -2,8 +2,8 @@
 
 - [ ] Math module:
   - [ ] arithmetic utilities
-    - [ ] `crpaic_is_even`
-    - [ ] `crpaic_is_odd`
+    - [x] `crpaic_is_even`
+    - [x] `crpaic_is_odd`
     - [ ] `crpaic_gcd`
     - [ ] `crpaic_lcm`
     - [ ] `crpaic_clamp`

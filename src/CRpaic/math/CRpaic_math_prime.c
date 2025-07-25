@@ -1,12 +1,13 @@
 /**
  * File    : CRpaic_math_prime.c
- * Date    : 2025-07-21 16:58 -0300
+ * Date    : 2025-07-24 20:21 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
  * This file implements the "CRpaic_math_prime.h" interface, a module for
  * general utilities about prime numbers.
  */
 
+#include <errno.h>
 #include <CRpaic/math/CRpaic_math_prime.h>
 
 /**
@@ -57,7 +58,8 @@ crpaic_next_prime_c (char n)
         if (crpaic_is_prime(++n))
             return n;
     }
-    
+
+    errno = ERANGE;
     return 0;
 }
 
@@ -69,7 +71,8 @@ crpaic_next_prime_uc (unsigned char n)
         if (crpaic_is_prime(++n))
             return n;
     }
-    
+
+    errno = ERANGE;
     return 0;
 }
 
@@ -84,7 +87,8 @@ crpaic_next_prime_si (short int n)
         if (crpaic_is_prime(++n))
             return n;
     }
-    
+
+    errno = ERANGE;
     return 0;
 }
 
@@ -96,7 +100,8 @@ crpaic_next_prime_usi (unsigned short int n)
         if (crpaic_is_prime(++n))
             return n;
     }
-    
+
+    errno = ERANGE;
     return 0;
 }
 
@@ -111,7 +116,8 @@ crpaic_next_prime_i (int n)
         if (crpaic_is_prime(++n))
             return n;
     }
-    
+
+    errno = ERANGE;
     return 0;
 }
 
@@ -123,7 +129,8 @@ crpaic_next_prime_ui (unsigned int n)
         if (crpaic_is_prime(++n))
             return n;
     }
-    
+
+    errno = ERANGE;
     return 0;
 }
 
@@ -138,7 +145,8 @@ crpaic_next_prime_li (long int n)
         if (crpaic_is_prime(++n))
             return n;
     }
-    
+
+    errno = ERANGE;
     return 0;
 }
 
@@ -150,7 +158,8 @@ crpaic_next_prime_uli (unsigned long int n)
         if (crpaic_is_prime(++n))
             return n;
     }
-    
+
+    errno = ERANGE;
     return 0;
 }
 
@@ -165,7 +174,8 @@ crpaic_next_prime_lli (long long int n)
         if (crpaic_is_prime(++n))
             return n;
     }
-    
+
+    errno = ERANGE;
     return 0;
 }
 
@@ -177,6 +187,7 @@ crpaic_next_prime_ulli (unsigned long long int n)
         if (crpaic_is_prime(++n))
             return n;
     }
-    
+
+    errno = ERANGE;
     return 0;
 }
