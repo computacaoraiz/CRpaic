@@ -92,6 +92,7 @@
 
 #include <CRpaic/CRpaic_version.h>
 #include <CRpaic/CRpaic_globals.h>
+#include <CRpaic/io/CRpaic_io.h>
 #include <CRpaic/math/CRpaic_math.h>
 
 /* End of include guard: */
