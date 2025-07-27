@@ -26,6 +26,7 @@ for the beginning student. ([go back to CRpaic Modules list](#crpaic-modules))
   - [x] `crpaic_get_string`
   - [x] `crpaic_vget_string`
   - [x] `crpaic_get_char`
+  - [ ] unit tests
   - [ ] comments in headers and implementations
   - [ ] man pages
   - [ ] read the docs
@@ -37,6 +38,7 @@ for the beginning student. ([go back to CRpaic Modules list](#crpaic-modules))
   - [x] `crpaic_get_float`
   - [x] `crpaic_get_double`
   - [x] `crpaic_get_long_double`
+  - [ ] unit tests
   - [ ] comments in headers and implementations
   - [ ] man pages
   - [ ] read the docs
@@ -49,6 +51,7 @@ for the beginning student. ([go back to CRpaic Modules list](#crpaic-modules))
   - [ ] `crpaic_get_sys_time`
   - [ ] `crpaic_get_sys_datetime`
   - [ ] `crpaic_get_sys_datetimetz`
+  - [ ] unit tests
   - [ ] comments in headers and implementations
   - [ ] man pages
   - [ ] read the docs
@@ -62,12 +65,14 @@ for the beginning student. ([go back to CRpaic Modules list](#crpaic-modules))
   - [ ] `crpaic_clamp`
   - [x] `crpaic_max`
   - [x] `crpaic_min`
+  - [ ] unit tests
   - [ ] comments in headers and implementations
   - [ ] man pages
   - [ ] read the docs
 - [x] prime number utilities
   - [x] `crpaic_is_prime`
   - [x] `crpaic_next_prime`
+  - [ ] unit tests
   - [ ] comments in headers and implementations
   - [x] man pages
   - [ ] read the docs
