@@ -2,6 +2,13 @@
 The lists below show the status of the work being done in the project and some
 short and medium term goals. The content is roughly organized by CRpaic module.
 
+Legend for the tasks:
+* ⏺ Not started
+* ⏱ Will start soon
+* 🔁 Started
+* ⏸ Paused
+* ✔ Finished
+
 ## CRpaic Modules
 The list below contains the proposed modules for CRpaic. Some are already in
 development, while others are still in the planning stages.
