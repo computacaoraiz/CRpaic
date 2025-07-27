@@ -1,4 +1,4 @@
-# TODO list:
+# TODO list
 The lists below show the status of the work being done in the project and some
 short and medium term goals. The content is roughly organized by CRpaic module.
 
@@ -20,7 +20,7 @@ development, while others are still in the planning stages.
 ## I/O Module
 The I/O module aims to provide functions that allow obtaining different types of
 user input (char, string, integer, real numbers, dates, etc.) in a friendly way
-for the beginning student. ([go back to Module list](#crpaic-modules))
+for the beginning student. ([go back to CRpaic Modules list](#crpaic-modules))
 
 - [ ] char and strings
   - [x] `crpaic_get_string`
@@ -28,6 +28,7 @@ for the beginning student. ([go back to Module list](#crpaic-modules))
   - [x] `crpaic_get_char`
   - [ ] comments in headers and implementations
   - [ ] man pages
+  - [ ] read the docs
 - [ ] numbers
   - [ ] `crpaic_get_short`
   - [x] `crpaic_get_int`
@@ -38,6 +39,7 @@ for the beginning student. ([go back to Module list](#crpaic-modules))
   - [x] `crpaic_get_long_double`
   - [ ] comments in headers and implementations
   - [ ] man pages
+  - [ ] read the docs
 - [ ] dates
   - [ ] `crpaic_get_date`
   - [ ] `crpaic_get_time`
@@ -49,6 +51,7 @@ for the beginning student. ([go back to Module list](#crpaic-modules))
   - [ ] `crpaic_get_sys_datetimetz`
   - [ ] comments in headers and implementations
   - [ ] man pages
+  - [ ] read the docs
 
 ## Math Module
 - [ ] arithmetic utilities
@@ -61,8 +64,10 @@ for the beginning student. ([go back to Module list](#crpaic-modules))
   - [x] `crpaic_min`
   - [ ] comments in headers and implementations
   - [ ] man pages
+  - [ ] read the docs
 - [x] prime number utilities
   - [x] `crpaic_is_prime`
   - [x] `crpaic_next_prime`
   - [ ] comments in headers and implementations
   - [x] man pages
+  - [ ] read the docs
