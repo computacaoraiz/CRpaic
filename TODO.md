@@ -29,25 +29,25 @@ user input (char, string, integer, real numbers, dates, etc.) in a friendly way
 for the beginning student. ([go back to CRpaic Modules list](#crpaic-modules))
 
 - [ ] 🔁 char and strings
-  - [x] `crpaic_get_string`
-  - [x] `crpaic_vget_string`
-  - [x] `crpaic_get_char`
+  - [x] ✔️ `crpaic_get_string`
+  - [x] ✔️ `crpaic_vget_string`
+  - [x] ✔️ `crpaic_get_char`
   - [ ] ⏹️ unit tests
   - [ ] ⏹️ comments in headers and implementations
   - [ ] ⏹️ man pages
   - [ ] ⏹️ read the docs
-- [ ] numbers
+- [ ] 🔁 numbers
   - [ ] ⏹️ `crpaic_get_short`
-  - [x] `crpaic_get_int`
-  - [x] `crpaic_get_long`
-  - [x] `crpaic_get_long_long`
-  - [x] `crpaic_get_float`
-  - [x] `crpaic_get_double`
-  - [x] `crpaic_get_long_double`
-  - [ ] unit tests
+  - [x] ✔️ `crpaic_get_int`
+  - [x] ✔️ `crpaic_get_long`
+  - [x] ✔️ `crpaic_get_long_long`
+  - [x] ✔️ `crpaic_get_float`
+  - [x] ✔️ `crpaic_get_double`
+  - [x] ✔️ `crpaic_get_long_double`
+  - [ ] ⏹️ unit tests
   - [ ] 🔁 comments in headers and implementations
   - [ ] 🔁 man pages
-  - [ ] read the docs
+  - [ ] ⏹️ read the docs
 - [ ] ⏹️ dates
   - [ ] ⏹️ `crpaic_get_date`
   - [ ] ⏹️ `crpaic_get_time`
@@ -66,23 +66,23 @@ for the beginning student. ([go back to CRpaic Modules list](#crpaic-modules))
 The math module aims to provide common functions and utilities for handling
 various basic mathematical operations. It also provides various mathematical and
 physical constants. ([go back to CRpaic Modules list](#crpaic-modules))
-- [x] mathematical constants
+- [x] ✔️ mathematical constants
 - [ ] 🔁 arithmetic utilities
-  - [x] `crpaic_is_even`
-  - [x] `crpaic_is_odd`
-  - [ ] `crpaic_gcd`
-  - [ ] `crpaic_lcm`
-  - [ ] `crpaic_clamp`
-  - [x] `crpaic_max`
-  - [x] `crpaic_min`
-  - [ ] unit tests
+  - [x] ✔️ `crpaic_is_even`
+  - [x] ✔️ `crpaic_is_odd`
+  - [ ] ⏹️ `crpaic_gcd`
+  - [ ] ⏹️ `crpaic_lcm`
+  - [ ] ⏹️ `crpaic_clamp`
+  - [x] ✔️ `crpaic_max`
+  - [x] ✔️ `crpaic_min`
+  - [ ] ⏹️ unit tests
   - [ ] 🔁 comments in headers and implementations
   - [ ] 🔁 man pages
-  - [ ] read the docs
-- [x] prime number utilities
-  - [x] `crpaic_is_prime`
-  - [x] `crpaic_next_prime`
-  - [ ] unit tests
+  - [ ] ⏹️ read the docs
+- [ ] 🔁 prime number utilities
+  - [x] ✔️ `crpaic_is_prime`
+  - [x] ✔️ `crpaic_next_prime`
+  - [ ] ⏹️ unit tests
   - [ ] 🔁 comments in headers and implementations
   - [x] 🔁 man pages
-  - [ ] read the docs
+  - [ ] ⏹️ read the docs
