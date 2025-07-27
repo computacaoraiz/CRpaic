@@ -7,7 +7,7 @@ Legend for the tasks:
 * ⏱ Will start soon
 * 🔁 Started
 * ⏸ Paused
-* ✔ Finished
+* ✔ Finished✔️
 
 ## CRpaic Modules
 The list below contains the proposed modules for CRpaic. Some are already in
