@@ -57,10 +57,14 @@ for the beginning student. ([go back to CRpaic Modules list](#crpaic-modules))
   - [ ] read the docs
 
 ## Math Module
+The math module aims to provide common functions and utilities for handling
+various basic mathematical operations. It also provides various mathematical and
+physical constants. ([go back to CRpaic Modules list](#crpaic-modules))
+- [x] mathematical constants
 - [ ] arithmetic utilities
   - [x] `crpaic_is_even`
   - [x] `crpaic_is_odd`
-  - [ ] `crpaic_gcd`
+  - [ ] ⏺ `crpaic_gcd`
   - [ ] `crpaic_lcm`
   - [ ] `crpaic_clamp`
   - [x] `crpaic_max`
