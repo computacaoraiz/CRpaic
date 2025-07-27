@@ -3,8 +3,11 @@ The lists below show the status of the work being done in the project and some
 short and medium term goals. The content is roughly organized by CRpaic module.
 
 ## CRpaic Modules
-- [s] [I/O Module](#)
-- [s] Math Module
+The list below contains the proposed modules for CRpaic. Some are already in
+development, while others are still in the planning stages.
+
+- [ ] [I/O Module](#io-module)
+- [ ] [Math Module](#math-module)
 - [ ] Char Module
 - [ ] String Module
 - [ ] Date/Time Module
@@ -15,6 +18,10 @@ short and medium term goals. The content is roughly organized by CRpaic module.
 - [ ] Graphic (Raylib) Module
 
 ## I/O Module
+The I/O module aims to provide functions that allow obtaining different types of
+user input (char, string, integer, real numbers, dates, etc.) in a friendly way
+for the beginning student. ([go back to Module list](#crpaic-modules))
+
 - [ ] char and strings
   - [x] `crpaic_get_string`
   - [x] `crpaic_vget_string`
