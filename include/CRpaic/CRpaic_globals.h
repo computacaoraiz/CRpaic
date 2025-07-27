@@ -12,6 +12,17 @@
 #define CRPAIC_GLOBALS_H
 
 /**
+ * Constant: NOPROMPT
+ * ------------------
+ * Symbolic constant to be used in "crpaic_get_*" functions (I/O module) to
+ * indicate that the function call will not provide a prompt to the user.
+ */
+
+#ifndef NOPROMPT
+#define NOPROMPT " \b"
+#endif
+
+/**
  * Type: string
  * ------------
  * Type for (pointers to) strings (array of chars). The type 'string' is
