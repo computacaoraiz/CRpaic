@@ -33,8 +33,8 @@ for the beginning student. ([go back to CRpaic Modules list](#crpaic-modules))
   - [x] ✔️ `crpaic_vget_string`
   - [x] ✔️ `crpaic_get_char`
   - [ ] ⏹️ unit tests
-  - [ ] ⏹️ comments in headers and implementations
-  - [ ] ⏹️ man pages
+  - [ ] 🔁 comments in headers and implementations
+  - [ ] 🔁 man pages
   - [ ] ⏹️ read the docs
 - [ ] 🔁 numbers
   - [ ] ⏹️ `crpaic_get_short`
@@ -82,6 +82,7 @@ physical constants. ([go back to CRpaic Modules list](#crpaic-modules))
 - [ ] 🔁 prime number utilities
   - [x] ✔️ `crpaic_is_prime`
   - [x] ✔️ `crpaic_next_prime`
+  - [ ] ⏹️ `crpaic_prev_prime`
   - [ ] ⏹️ unit tests
   - [ ] 🔁 comments in headers and implementations
   - [x] 🔁 man pages
