@@ -11,9 +11,9 @@ development, while others are still in the planning stages.
 - [ ] Char Module
 - [ ] String Module
 - [ ] Date/Time Module
-- [ ] Database Module
 - [ ] Data Structure Module
 - [ ] Algorithms Module
+- [ ] Database (SQLite) Module
 - [ ] ICU (Unicode) Module
 - [ ] Graphic (Raylib) Module
 
