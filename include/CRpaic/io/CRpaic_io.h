@@ -22,6 +22,7 @@
 
 #include <CRpaic/CRpaic_globals.h>
 #include <CRpaic/io/CRpaic_io_charstr.h>
+#include <CRpaic/io/CRpaic_io_numbers.h>
 
 /* End of include guard: */
 #endif

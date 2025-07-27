@@ -1,0 +1,15 @@
+/**
+ * File    : CRpaic_xx_xxxxx.h
+ * Date    : 0000-00-00 00:00 -0300
+ * GitHub  : https://github.com/computacaoraiz/CRpaic
+ * --------------------------------------------------
+ * This interface is part of the XX module of the CRpaic Library, and declares
+ * subprograms and resources useful for ...
+ */
+
+/* Start of include guard: */
+#ifndef CRPAIC_XX_XXXXX_H
+#define CRPAIC_XX_XXXXX_H
+
+/* End of include guard: */
+#endif

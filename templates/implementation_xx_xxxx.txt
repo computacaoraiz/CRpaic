@@ -1,0 +1,10 @@
+/**
+ * File    : CRpaic_xx_xxxxx.c
+ * Date    : 0000-00-00 00:00 -0300
+ * GitHub  : https://github.com/computacaoraiz/CRpaic
+ * --------------------------------------------------
+ * This file implements the XX interface, from the XXXX submodule of the CRpaic
+ * Library.
+ */
+
+#include <CRpaic/XX/CRpaic_xx_xxxxx.h>

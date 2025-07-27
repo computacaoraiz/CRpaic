@@ -1,0 +1,16 @@
+/**
+ * File    : CRpaic_xx.h
+ * Date    : 0000-00-00 00:00 -0300
+ * GitHub  : https://github.com/computacaoraiz/CRpaic
+ * --------------------------------------------------
+ * This is the main interface for the XX module of the CRpaic library. The
+ * purpose of this interface is simply to include the various Standard C headers
+ * and submodules headers that make up the XX module.
+ */
+
+/* Start of include guard: */
+#ifndef CRPAIC_XX_H
+#define CRPAIC_XX_H
+
+/* End of include guard: */
+#endif

@@ -1,10 +1,11 @@
 /**
- * File    : crpaic_io_charstr.h
+ * File    : CRpaic_io_charstr.h
  * Date    : 2025-07-25 21:36 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
- * This file creates the "crpaic_io_charstr.h" modeule, an Input/Ouput (I/O)
- * module for char and strings.
+ * This interface is part of the I/O module of the CRpaic Library, and declares
+ * subprograms and resources useful for obtaining single character and string
+ * input from the user.
  */
 
 /* Start of include guard: */
@@ -37,6 +38,20 @@
 string
 crpaic_get_string (const char *format, ...)
     __attribute__((format (printf, 1, 2)));
+
+/**
+ * Function: crpaic_vget_string
+ * Usage: s = crpaic_vget_string(format, args);
+ * --------------------------------------------
+ * Receives a constant string representing a format string and a list of
+ * arguments (va_list) to prompt the user for a line of text from standard input
+ * and returns it as a 'string' type (char *), sans trailing line ending. It is
+ * equivalent to crpaic_get_string. Attention: the "args" va_list must already
+ * be validated by the user.
+ */
+
+string
+crpaic_vget_string (char const *format, va_list args);
 
 /**
  * Function: crpaic_get_char

@@ -1,10 +1,10 @@
 /**
- * File    : CRpaic.c
- * Date    : 2025-07-25 21:41 -0300
+ * File    : CRpaic_io_charstr.c
+ * Date    : 2025-07-26 22:52 -0300
  * GitHub  : https://github.com/computacaoraiz/CRpaic
  * --------------------------------------------------
- * This file implements the "CRpaic_io_charstr.h" interface, a module
- * specifically getting char and string inputs from user.
+ * This file implements the CRpaic_id_charstr.h interface, from the I/O
+ * submodule of the CRpaic Library.
  */
 
 #include <ctype.h>
@@ -23,31 +23,44 @@
 #include <CRpaic/io/CRpaic_io_charstr.h>
 
 /**
- * Variable: total_allocations
- * ---------------------------
- * Keep the total number of strings allocated on HEAP by _get_string.
+ * Private variable: total_allocations
+ * -----------------------------------
+ * Keep the total number of strings allocated on HEAP by _crpaic_get_string.
  */
 
 static size_t total_allocations = 0;
 
 /**
- * Variable: arr_strings
- * ---------------------
+ * Private variable: arr_strings
+ * -----------------------------
  * Array of strings allocated on HEAP by get_string.
  */
 
 static string *arr_strings = NULL;
 
 /**
- * Function: _get_string
- * Usage: s = _get_string(&args, &format);
+ * Private procedure declaration: teardown
+ * Usage: teardown( );
  * ---------------------------------------
- * This internal function is used by get_char, get_int, get_float and other
- * functions to avoid passing a non-literal format string to a function with
- * the "format" attribute (get_string) when there are no variadic arguments.
- * All get_* functions in this library use "get_string" to get the line from
- * user to processing, and "get_string" receives a format string and variadic
- * arguments for checking. But when "get_string" is called from inside other
+ * Iterate on arrays of strings allocated, and free strings.
+ */
+
+static void
+teardown (void);
+
+/**
+ * Function implementation: crpaic_vget_string
+ * Usage: s = crpaic_vget_string(&args, &format);
+ * ----------------------------------------------
+ * This internal function is used by crpaic_get_char, crpaic_get_int,
+ * crpaic_get_float and other functions to avoid passing a non-literal format
+ * string to a function with the "format" attribute (crpaic_get_string) when
+ * there are no variadic arguments.
+ *
+ * All crpaic_get_* functions in this library use "crpaic_vget_string" to get
+ * the line from user to processing.
+ * and "crpaic_get_string" receives a format string and variadic arguments for
+ * checking. But when "crpaic_vget_string" is called from inside other
  * funcionts (like get_int) the "format" is repassed as a non-literal string
  * and with no variadic arguments, and so the compiler can't perform the
  * check on the format string. The solution is to separate the functions that
@@ -62,32 +75,17 @@ static string *arr_strings = NULL;
  * only a line ending, return "", not NULL. Return NULL upon error or no input
  * whatsoever (i.e., just EOF). Stores string on HEAP, but library's destructor
  * frees memory on program's exit.
- */
-
-static string
-_crpaic_get_string (va_list *args, const char *format);
-
-/**
- * Procedure: teardown
- * Usage: teardown( );
- * -------------------
- * Iterate on arrays of strings allocated, and free strings.
- */
-
-static void
-teardown (void);
-
-/**
- * Function: _crpaic_get_string
+ *
+ * Function implementation: crpaic_vget_string
  * Usage: s = _crpaic_get_string(&args, &format);
- * ----------------------------------------------
- * Implements _crpaic_get_string internal function. Receives a pointer to an
- * args list and a point to a format string, previously validated by get_string,
- * and return a string.
+ * ---------------------------------------------------
+ * Implements crpaic_vget_string function. Receives a pointer to an args list
+ * and a point to a format string, previously validated by another crpaic_get_*
+ * function, and returns a string.
  */
 
-static string
-_crpaic_get_string (va_list *args, const char *format)
+string
+crpaic_vget_string (char const *format, va_list args)
 {
     // Checks if the number of allocations has exceeded the theoretical
     // mathematical limit representable in "size_t". This check does not
@@ -104,24 +102,8 @@ _crpaic_get_string (va_list *args, const char *format)
         // Initialize variadic argument list:
         va_list ap;
 
-        // Client code will pass in printf-like arguments as variadic
-        // parameters. The client-facing get_string macro always set args to
-        // NULL. In this case, we initialize the list of variadic parameters
-        // the standard way with va_start.
-        if (!args)
-        {
-            fprintf(stderr, "Error: args cannot be null.\n");
-            return NULL;
-        }
-
-        // When functions in this library call get_string, they will have
-        // already stored their variadic parameters in a "va_list" and so they
-        // just pass that in by pointer:
-        else
-        {
-            // Put a copy of argument list in ap so it's not consumed by vprintf
-            va_copy(ap, *args);
-        }
+        // Put a copy of argument list in ap so it's not consumed by vprintf
+        va_copy(ap, args);
 
         // Print prompt:
         vprintf(format, ap);
@@ -228,33 +210,11 @@ _crpaic_get_string (va_list *args, const char *format)
 }
 
 /**
- * Procedure: teardown
- * Usage: teardown( );
- * -------------------
- * Called automatically after execution exits main.
- */
-
-static void
-teardown (void)
-{
-    if (arr_strings)
-    {
-        for (size_t i = 0; i < total_allocations; i++)
-        {
-            free(arr_strings[i]);
-            arr_strings[i] = NULL;
-        }
-        free(arr_strings);
-        arr_strings = NULL;
-    }
-}
-
-/**
- * Function: crpaic_get_string
+ * Function implementation: crpaic_get_string
  * Usage: s = crpaic_get_string(format, args);
  * -------------------------------------------
  * This function is a wrapper to pass the format string ("format") and variadic
- * arguments ("ap") to _crpaic_get_string, who really does the processing of
+ * arguments ("ap") to crpaic_vget_string, who really does the processing of
  * getting a string from the user.
  */
 
@@ -266,7 +226,7 @@ crpaic_get_string (const char *format, ...)
     va_start(ap, format);
 
     // Process the input from user, putting the string in result:
-    string result = _crpaic_get_string(&ap, format);
+    string result = crpaic_vget_string(format, ap);
 
     // Finalizes argument list and return result:
     va_end(ap);
@@ -293,7 +253,7 @@ crpaic_get_char (const char *format, ...)
     while (true)
     {
         // Get line of text, returning CHAR_MAX on failure
-        string line = _crpaic_get_string(&ap,  format);
+        string line = crpaic_vget_string(format, ap);
         if (!line)
         {
             va_end(ap);
@@ -307,6 +267,28 @@ crpaic_get_char (const char *format, ...)
             va_end(ap);
             return c;
         }
+    }
+}
+
+/**
+ * Private procedure implementation: teardown
+ * Usage: teardown( );
+ * ------------------------------------------
+ * Called automatically after execution exits main.
+ */
+
+static void
+teardown (void)
+{
+    if (arr_strings)
+    {
+        for (size_t i = 0; i < total_allocations; i++)
+        {
+            free(arr_strings[i]);
+            arr_strings[i] = NULL;
+        }
+        free(arr_strings);
+        arr_strings = NULL;
     }
 }
 

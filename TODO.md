@@ -3,16 +3,19 @@
 - [ ] I/O module:
   - [ ] char and strings
     - [x] `crpaic_get_string`
+    - [x] `crpaic_vget_string`
     - [x] `crpaic_get_char`
+    - [ ] comments in header and implementation
     - [ ] man pages
   - [ ] numbers
-    - [ ] `crpaic_get_short_int`
-    - [ ] `crpaic_get_int`
-    - [ ] `crpaic_get_long`
-    - [ ] `crpaic_get_long_long`
-    - [ ] `crpaic_get_float`
-    - [ ] `crpaic_get_double`
-    - [ ] `crpaic_get_long_double`
+    - [ ] `crpaic_get_short`
+    - [x] `crpaic_get_int`
+    - [x] `crpaic_get_long`
+    - [x] `crpaic_get_long_long`
+    - [x] `crpaic_get_float`
+    - [x] `crpaic_get_double`
+    - [x] `crpaic_get_long_double`
+    - [ ] comments in header and implementation
     - [ ] man pages
   - [ ] dates
     - [ ] `crpaic_get_date`
