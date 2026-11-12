@@ -1,0 +1,544 @@
+Histórico de conversas: 2026-11-12
+==================================
+
+
+ABRANTES:
+=========
+/init
+
+
+CLAUDE:
+=======
+I've written CLAUDE.md at the repository root. No Cursor, Copilot, Codex or
+Gemini config files were found, so there was nothing to import.
+
+What it covers:
+
+- Project context: what CRpaic is, and how the v2 branch (modules, crpaic_
+  prefix on every public name) differs from the older v1 API on master.
+
+- Build: the main make commands and options (MODE=DEBUG, CSTD, install and
+  uninstall). Two easy-to-miss rules:
+  - Warnings are treated as errors, including implicit narrowing conversions.
+  - The version must match in both include/CRpaic/CRpaic_version.h and
+    src/VERSION.TXT, or the build stops.
+
+- Tests:
+  - The CUnit tests in tests/ link against the installed library, not the copy
+    built in the repo.
+  - They still use the old v1 names (get_int and so on), so they haven't been
+    updated for v2. 
+  - There's no way to run a single test.
+
+- Architecture:
+  - CRpaic.h is the one header users include. It pulls in one header per module,
+    and each module is split into smaller parts with matching files in include/
+    and src/.
+  - Functions like crpaic_max and crpaic_min work for any number type. This
+    relies on GCC extensions, which is why the build needs gnu17. 
+  - Folders that are drafts or reference material and aren't built: todo/,
+    experimental/, gpt/. 
+
+- Conventions: the file templates and section order, the comment and formatting
+  style, and how man pages and their examples are written.
+
+I only ran the build as a dry run and didn't compile or run the tests.
+
+
+ABRANTES:
+=========
+Crie uma memória para este projeto. Leia todos os documentos, arquivos, códigos
+C, documentos de contexto, histórico e status deste projeto. Informe se você
+conseguiu entender do que se trata este projeto. Se precisar de mais
+explicações, me avise.
+
+
+CLAUDE:
+=======
+Estou lendo os módulos de I/O e matemática; em seguida vejo todo/,
+experimental/, os testes e uma amostra dos PDFs de gpt/.
+
+Criei a memória do projeto e acho que entendi bem do que se trata. Li todo o
+código C, os headers, Makefiles, README, TODO, templates, man pages, exemplos,
+todo/, experimental/, os testes, o git log e o seu historico/. Dos cerca de 80
+PDFs em gpt/, li só o começo de uns 20, os que tratam das decisões de design; os
+demais conheço apenas pelo nome. Rodei make e a v2 compilou sem erros (depois
+rodei make clean).
+
+O que entendi
+
+A CRpaic é uma biblioteca de apoio para alunos que estudam pelo Programming
+Abstractions in C, do Roberts. Ela se inspira no cslib e na libcs50, mas é mais
+enxuta: deixa de fora o que "facilita demais", como GetBlock e New, porque aluno
+de PAIC deve usar a libc diretamente.
+
+- v1 (2024, master): um único CRpaic.h + CRpaic.c, com as get_*, substring,
+  ithchar e concat, mais testes em CUnit.
+
+- v2 (2025, v2, 2.0.0 ainda não lançada): biblioteca modular com prefixo
+  crpaic_. Os módulos I/O e math estão prontos. As funções genéricas usam
+  _Generic com extensões do GCC e _Static_assert; por isso o build é gnu17 sem
+  -Wpedantic. Todas as get_* passam por crpaic_vget_string, para não quebrar o
+  atributo format. As strings são liberadas por um destrutor no fim do programa.
+
+- O que falta: testes da v2 (os de tests/ ainda são da v1),
+  gcd/lcm/clamp/prev_prime, datas, os módulos String/Char portados de
+  todo/src/CRpaic.c, estruturas de dados com ponteiros opacos e, mais adiante,
+  SQLite, ICU e raylib. Para distribuir, você já pesquisou pkg-config, .deb/APT
+  e Read the Docs.
+
+Memórias criadas
+
+Ficam em ~/.claude/projects/-home-abrantesasf-repositoriosGit-CRpaic/memory/:
+- seu perfil;
+- o status da v2;
+- as decisões de design e o motivo de cada uma;
+- um índice da pasta gpt/ por tema;
+- o seu costume de registrar as sessões em historico/AAAAMMDD.txt.
+
+Possíveis problemas que encontrei (não alterei nada)
+
+1. Em crpaic_is_prime_ulli, a condição i * i <= n estoura para n perto de
+   ULLONG_MAX, e um primo muito grande pode ser classificado como
+   composto. Trocar por i <= n / i resolve.
+
+2. O soname da .so é libCRpaic.so.2.0.0. O usual seria libCRpaic.so.2, que é
+   justamente o symlink que o install cria.
+
+3. docs/#crpaic_next_prime.3# é um autosave do Emacs esquecido em docs/.
+
+Perguntas
+
+- Qual é a prioridade agora: terminar I/O e math com testes, portar String/Char
+  ou preparar o lançamento da 2.0.0?
+
+- A v2 vai substituir a v1 de vez, ou você pretende manter os nomes antigos
+  (get_int etc.) como aliases para os alunos?
+
+- Quer que eu leia algum PDF de gpt/ por inteiro, sobre um tema que vamos
+  retomar?
+
+
+ABRANTES:
+=========
+Deixe na memória que toda vez que você, no futuro, for me apresentar alguma
+tabela, não utilize markdown, ao invés disse crie tabelas em ascii puro com, no
+máximo, 80 colunas.
+
+Alguns esclarecimentos: a CRpaic tem objetivo acadêmico, ou seja, permitir que
+alunos iniciantes criem programas interessantes em C, sem facilitar demais com
+abstrações que escondem tudo do aluno.
+
+Além disso, um objetivo secundário da CRpaic (que ainda não está documentado em
+lugar nenhum) é, de fato, criar abstrações mais úteis para alunos mais
+avançados, que já entenderam como programação e estrutura de dados funcionam, e
+querem agora criar programas de forma mais rápida. Por exemplo: podemos criar
+uma abstração chamada "vetor", que já fornece aos usuários operações como
+adicionar, remover, procurar, etc., de forma fácil e simples, sem que o usuário
+precise gerenciar memória, aumentar o tamanho do vetor, etc. Essas abstrações
+serão criadas com o tempo.
+
+Deixe também registrado que há um outro repositório de documentação, em
+~/CRpaic_docs/, usando Read The Docs. Esse repositório deve conter a
+documentação para os usuários. Trabalharemos então com 2 repositórios neste
+projeto:
+  a) ~/CRpaic      : código
+  b) ~/CRpaic_docs : documentação
+
+Você tem permissão para confiar e fazer alterações nesses dois repositórios,
+sempre depois de minha revisão e autorização.
+
+O que eu gostaria de fazer, nesse momento, é uma série de atividades:
+
+  1) Uma revisão detalhada de todo o código já existente, para saber o que está
+     bom, o que está ruim, o que poderia melhorar, bugs latentes e outros
+     problemas.
+     
+  2) Reescrever totalmente os testes unitários, com CUnit ou outra biblioteca,
+     pois a maneira com a qual os testes estão sendo criados e executados está
+     se tornando um gargalo na manutenibilidade do projeto. Eu gostaria que toda
+     a CRpaic tivesse muitos e muitos testes para evitar regressões. Meu "padrão
+     ouro" para "test driven development" é o SQLite: tudo é testado
+     exaustivamente antes do lançamento de qualquer versão. Quero chegar nesse
+     nível, mesmo que devagar.
+
+Por favor, faça a revisão detalhada do código. Proponha uma reestruturação dos
+testes com CUnit ou outra coisa.
+
+
+CLAUDE:
+=======
+Memórias salvas. Agora vou para a revisão detalhada: vou ler o restante do
+código que ainda não li por inteiro e fazer testes práticos para confirmar os
+possíveis bugs.
+
+Background command "Rerun probe with double NaN" completed (exit code 0)
+
+Confirmei dois bugs: crpaic_max(int8_t, int8_t) devolve long double, e
+crpaic_is_prime trava com primos de 64 bits. Agora testo os demais casos de
+borda e as funções de I/O.
+
+Salvei na memória a regra das tabelas em ASCII, os dois objetivos da CRpaic e o
+uso de dois repositórios. Também registrei que só altero ~/CRpaic e
+~/CRpaic_docs depois da sua revisão e autorização. Nesta etapa não mudei nenhum
+arquivo do projeto: só li o código, compilei e rodei testes num diretório
+temporário.
+
+Parte 1: revisão do código
+
+Resumo: a base é boa. O código é organizado, bem comentado, compila sem avisos
+mesmo com -Werror -Wconversion e o valgrind não acusou vazamentos. Mas encontrei
+dois bugs graves e confirmados no módulo math, alguns problemas no Makefile que
+atrapalham a instalação e o futuro .deb, e decisões de design no módulo I/O que
+vale a pena discutir.
+
+1.1 Bugs confirmados por teste
+
++----+--------+---------------------------------------------------------+
+| #  | Grav.  | Problema (confirmado no teste)                          |
++----+--------+---------------------------------------------------------+
+| B1 | ALTA   | crpaic_is_prime: "i * i <= n" dá overflow em unsigned   |
+|    |        | long long. Com o maior primo de 64 bits                 |
+|    |        | (18446744073709551557) o programa passou de 20 s sem    |
+|    |        | responder. Também trava crpaic_next_prime perto do fim  |
+|    |        | da faixa.                                               |
++----+--------+---------------------------------------------------------+
+| B2 | ALTA   | int8_t é "signed char", que é um tipo diferente de      |
+|    |        | "char". crpaic_max((int8_t)3, (int8_t)5) cai no         |
+|    |        | default e devolve long double (sizeof = 16). O mesmo    |
+|    |        | acontece com bool. Já is_prime, is_even, is_odd e       |
+|    |        | next_prime nem compilam com int8_t, embora a            |
+|    |        | documentação diga que aceitam.                          |
++----+--------+---------------------------------------------------------+
+| B3 | MÉDIA  | O Makefile não inclui os arquivos .pic.d: depois de     |
+|    |        | "touch CRpaic_math_prime.h", "make shared" não          |
+|    |        | recompilou nada. A .so fica desatualizada, o que é      |
+|    |        | grave porque prime.h tem código inline.                 |
++----+--------+---------------------------------------------------------+
+| B4 | MÉDIA  | install com DESTDIR: os symlinks são absolutos e        |
+|    |        | apontam para o diretório temporário de staging, o       |
+|    |        | diretório man3 não é criado e o ldconfig roda dentro    |
+|    |        | do DESTDIR. Isso inviabiliza o empacotamento .deb.      |
++----+--------+---------------------------------------------------------+
+| B5 | MÉDIA  | install instala as man pages da v1 (get_int,            |
+|    |        | concat...), de funções que não existem na v2. Não há    |
+|    |        | man page para nenhuma crpaic_get_*. A variável MANS é   |
+|    |        | calculada antes de "make mans" gerar os .gz.            |
++----+--------+---------------------------------------------------------+
+| B6 | MÉDIA  | O SONAME é libCRpaic.so.2.0.0. O correto seria          |
+|    |        | libCRpaic.so.2; do jeito atual, toda versão de patch    |
+|    |        | quebra os binários já compilados.                       |
++----+--------+---------------------------------------------------------+
+| B7 | BAIXA  | NaN: crpaic_max(NaN, 1.0) devolve 1, mas                |
+|    |        | crpaic_max(1.0, NaN) devolve NaN. A semântica precisa   |
+|    |        | ser definida e documentada.                             |
++----+--------+---------------------------------------------------------+
+| B8 | BAIXA  | Os nomes "__x" e "__y" dentro das macros colidem com    |
+|    |        | variáveis do usuário: com int __x = 7,                  |
+|    |        | crpaic_max(1, __x) devolveu 1. São identificadores      |
+|    |        | reservados, mas dá para usar nomes únicos.              |
++----+--------+---------------------------------------------------------+
+| B9 | BAIXA  | LDLIBS tem -lX11 e -lcrypt, que a biblioteca não usa.   |
+|    |        | O build falha se libx11-dev não estiver instalado.      |
++----+--------+---------------------------------------------------------+
+
+Correções:
+- B1: trocar a condição por i <= n / i.
+
+- B2: acrescentar o caso signed char e remover o default:. Sem o default, um
+  tipo não previsto vira erro de compilação, em vez de virar long double sem
+  aviso.
+
+1.2 Design do módulo I/O (para discutirmos)
+
+- D1. NOPROMPT é " \b": isso escreve 2 bytes de verdade na saída, e confirmei
+  com od que eles aparecem quando a saída vai para um arquivo ou pipe. Testei
+  que crpaic_get_string(NULL) não gera aviso com -Wall -Wextra, ao contrário de
+  "", que dispara -Wformat-zero-length. Então #define NOPROMPT NULL resolve.
+
+- D2. O construtor deixa o stdout sem buffer para todo o programa:
+  - Com a .so, isso vale até para um programa que só usa math.
+  - Com a .a, só vale se charstr.o for linkado, então o comportamento muda entre
+    link estático e dinâmico (vi isso no teste).
+  - Saída sem buffer é muito mais lenta.
+  - Alternativa: chamar fflush(stdout) depois de imprimir o prompt.
+
+- D3. Toda linha lida fica na memória até o fim do programa: isso inclui as
+  tentativas inválidas e as linhas usadas por dentro de get_int. Um laço que lê
+  10^6 inteiros guarda 10^6 strings. Além disso, o buffer cresce 1 byte por
+  caractere e o array de strings cresce 1 posição por chamada, o que é
+  O(n²). Sugiro que get_int e as outras get_* numéricas liberem a própria linha,
+  que só get_string registre a string para liberar no fim, e que o crescimento
+  seja geométrico.
+
+- D4. free() na string de get_string causa double free na saída do
+  programa. Isso conflita com o objetivo primário, porque o aluno precisa
+  aprender a usar free. Opções: 
+  - (a) documentar "nunca libere";
+  - (b) criar crpaic_free_string, que tira a string do registro;
+  - (c) tirar o registro e deixar o aluno liberar.
+
+- D5. A biblioteca não é thread-safe (usa um array global). Basta documentar.
+
+- D6. get_float e get_double recusam notação científica (1e3). Vírgula e locale
+  também não estão definidos. Precisa de uma decisão.
+
+- D7. Falta __attribute__((format(printf, 1, 0))) em crpaic_vget_string.
+
+- D8. Valores sentinela ambíguos: em erro, get_char devolve CHAR_MAX (127, que é
+  um caractere válido), e INT_MAX não pode ser digitado. Isso veio da libcs50;
+  vale decidir conscientemente se fica assim.
+
+1.3 Módulo math, consistência e build
+
+- Há dois estilos misturados: os wrappers de is_prime são static inline no
+  header, e as outras funções são extern. Convém escolher um padrão, porque isso
+  afeta a ABI.
+
+- A regra de "mesmo tipo" é boa, mas faz crpaic_max(x_long, 0) falhar; o aluno
+  precisa escrever 0L. Isso deve estar documentado na man page.
+
+- #ifndef string não tem efeito, porque string é um typedef e não uma macro.
+
+- O ramo para MSVC no INITIALIZER é código morto, já que a biblioteca só suporta
+  Linux.
+
+- Expressões ? true : false são redundantes.
+
+- No Makefile:
+  - CFLAGS := impede o usuário de acrescentar flags.
+  - O clean faz find ... -exec rm -fr no repositório inteiro, o que é arriscado.
+  - A conferência com VERSION.TXT repete o que CRpaic_version.h já diz.
+  - Sugiro acrescentar -Wformat=2 -Wshadow -Wmissing-prototypes e talvez
+    -fvisibility=hidden.
+
+- Comentários desatualizados e erros de digitação:
+  - a documentação de vget_string cita _crpaic_get_string(&args, &format);
+  - "CRpaic_id_charstr.h";
+  - "unsiged", "lont", "int64_4", "stanard", "flot", "funcionts".
+
+- O README ainda descreve a API da v1.
+
+- CRpaic.h já inclui stdio.h, stdlib.h e outros headers por conta própria. Isso
+  conflita com o objetivo de não esconder demais? A decisão é sua.
+
+1.4 O que está bom
+
+- Estrutura modular limpa: as fontes são encontradas automaticamente e o build
+  gera .a, .so e objetos PIC.
+
+- vget_string é robusta: verifica SIZE_MAX, trata CR, LF e CRLF, usa ungetc e
+  libera a memória em todos os caminhos de erro. O valgrind não acusou nada.
+
+- O _Generic com _Static_assert dá mensagens de erro claras e avalia cada
+  argumento uma única vez (testei com x++).
+
+- is_even e is_odd estão corretas para negativos.
+
+- next_prime acerta os limites: (char)127 devolve 0 com ERANGE, e INT_MAX - 1
+  devolve INT_MAX.
+
+- Comentários de interface e man pages com exemplos são um ótimo padrão.
+
+Parte 2: proposta de reestruturação dos testes
+
+2.1 Por que os testes atuais viraram gargalo
+
+- Testam a biblioteca instalada (-lCRpaic), não o código que está sendo editado.
+
+- São da v1, então nada da v2 está testado.
+
+- Cada caso repete umas 10 linhas de fmemopen e troca o stdin por atribuição, o
+  que não é portável. Além disso, o strlen + 1 injeta um '\0' no fim da entrada.
+
+- Rodam num único processo sem timeout: o B1 teria travado a suíte inteira para
+  sempre.
+
+- Não há testes de falha de malloc, de cobertura, de sanitizers nem de tipos.
+
+2.2 Escolha do framework
+
++--------------+----------+----------+-----------+-----------+
+| Critério     | CUnit    | cmocka   | Criterion | Próprio   |
++--------------+----------+----------+-----------+-----------+
+| Mantido      | não      | sim      | pouco     | por você  |
+| Pacote apt   | sim      | sim      | sim       | n/a       |
+| Isola testes | não      | não (*)  | fork      | não (*)   |
+| Timeout      | não      | não (*)  | sim       | não (*)   |
+| Mocks/falhas | não      | sim      | não       | --wrap    |
+| Saída TAP    | não      | sim      | sim       | fácil     |
+| Filtro teste | não      | sim      | sim       | fácil     |
++--------------+----------+----------+-----------+-----------+
+(*) resolvido com um executável por submódulo, rodado sob timeout
+
+Recomendo o cmocka. É C puro, é mantido, está no apt (libcmocka-dev), permite
+simular falhas de malloc e realloc (é o que o SQLite faz de mais importante),
+gera saída TAP e JUnit para CI e permite filtrar um único teste. O CUnit não tem
+release desde 2018.
+
+2.3 Duas mudanças pequenas no código para facilitar os testes
+
+1. Núcleo de I/O recebendo FILE *: algo como crpaic_vfget_string(FILE *in, FILE
+   *out, fmt, va_list). As funções públicas continuam usando stdin e stdout, e
+   os testes passam um stream de memória, sem mexer no stdin. Se quiser, essa
+   variante pode virar API pública (crpaic_fget_int), útil para ler de arquivos.
+
+2. Uma função interna só para testes que esvazia o registro de strings entre um
+   teste e outro.
+
+2.4 Camadas de teste (o "nível SQLite", aos poucos)
+
++----+------------------+---------------------------------------------+
+| Nº | Camada           | Exemplo na CRpaic                           |
++----+------------------+---------------------------------------------+
+| T1 | Unitário tabular | tabelas {entrada, esperado} para get_int    |
+| T2 | Exaustivo        | todos os valores char/short; is_prime de    |
+|    |                  | 0..2^24 comparado com o crivo               |
+| T3 | Propriedades     | max(a,b)==max(b,a) para valores aleatórios  |
+|    |                  | com semente fixa                            |
+| T4 | Falha de memória | o n-ésimo malloc/realloc falha, para cada n |
+| T5 | Compilação       | crpaic_max(1, 2.0) TEM de dar erro;         |
+|    |                  | verificar o tipo de retorno de cada macro   |
+| T6 | Matriz de build  | gcc/clang x -O0/-O3 x .a/.so x ASan/UBSan   |
+|    |                  | x valgrind                                  |
+| T7 | Cobertura        | gcov/gcovr, meta de cobertura de ramos      |
+| T8 | Fuzzing          | libFuzzer (clang) nos parsers get_*         |
+| T9 | Instalação/docs  | DESTDIR install + compilar um programa;     |
+|    |                  | exemplos de docs/examples; lint das man     |
++----+------------------+---------------------------------------------+
+
+Teria pegado: B1 com T1/T2, B2 com T5, B3 com T6, B4 e B5 com T9.
+
+2.5 Organização proposta
+
+tests/
+  tests.mk                 incluído pelo Makefile da raiz
+  harness/crpaic_test.h    helpers (entrada simulada, floats, falhas)
+  unit/io/test_io_charstr.c
+  unit/io/test_io_numbers.c
+  unit/math/test_math_{minmax,oddeven,prime}.c
+  exhaustive/              testes lentos (T2/T3)
+  compile/{pass,fail}/     trechos que devem compilar ou falhar
+  fuzz/                    alvos libFuzzer
+  install/                 teste de DESTDIR e dos exemplos
+
+Comandos previstos:
+
+make check                        T1 + T5, rápido, todo commit
+make check TEST=math_prime        um só submódulo
+make check TEST=math_prime F=lim* um só caso (filtro do cmocka)
+make check-asan | check-valgrind | check-clang
+make check-slow                   T2/T3
+make coverage                     relatório HTML
+make release-check                tudo: obrigatório antes de lançar
+
+Um teste ficaria assim:
+
+static void
+test_is_prime_limites_64 (void **state)
+{
+    (void) state;
+    static struct { unsigned long long n; bool primo; } const casos[] = {
+        { 0ULL, false }, { 1ULL, false }, { 2ULL, true },
+        { 4294967291ULL, true },          /* maior primo de 32 bits */
+        { 18446744073709551557ULL, true } /* maior primo de 64 bits */
+    };
+
+    for (size_t i = 0; i < sizeof casos / sizeof casos[0]; i++)
+        assert_int_equal(crpaic_is_prime(casos[i].n), casos[i].primo);
+}
+
+2.6 Ordem sugerida, no estilo TDD
+
+- Fase 0: corrigir B3 e B9 no Makefile e montar a infraestrutura (cmocka,
+  tests.mk, harness, make check linkando o build local).
+
+- Fase 1: testes do math (T1, T2, T5). Primeiro escrevo os testes que reproduzem
+  B1, B2 e B7 e só depois corrijo.
+
+- Fase 2: passar o I/O para o núcleo com FILE *, mais T1 e T4, e as decisões D1
+  a D8.
+
+- Fase 3: sanitizers, cobertura e CI (GitHub Actions?).
+
+- Fase 4: fuzzing, testes de instalação (B4, B5, B6) e make release-check.
+
+Decisões que preciso de você
+
+1. Você aprova o cmocka, ou prefere Criterion ou um harness próprio?
+
+2. Posso refatorar o I/O para o núcleo com FILE *? As crpaic_fget_* devem ser
+   públicas?
+
+3. Posso descartar os testes da v1 em tests/? Eles continuam no git e no master.
+
+4. Como quer resolver D1 (NOPROMPT), D2 (buffer do stdout), D3 e D4 (memória das
+   strings) e D6 (notação científica)?
+
+5. Posso começar pelas Fases 0 e 1?
+
+Se quiser, salvo esta revisão num arquivo de texto em 80 colunas para você
+guardar em historico/.
+
+
+ABRANTES:
+=========
+Vou pensar em suas sugestões e retorno em outra sessão com minhas decisões. No
+momento apenas atualize o status, memória, histórico e contexto. Sugira uma
+mensagem de commit (o commit/push eu prefiro fazer manualmente).
+
+
+CLAUDE:
+=======
+Como o arquivo historico/20261112.txt está aberto no seu Emacs, não vou
+alterá-lo; vou salvar a revisão completa em outro arquivo dentro de historico/ e
+atualizar TODO.md, CLAUDE.md e a memória.
+
+Agora atualizo o TODO.md e o CLAUDE.md.
+
+Pronto, deixei tudo atualizado e não fiz commit.
+
+Arquivos no repositório (~/CRpaic):
+
+- historico/20261112_revisao_codigo.txt (novo): a revisão completa em texto
+  puro, até 80 colunas, com bugs B1 a B9, decisões de I/O D1 a D8, a proposta de
+  testes e a lista das decisões que ficaram com você. Não mexi no
+  historico/20261112.txt, porque ele está aberto no seu Emacs.
+
+- TODO.md: nova seção "Code Review and Test Overhaul (2026-11-12)" com os bugs,
+  as decisões em espera e as Fases 0 a 4. Escrevi em inglês, como o resto do
+  arquivo.
+
+- CLAUDE.md: a parte de testes agora aponta para o plano e para a
+  revisão. Acrescentei uma seção "Workflow": dois repositórios, aprovação antes
+  de alterar, commit feito por você, historico/ intocável e tabelas em ASCII.
+
+Memória (fora do repositório):
+
+- O status da v2 registra que a revisão foi feita e que nada deve ser
+  implementado antes das suas decisões. Na próxima sessão eu começo relendo a
+  revisão e perguntando o que você decidiu.
+
+- Memória nova: commit e push são sempre seus; eu só sugiro a mensagem.
+
+- O histórico agora diz que resumos de sessão vão em arquivo separado.
+
+O autosave e o lock do Emacs já são ignorados pelo .gitignore. Com git add
+historico/, entram tanto o seu 20261112.txt quanto o arquivo da revisão.
+
+Mensagem de commit sugerida:
+
+Add CLAUDE.md, code review report and test overhaul plan
+
+- CLAUDE.md: build, tests, architecture and conventions for Claude
+  Code, plus workflow notes (two repositories, approval before
+  changes, manual commits, ASCII tables).
+- historico/: session log of 2026-11-12 and full v2 code review
+  (confirmed bugs B1-B9, I/O design questions D1-D8, proposal for a
+  new test infrastructure based on cmocka).
+- TODO.md: new "Code Review and Test Overhaul" section tracking the
+  bugs, pending decisions and test phases 0-4.
+
+No source code changed.
+
+Fico no aguardo das suas decisões para a próxima sessão.

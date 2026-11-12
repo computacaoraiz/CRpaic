@@ -1,0 +1,260 @@
+Revisão de código e proposta de testes: 2026-11-12
+==================================================
+
+Feita pelo Claude (Opus 5.5) no branch v2 (2.0.0, não lançada). Nenhum arquivo
+de código foi alterado; os testes práticos rodaram fora do repositório.
+
+Resumo: a base é boa. O código é organizado, bem comentado, compila sem avisos
+mesmo com -Werror -Wconversion e o valgrind não acusou vazamentos. Mas há dois
+bugs graves e confirmados no módulo math, problemas no Makefile que atrapalham
+a instalação e o futuro .deb, e decisões de design no módulo I/O que vale a
+pena discutir.
+
+
+1. BUGS CONFIRMADOS POR TESTE
+=============================
+
++----+--------+---------------------------------------------------------+
+| #  | Grav.  | Problema (confirmado no teste)                          |
++----+--------+---------------------------------------------------------+
+| B1 | ALTA   | crpaic_is_prime: "i * i <= n" dá overflow em unsigned   |
+|    |        | long long. Com o maior primo de 64 bits                 |
+|    |        | (18446744073709551557) o programa passou de 20 s sem    |
+|    |        | responder. Também trava crpaic_next_prime perto do fim  |
+|    |        | da faixa. Correção: "i <= n / i".                       |
++----+--------+---------------------------------------------------------+
+| B2 | ALTA   | int8_t é "signed char", que é um tipo diferente de      |
+|    |        | "char". crpaic_max((int8_t)3, (int8_t)5) cai no         |
+|    |        | default e devolve long double (sizeof = 16). O mesmo    |
+|    |        | acontece com bool. Já is_prime, is_even, is_odd e       |
+|    |        | next_prime nem compilam com int8_t, embora a            |
+|    |        | documentação diga que aceitam. Correção: acrescentar o  |
+|    |        | caso "signed char" e remover o "default:".              |
++----+--------+---------------------------------------------------------+
+| B3 | MÉDIA  | O Makefile não inclui os arquivos .pic.d: depois de     |
+|    |        | "touch CRpaic_math_prime.h", "make shared" não          |
+|    |        | recompilou nada. A .so fica desatualizada, o que é      |
+|    |        | grave porque prime.h tem código inline.                 |
++----+--------+---------------------------------------------------------+
+| B4 | MÉDIA  | install com DESTDIR: os symlinks são absolutos e        |
+|    |        | apontam para o diretório temporário de staging, o       |
+|    |        | diretório man3 não é criado e o ldconfig roda dentro    |
+|    |        | do DESTDIR. Isso inviabiliza o empacotamento .deb.      |
++----+--------+---------------------------------------------------------+
+| B5 | MÉDIA  | install instala as man pages da v1 (get_int,            |
+|    |        | concat...), de funções que não existem na v2. Não há    |
+|    |        | man page para nenhuma crpaic_get_*. A variável MANS é   |
+|    |        | calculada antes de "make mans" gerar os .gz.            |
++----+--------+---------------------------------------------------------+
+| B6 | MÉDIA  | O SONAME é libCRpaic.so.2.0.0. O correto seria          |
+|    |        | libCRpaic.so.2; do jeito atual, toda versão de patch    |
+|    |        | quebra os binários já compilados.                       |
++----+--------+---------------------------------------------------------+
+| B7 | BAIXA  | NaN: crpaic_max(NaN, 1.0) devolve 1, mas                |
+|    |        | crpaic_max(1.0, NaN) devolve NaN. A semântica precisa   |
+|    |        | ser definida e documentada.                             |
++----+--------+---------------------------------------------------------+
+| B8 | BAIXA  | Os nomes "__x" e "__y" dentro das macros colidem com    |
+|    |        | variáveis do usuário: com int __x = 7,                  |
+|    |        | crpaic_max(1, __x) devolveu 1. São identificadores      |
+|    |        | reservados, mas dá para usar nomes únicos.              |
++----+--------+---------------------------------------------------------+
+| B9 | BAIXA  | LDLIBS tem -lX11 e -lcrypt, que a biblioteca não usa.   |
+|    |        | O build falha se libx11-dev não estiver instalado.      |
++----+--------+---------------------------------------------------------+
+
+
+2. DESIGN DO MÓDULO I/O (DECISÕES PENDENTES)
+============================================
+
+D1. NOPROMPT é " \b": isso escreve 2 bytes de verdade na saída, e eles
+    aparecem quando a saída vai para um arquivo ou pipe (confirmado com od).
+    crpaic_get_string(NULL) não gera aviso com -Wall -Wextra, ao contrário de
+    "", que dispara -Wformat-zero-length. Então "#define NOPROMPT NULL"
+    resolve.
+
+D2. O construtor deixa o stdout sem buffer para todo o programa. Com a .so,
+    isso vale até para um programa que só usa math; com a .a, só vale se
+    charstr.o for linkado, então o comportamento muda entre link estático e
+    dinâmico. Saída sem buffer é muito mais lenta. Alternativa: chamar
+    fflush(stdout) depois de imprimir o prompt.
+
+D3. Toda linha lida fica na memória até o fim do programa, inclusive as
+    tentativas inválidas e as linhas usadas por dentro de get_int. Um laço
+    que lê 10^6 inteiros guarda 10^6 strings. Além disso, o buffer cresce 1
+    byte por caractere e o array de strings cresce 1 posição por chamada, o
+    que é O(n^2). Sugestão: get_int e as outras get_* numéricas liberam a
+    própria linha, só get_string registra a string para liberar no fim, e o
+    crescimento passa a ser geométrico.
+
+D4. free() na string de get_string causa double free na saída do programa.
+    Isso conflita com o objetivo primário, porque o aluno precisa aprender a
+    usar free. Opções: (a) documentar "nunca libere"; (b) criar
+    crpaic_free_string, que tira a string do registro; (c) tirar o registro
+    e deixar o aluno liberar.
+
+D5. A biblioteca não é thread-safe (usa um array global). Basta documentar.
+
+D6. get_float e get_double recusam notação científica (1e3). Vírgula e
+    locale também não estão definidos. Precisa de uma decisão.
+
+D7. Falta __attribute__((format(printf, 1, 0))) em crpaic_vget_string.
+
+D8. Valores sentinela ambíguos: em erro, get_char devolve CHAR_MAX (127, que
+    é um caractere válido), e INT_MAX não pode ser digitado. Isso veio da
+    libcs50; vale decidir conscientemente se fica assim.
+
+
+3. MÓDULO MATH, CONSISTÊNCIA E BUILD
+====================================
+
+- Há dois estilos misturados: os wrappers de is_prime são static inline no
+  header, e as outras funções são extern. Convém escolher um padrão, porque
+  isso afeta a ABI.
+- A regra de "mesmo tipo" é boa, mas faz crpaic_max(x_long, 0) falhar; o
+  aluno precisa escrever 0L. Isso deve estar documentado na man page.
+- "#ifndef string" não tem efeito, porque string é um typedef e não uma
+  macro.
+- O ramo para MSVC no INITIALIZER é código morto, já que a biblioteca só
+  suporta Linux.
+- Expressões "? true : false" são redundantes.
+- Makefile: "CFLAGS :=" impede o usuário de acrescentar flags; o clean faz
+  "find ... -exec rm -fr" no repositório inteiro, o que é arriscado; a
+  conferência com VERSION.TXT repete o que CRpaic_version.h já diz. Sugestão:
+  acrescentar -Wformat=2 -Wshadow -Wmissing-prototypes e talvez
+  -fvisibility=hidden.
+- Comentários desatualizados e erros de digitação: a documentação de
+  vget_string cita "_crpaic_get_string(&args, &format)"; "CRpaic_id_charstr.h";
+  "unsiged", "lont", "int64_4", "stanard", "flot", "funcionts".
+- O README ainda descreve a API da v1.
+- Pergunta em aberto: CRpaic.h já inclui stdio.h, stdlib.h e outros headers
+  por conta própria. Isso conflita com o objetivo de não esconder demais?
+
+
+4. O QUE ESTÁ BOM
+=================
+
+- Estrutura modular limpa: as fontes são encontradas automaticamente e o build
+  gera .a, .so e objetos PIC.
+- vget_string é robusta: verifica SIZE_MAX, trata CR, LF e CRLF, usa ungetc e
+  libera a memória em todos os caminhos de erro. O valgrind não acusou nada.
+- O _Generic com _Static_assert dá mensagens de erro claras e avalia cada
+  argumento uma única vez (testado com x++).
+- is_even e is_odd estão corretas para negativos.
+- next_prime acerta os limites: (char)127 devolve 0 com ERANGE, e INT_MAX - 1
+  devolve INT_MAX.
+- Comentários de interface e man pages com exemplos são um ótimo padrão.
+
+
+5. PROPOSTA DE REESTRUTURAÇÃO DOS TESTES
+========================================
+
+5.1 Por que os testes atuais viraram gargalo
+
+- Testam a biblioteca INSTALADA (-lCRpaic), não o código que está sendo
+  editado.
+- São da v1, então nada da v2 está testado.
+- Cada caso repete umas 10 linhas de fmemopen e troca o stdin por atribuição,
+  o que não é portável. Além disso, o "strlen + 1" injeta um '\0' no fim da
+  entrada.
+- Rodam num único processo sem timeout: o B1 teria travado a suíte inteira
+  para sempre.
+- Não há testes de falha de malloc, de cobertura, de sanitizers nem de tipos.
+
+5.2 Escolha do framework
+
++--------------+----------+----------+-----------+-----------+
+| Critério     | CUnit    | cmocka   | Criterion | Próprio   |
++--------------+----------+----------+-----------+-----------+
+| Mantido      | não      | sim      | pouco     | por você  |
+| Pacote apt   | sim      | sim      | sim       | n/a       |
+| Isola testes | não      | não (*)  | fork      | não (*)   |
+| Timeout      | não      | não (*)  | sim       | não (*)   |
+| Mocks/falhas | não      | sim      | não       | --wrap    |
+| Saída TAP    | não      | sim      | sim       | fácil     |
+| Filtro teste | não      | sim      | sim       | fácil     |
++--------------+----------+----------+-----------+-----------+
+(*) resolvido com um executável por submódulo, rodado sob timeout
+
+Recomendação: cmocka. É C puro, é mantido, está no apt (libcmocka-dev),
+permite simular falhas de malloc e realloc (é o que o SQLite faz de mais
+importante), gera saída TAP e JUnit para CI e permite filtrar um único teste.
+O CUnit não tem release desde 2018.
+
+5.3 Duas mudanças pequenas no código para facilitar os testes
+
+1. Núcleo de I/O recebendo FILE *: algo como
+   crpaic_vfget_string(FILE *in, FILE *out, fmt, va_list). As funções
+   públicas continuam usando stdin e stdout, e os testes passam um stream de
+   memória, sem mexer no stdin. Talvez vire API pública (crpaic_fget_int),
+   útil para ler de arquivos.
+2. Uma função interna só para testes que esvazia o registro de strings entre
+   um teste e outro.
+
+5.4 Camadas de teste (o "nível SQLite", aos poucos)
+
++----+------------------+---------------------------------------------+
+| Nº | Camada           | Exemplo na CRpaic                           |
++----+------------------+---------------------------------------------+
+| T1 | Unitário tabular | tabelas {entrada, esperado} para get_int    |
+| T2 | Exaustivo        | todos os valores char/short; is_prime de    |
+|    |                  | 0..2^24 comparado com o crivo               |
+| T3 | Propriedades     | max(a,b)==max(b,a) para valores aleatórios  |
+|    |                  | com semente fixa                            |
+| T4 | Falha de memória | o n-ésimo malloc/realloc falha, para cada n |
+| T5 | Compilação       | crpaic_max(1, 2.0) TEM de dar erro;         |
+|    |                  | verificar o tipo de retorno de cada macro   |
+| T6 | Matriz de build  | gcc/clang x -O0/-O3 x .a/.so x ASan/UBSan   |
+|    |                  | x valgrind                                  |
+| T7 | Cobertura        | gcov/gcovr, meta de cobertura de ramos      |
+| T8 | Fuzzing          | libFuzzer (clang) nos parsers get_*         |
+| T9 | Instalação/docs  | DESTDIR install + compilar um programa;     |
+|    |                  | exemplos de docs/examples; lint das man     |
++----+------------------+---------------------------------------------+
+
+Teria pegado: B1 com T1/T2, B2 com T5, B3 com T6, B4 e B5 com T9.
+
+5.5 Organização proposta
+
+tests/
+  tests.mk                 incluído pelo Makefile da raiz
+  harness/crpaic_test.h    helpers (entrada simulada, floats, falhas)
+  unit/io/test_io_charstr.c
+  unit/io/test_io_numbers.c
+  unit/math/test_math_{minmax,oddeven,prime}.c
+  exhaustive/              testes lentos (T2/T3)
+  compile/{pass,fail}/     trechos que devem compilar ou falhar
+  fuzz/                    alvos libFuzzer
+  install/                 teste de DESTDIR e dos exemplos
+
+Comandos previstos:
+
+  make check                        T1 + T5, rápido, todo commit
+  make check TEST=math_prime        um só submódulo
+  make check TEST=math_prime F=lim* um só caso (filtro do cmocka)
+  make check-asan | check-valgrind | check-clang
+  make check-slow                   T2/T3
+  make coverage                     relatório HTML
+  make release-check                tudo: obrigatório antes de lançar
+
+5.6 Ordem sugerida, no estilo TDD
+
+- Fase 0: corrigir B3 e B9 no Makefile e montar a infraestrutura (cmocka,
+  tests.mk, harness, make check linkando o build local).
+- Fase 1: testes do math (T1, T2, T5). Primeiro escrevo os testes que
+  REPRODUZEM B1, B2 e B7 e só depois corrijo.
+- Fase 2: passar o I/O para o núcleo com FILE *, mais T1 e T4, e as decisões
+  D1 a D8.
+- Fase 3: sanitizers, cobertura e CI (GitHub Actions?).
+- Fase 4: fuzzing, testes de instalação (B4, B5, B6) e make release-check.
+
+
+6. DECISÕES PENDENTES (Abrantes, próxima sessão)
+================================================
+
+1. Framework: cmocka (recomendado), Criterion ou harness próprio?
+2. Refatorar o I/O para o núcleo com FILE *? As crpaic_fget_* serão públicas?
+3. Descartar os testes da v1 em tests/? Eles continuam no git e no master.
+4. Como resolver D1 (NOPROMPT), D2 (buffer do stdout), D3 e D4 (memória das
+   strings) e D6 (notação científica)?
+5. Autorizar o início das Fases 0 e 1?
